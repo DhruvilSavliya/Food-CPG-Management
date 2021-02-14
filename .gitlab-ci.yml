@@ -8,8 +8,7 @@ build:
   script:
     - mvn clean package
   tags:
-    - docker
-    - shared
+    - dalfcs_gitlab_docker_ci
 
 deploy_staging:
   stage: deploy
@@ -25,5 +24,4 @@ deploy_staging:
   only:
     - branches
   tags:
-    - docker
-    - shared
+    - dalfcs_gitlab_docker_ci
