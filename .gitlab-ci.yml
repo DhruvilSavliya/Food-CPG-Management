@@ -1,0 +1,25 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: maven:3.3.9-jdk-8
+  script:
+    - mvn clean package
+  tags:
+    - dalfcs_gitlab_docker_ci
+
+deploy_staging:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+  environment:
+    name: staging
+    url: https://food-cpg-management-staging.herokuapp.com
+  only:
+    - branches
+  tags:
+    - dalfcs_gitlab_docker_ci
