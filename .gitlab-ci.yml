@@ -7,9 +7,9 @@ build:
   stage: build
   image: maven:3.3.9-jdk-8
   script:
-    - mvn clean package
+    - mvn clean compile
   tags:
-    - dalfcs_gitlab_docker_ci
+    - ugrad
 
 test:
   stage: test
@@ -21,7 +21,7 @@ test:
       junit:
         - target/surefire-reports/TEST-*.xml
   tags:
-    - dalfcs_gitlab_docker_ci
+    - ugrad
 
 deploy_test:
   stage: deploy
@@ -35,7 +35,7 @@ deploy_test:
   only:
     - development
   tags:
-    - dalfcs_gitlab_docker_ci
+    - ugrad
 
 deploy_production:
   stage: deploy
@@ -49,4 +49,4 @@ deploy_production:
   only:
     - master
   tags:
-    - dalfcs_gitlab_docker_ci
+    - ugrad
