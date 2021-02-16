@@ -1,25 +1,52 @@
 stages:
   - build
+  - test
   - deploy
 
 build:
   stage: build
   image: maven:3.3.9-jdk-8
   script:
-    - mvn clean package
+    - mvn clean compile
   tags:
-    - dalfcs_gitlab_docker_ci
+    - ugrad
 
-deploy_staging:
+test:
+  stage: test
+  script:
+    - mvn verify
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+  tags:
+    - ugrad
+
+deploy_test:
   stage: deploy
   image: ruby:latest
   script:
     - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_TEST --api-key=$HEROKU_API_KEY
   environment:
-    name: staging
-    url: https://food-cpg-management-staging.herokuapp.com
+    name: test
+    url: https://food-cpg-management-test.herokuapp.com
   only:
-    - branches
+    - development
   tags:
-    - dalfcs_gitlab_docker_ci
+    - ugrad
+
+deploy_production:
+  stage: deploy
+  image: ruby:latest
+  script:
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  environment:
+    name: production
+    url: https://food-cpg-management-production.herokuapp.com
+  only:
+    - master
+  tags:
+    - ugrad
