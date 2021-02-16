@@ -33,7 +33,7 @@ deploy_test:
     name: test
     url: https://food-cpg-management-test.herokuapp.com
   only:
-    - development
+    - develop
   tags:
     - ugrad
 
