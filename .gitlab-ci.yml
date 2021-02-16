@@ -9,10 +9,11 @@ build:
   script:
     - mvn clean compile
   tags:
-    - ugrad
+    - dalfcs_docker_kvm
 
 test:
   stage: test
+  image: maven:3.3.9-jdk-8
   script:
     - mvn verify
   artifacts:
@@ -21,7 +22,7 @@ test:
       junit:
         - target/surefire-reports/TEST-*.xml
   tags:
-    - ugrad
+    - dalfcs_docker_kvm
 
 deploy_test:
   stage: deploy
@@ -35,7 +36,7 @@ deploy_test:
   only:
     - develop
   tags:
-    - ugrad
+    - dalfcs_docker_kvm
 
 deploy_production:
   stage: deploy
@@ -49,4 +50,4 @@ deploy_production:
   only:
     - master
   tags:
-    - ugrad
+    - dalfcs_docker_kvm
