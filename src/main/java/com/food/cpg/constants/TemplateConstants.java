@@ -17,4 +17,6 @@ public final class TemplateConstants {
 
     // Version Template
 
+    // Vendor Template
+    public static final String VENDOR = "vendor";
 }
