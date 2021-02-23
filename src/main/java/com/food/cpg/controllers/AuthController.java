@@ -1,4 +1,4 @@
-package com.food.cpg;
+package com.food.cpg.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
