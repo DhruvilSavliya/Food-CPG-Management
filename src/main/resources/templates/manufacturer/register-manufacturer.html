@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<div align="centre">
+<h2>Registration</h2>
+<form th:action="@{/save-manufacturer}" th:object="${manufacturer}" method="post">
+    <label>Company Name: </label>
+    <input type="text" th:field="*{companyName}" />
+<!--    <span class="col-4 text-danger" th:text="*{errors['companyName']}"></span>-->
+    <label>Email: </label>
+    <input type="email" th:field="*{email}" />
+<!--    <span class="col-4 text-danger" th:text="*{errors['email']}"></span>-->
+    <label>Password: </label>
+    <input type="password" th:field="*{password}">
+<!--    <span class="col-4 text-danger" th:text="*{errors['password']}"></span>-->
+    <label>Contact Number: </label>
+    <input type="text" th:field="*{contact}" />
+<!--    <span class="col-4 text-danger" th:if="*{errors['contact'] != null}" th:text="*{errors['contact']}"></span>-->
+<!--    <span class="col-4 text-danger" th:if="${#fields.hasErrors('contactLength')}" th:text="${'Invalid value'}"></span>-->
+    <label>Address: </label>
+    <textarea type="text" th:field="*{address}"></textarea>
+    <button type="submit">Register</button>
+
+</form>
+</div>
+</body>
+</html>
