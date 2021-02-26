@@ -22,4 +22,7 @@ public final class TemplateConstants {
 
     // Raw material Template
     public static final String RAW_MATERIAL = "rawMaterial";
+
+    //Manufacturer Template
+    public static final String MANUFACTURER = "manufacturer";
 }
