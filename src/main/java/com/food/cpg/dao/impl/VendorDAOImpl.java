@@ -36,12 +36,14 @@ public class VendorDAOImpl extends AbstractBaseDAO implements IVendorDAO {
 
     @Override
     public List<Vendor> getVendorsList(int manufacturerId) {
+        LOG.info("IN VendorDAOImpl : getVendorsList : manufacturerId - {}", manufacturerId);
         List<Vendor> vendorList = new ArrayList<>();
-        try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from vendors")) {
+        try (Connection connection = getDBConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from vendors where manufacturer_id = ?")) {
+                statement.setInt(1, manufacturerId);
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs != null) {
-                        while(rs.next()) {
+                        while (rs.next()) {
                             Vendor vendor = new Vendor();
                             vendor.setId(rs.getInt("vendor_id"));
                             vendor.setName(rs.getString("vendor_name"));
@@ -58,13 +60,15 @@ public class VendorDAOImpl extends AbstractBaseDAO implements IVendorDAO {
             throw new ServiceException(e);
         }
 
+        LOG.info("OUT VendorDAOImpl : getVendorsList : Vendor count - {}", vendorList.size());
         return vendorList;
     }
 
     @Override
     public Vendor getVendor(int vendorId) {
+        LOG.info("IN VendorDAOImpl : getVendor : vendorId - {}", vendorId);
         Vendor vendor = null;
-        try(Connection connection = getDBConnection()) {
+        try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("select * from vendors where vendor_id = ?")) {
                 statement.setInt(1, vendorId);
                 try (ResultSet rs = statement.executeQuery()) {
@@ -83,13 +87,16 @@ public class VendorDAOImpl extends AbstractBaseDAO implements IVendorDAO {
             throw new ServiceException(e);
         }
 
+        LOG.info("OUT VendorDAOImpl : getVendor");
         return vendor;
     }
 
     @Override
     public void saveVendor(Vendor vendor) {
+        LOG.info("IN VendorDAOImpl : saveVendor");
+
         String insertVendorQuery = "insert into vendors (vendor_name, vendor_address, contact_person_name, contact_person_email, contact_person_phone, manufacturer_id) values (?, ?, ?, ?, ?, ?)";
-        try(Connection connection = getDBConnection()) {
+        try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertVendorQuery)) {
                 statement.setString(1, vendor.getName());
                 statement.setString(2, vendor.getAddress());
@@ -99,17 +106,21 @@ public class VendorDAOImpl extends AbstractBaseDAO implements IVendorDAO {
                 statement.setInt(6, 1);
 
                 statement.executeUpdate();
+                LOG.info("Vendor saved successfully.");
             }
         } catch (DBException | SQLException e) {
             throw new ServiceException(e);
         }
+        LOG.info("OUT VendorDAOImpl : saveVendor");
     }
 
     @Override
     public void updateVendor(Vendor vendor) {
-        String insertVendorQuery = "update vendors set vendor_name = ?, vendor_address = ?, contact_person_name = ?, contact_person_email = ?, contact_person_phone = ? where vendor_id = ?";
-        try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(insertVendorQuery)) {
+        LOG.info("IN VendorDAOImpl : updateVendor");
+
+        String updateQuery = "update vendors set vendor_name = ?, vendor_address = ?, contact_person_name = ?, contact_person_email = ?, contact_person_phone = ? where vendor_id = ?";
+        try (Connection connection = getDBConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
                 statement.setString(1, vendor.getName());
                 statement.setString(2, vendor.getAddress());
                 statement.setString(3, vendor.getContactPersonName());
@@ -118,22 +129,28 @@ public class VendorDAOImpl extends AbstractBaseDAO implements IVendorDAO {
                 statement.setInt(6, vendor.getId());
 
                 statement.executeUpdate();
+                LOG.info("Vendor updated successfully.");
             }
         } catch (DBException | SQLException e) {
             throw new ServiceException(e);
         }
+        LOG.info("OUT VendorDAOImpl : updateVendor");
     }
 
     @Override
     public void deleteVendor(int vendorId) {
-        String insertVendorQuery = "delete from vendors where vendor_id = ?";
-        try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(insertVendorQuery)) {
+        LOG.info("IN VendorDAOImpl : deleteVendor");
+
+        String deleteQuery = "delete from vendors where vendor_id = ?";
+        try (Connection connection = getDBConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
                 statement.setInt(1, vendorId);
                 statement.executeUpdate();
+                LOG.info("Vendor deleted successfully.");
             }
         } catch (DBException | SQLException e) {
             throw new ServiceException(e);
         }
+        LOG.info("OUT VendorDAOImpl : deleteVendor");
     }
 }
