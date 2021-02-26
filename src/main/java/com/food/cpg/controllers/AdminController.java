@@ -1,11 +1,11 @@
 package com.food.cpg.controllers;
 
 
+import com.food.cpg.constants.TemplateConstants;
 import com.food.cpg.models.Manufacturer;
 import com.food.cpg.services.ImanufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,4 +54,12 @@ public class AdminController {
         manufacturerService.blockManufacturer(manufacturerId);
         return "redirect:/admin";
     }
+
+    @GetMapping("manufacturer-details/{manufacturerId}")
+    public String details(@PathVariable("manufacturerId") int manufacturerId, Model model) {
+        Manufacturer manufacturer = manufacturerService.getManufacturer(manufacturerId);
+        model.addAttribute(TemplateConstants.MANUFACTURER, manufacturer);
+        return "admin/manufacturer-details";
+    }
+
 }
