@@ -3,7 +3,7 @@ package com.food.cpg.services.impl;
 import java.util.List;
 
 import com.food.cpg.dao.IManufacturerDAO;
-import com.food.cpg.dao.impl.ManufacutrerDAOImpl;
+import com.food.cpg.dao.impl.ManufacturerDAOImpl;
 import com.food.cpg.models.Manufacturer;
 import com.food.cpg.services.IManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class ManufacturerService implements IManufacturerService
     private final IManufacturerDAO manufacturerDAO;
 
     @Autowired
-    public ManufacturerService(ManufacutrerDAOImpl manufacturerDAO) {
+    public ManufacturerService(ManufacturerDAOImpl manufacturerDAO) {
         this.manufacturerDAO = manufacturerDAO;
     }
 
