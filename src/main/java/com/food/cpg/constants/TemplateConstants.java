@@ -19,4 +19,10 @@ public final class TemplateConstants {
 
     // Vendor Template
     public static final String VENDOR = "vendor";
+
+    // Raw material Template
+    public static final String RAW_MATERIAL = "rawMaterial";
+
+    //Manufacturer Template
+    public static final String MANUFACTURER = "manufacturer";
 }

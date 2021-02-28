@@ -5,14 +5,29 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Manufacturer {
+
+/**
+ * @author Dhruvilkumar Savliya
+ */
+public class Manufacturer
+{
+    private Integer id;
     private String companyName;
     private String email;
     private String password;
     private Long contact;
     private String address;
+    private String status;
 
     private Map<String, String> errors = new HashMap<>();
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCompanyName() {
         return companyName;
@@ -54,6 +69,19 @@ public class Manufacturer {
         this.address = address;
     }
 
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Map<String, String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Map<String, String> errors) {
+        this.errors = errors;
+    }
     public boolean isValidManufacturer() {
         errors = new HashMap<>();
 
