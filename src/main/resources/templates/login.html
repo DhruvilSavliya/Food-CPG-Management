@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,6 +19,28 @@
     <div class="text-align-center">
         <h1><span th:text="'Welcome to ' + ${projectName}"></span></h1>
     </div>
+    <div class="container-fluid text-center">
+        <form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto;">
+            <div th:if="${param.error}">
+                <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+            </div>
+            <div class="border border-secondary p-3 rounded">
+                <p>Login Here</p>
+                <p>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required autofocus/>
+                </p>
+                <p>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required />
+                </p>
+                <p>
+                    <input type="submit" value="Login" class="btn btn-primary" />
+                </p>
+            </div>
+        </form>
+
+    </div>
+
+
 </main>
 </body>
 </html>
