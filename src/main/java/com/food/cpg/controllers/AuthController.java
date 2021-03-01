@@ -54,7 +54,7 @@ public class AuthController {
         }
         model.addAttribute(TemplateConstants.PROJECT_NAME, projectName);
 
-        return "/login";
+        return "login";
     }
 
     @GetMapping("/403-error")
