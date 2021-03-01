@@ -2,10 +2,9 @@ package com.food.cpg.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.food.cpg.constants.TemplateConstants;
+import javax.annotation.security.RolesAllowed;
 
 /**
  * @author Kartik Gevariya
@@ -16,10 +15,24 @@ public class AuthController {
     @Value("${application.name}")
     private String projectName;
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String login(Model model) {
         model.addAttribute(TemplateConstants.PROJECT_NAME, projectName);
 
         return "login";
+    }*/
+    @RolesAllowed("USER")
+    @RequestMapping("/user")
+    public String getUser()
+    {
+        return "vendors";
     }
+
+    @RolesAllowed("ADMIN")
+    @RequestMapping("/admin")
+    public String getAdmin()
+    {
+        return "admin_login";
+    }
+
 }
