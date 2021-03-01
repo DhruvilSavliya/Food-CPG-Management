@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.util.StringUtils;
 
 public class User {
-    private Integer userid;
+    private Integer userId;
     private String email;
     private String password;
     private String role;
@@ -15,11 +15,11 @@ public class User {
     private Map<String, String> errors = new HashMap<>();
 
     public Integer getId() {
-        return userid;
+        return userId;
     }
 
     public void setId(Integer userid) {
-        this.userid = userid;
+        this.userId = userid;
     }
 
     public String getEmail() {
