@@ -1,4 +1,4 @@
-package com.food.cpg.exceptions;
+package com.food.cpg.handlers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class UncaughtExceptionHandler extends ResponseEntityExceptionHandler {
     public ModelAndView handleServiceException(Exception ex, HttpServletRequest request) {
         LOG.error("Internal server Error: {}", ex.getMessage(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/server-error");
+        mav.setViewName("/500-error");
         return mav;
     }
 }

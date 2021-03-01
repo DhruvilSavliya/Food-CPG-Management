@@ -39,7 +39,7 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
     public List<Manufacturer> getManufacturerList(int manufacturerId) {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer")) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer m left join users u on m.manufacturer_email = u.email")) {
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs != null) {
                         while(rs.next()) {
@@ -47,7 +47,6 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
                             manufacturer.setId(rs.getInt("manufacturer_id"));
                             manufacturer.setCompanyname(rs.getString("manufacturer_company_name"));
                             manufacturer.setEmail(rs.getString("manufacturer_email"));
-                            manufacturer.setPassword(rs.getString("manufacturer_password"));
                             manufacturer.setContact(rs.getString("manufacturer_contact"));
                             manufacturer.setAddress(rs.getString("manufacturer_address"));
                             manufacturer.setStatus(rs.getString("status"));
@@ -67,7 +66,7 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
     public Manufacturer getManufacturer(int manufacturerId) {
         Manufacturer manufacturer = null;
         try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer where manufacturer_id = ?")) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer m left join users u on m.manufacturer_email = u.email where manufacturer_id = ?")) {
                 statement.setInt(1, manufacturerId);
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs != null && rs.next()) {
@@ -75,7 +74,6 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
                         manufacturer.setId(rs.getInt("manufacturer_id"));
                         manufacturer.setCompanyname(rs.getString("manufacturer_company_name"));
                         manufacturer.setEmail(rs.getString("manufacturer_email"));
-                        manufacturer.setPassword(rs.getString("manufacturer_password"));
                         manufacturer.setContact(rs.getString("manufacturer_contact"));
                         manufacturer.setAddress(rs.getString("manufacturer_address"));
                         manufacturer.setStatus(rs.getString("status"));
@@ -91,7 +89,7 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
 
     @Override
     public void approveManufacturer(int manufacturerId) {
-        String approveManufacturerQuery = "update manufacturer set status='Approved' where manufacturer_id = ?";
+        String approveManufacturerQuery = "update users set status='Approved' where email in (select manufacturer_email from manufacturer where manufacturer_id = ?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(approveManufacturerQuery)) {
                 statement.setInt(1, manufacturerId);
@@ -104,7 +102,7 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
 
     @Override
     public void blockManufacturer(int manufacturerId) {
-        String blockManufacturerQuery = "update manufacturer set status='Blocked' where manufacturer_id = ?";
+        String blockManufacturerQuery = "update users set status='Blocked' where email in (select manufacturer_email from manufacturer where manufacturer_id = ?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(blockManufacturerQuery)) {
                 statement.setInt(1, manufacturerId);
