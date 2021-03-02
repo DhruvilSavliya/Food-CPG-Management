@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
-
 /**
  * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
  */
 @Service
 public class ManufacturerService implements IManufacturerService
@@ -35,6 +34,7 @@ public class ManufacturerService implements IManufacturerService
 
     @Override
     public void saveManufacturer(Manufacturer manufacturer) {
+
         manufacturerDAO.saveManufacturer(manufacturer);
     }
 

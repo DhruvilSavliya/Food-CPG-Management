@@ -6,6 +6,7 @@ import com.food.cpg.models.Manufacturer;
 
 /**
  * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
  */
 public interface IManufacturerService {
 

@@ -17,6 +17,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Manufacturer DAO implementation
+ *
+ * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
+ */
 @Repository
 public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacturerDAO {
 
@@ -29,15 +36,11 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
 
     @Override
     public void saveManufacturer(Manufacturer manufacturer) {
-        String insertManufacturerQuery = "insert into manufacturer (manufacturer_company_name, manufacturer_email, manufacturer_password, manufacturer_contact, manufacturer_address) values (?, ?, ?, ?, ?)";
+        String insertManufacturerQuery = "insert into manufacturer (manufacturer_company_name, manufacturer_email, manufacturer_contact, manufacturer_address) values (?, ?, ?, ?, ?)";
+        String insertUserQuery = "insert into user (email, password, role) values(?,?,?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertManufacturerQuery)) {
                 statement.setString(1, manufacturer.getCompanyName());
-                System.out.println(manufacturer.getCompanyName());
-                System.out.println(manufacturer.getEmail());
-                System.out.println(manufacturer.getPassword());
-                System.out.println(manufacturer.getContact());
-                System.out.println(manufacturer.getAddress());
                 statement.setString(2, manufacturer.getEmail());
                 statement.setString(3, manufacturer.getPassword());
                 statement.setLong(4, manufacturer.getContact());
@@ -45,6 +48,15 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
 
                 statement.executeUpdate();
             }
+//            try (PreparedStatement statement = connection.prepareStatement(insertUserQuery)) {
+//                statement.setString(1, user.getEmail());
+//                statement.setString(2, manufacturer.getPassword());
+//                statement.setLong(3, manufacturer.getContact());
+//                statement.setString(4, manufacturer.getAddress());
+//
+//                statement.executeUpdate();
+//            }
+
         } catch (DBException | SQLException e) {
             throw new ServiceException(e);
         }

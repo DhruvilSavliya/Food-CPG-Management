@@ -1,7 +1,9 @@
 package com.food.cpg.controllers;
 
 import com.food.cpg.constants.ApplicationConstants;
+import com.food.cpg.models.IUser;
 import com.food.cpg.models.Manufacturer;
+import com.food.cpg.models.User;
 import com.food.cpg.services.IManufacturerService;
 import com.food.cpg.services.impl.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * @author Rotesh Chhabra
+ */
+
 @Controller
 public class ManufacturerRegistrationController {
 
     private final IManufacturerService manufacturerService;
+   private final IUser user;
 
     @Autowired
-    public ManufacturerRegistrationController(ManufacturerService manufacturerService) {
+    public ManufacturerRegistrationController(ManufacturerService manufacturerService, User user) {
         this.manufacturerService = manufacturerService;
+        this.user = user;
     }
 
     @GetMapping("/register-manufacturer")

@@ -8,6 +8,7 @@ import com.food.cpg.models.Manufacturer;
  * Manufacturer DAO interface
  *
  * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
  */
 public interface IManufacturerDAO {
 

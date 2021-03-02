@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
  */
 public class Manufacturer
 {
