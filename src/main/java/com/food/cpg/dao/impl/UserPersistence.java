@@ -27,7 +27,7 @@ public class UserPersistence extends AbstractBaseDAO implements IUserPersistence
 
     @Override
     public void saveUser(User user) {
-        String insertUserQuery = "insert into user (email, password, role) values(?,?,?)";
+        String insertUserQuery = "insert into users (email, password, role) values(?,?,?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertUserQuery)) {
                 statement.setString(1, user.getEmail());
