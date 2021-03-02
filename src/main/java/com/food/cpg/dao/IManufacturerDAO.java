@@ -8,6 +8,7 @@ import com.food.cpg.models.Manufacturer;
  * Manufacturer DAO interface
  *
  * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
  */
 public interface IManufacturerDAO {
 
@@ -18,5 +19,7 @@ public interface IManufacturerDAO {
     void approveManufacturer(int manufacturerId);
 
     void blockManufacturer(int manufacturerId);
+
+    void saveManufacturer(Manufacturer manufacturer);
 
 }

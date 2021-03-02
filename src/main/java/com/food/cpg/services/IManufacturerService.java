@@ -6,10 +6,13 @@ import com.food.cpg.models.Manufacturer;
 
 /**
  * @author Dhruvilkumar Savliya
+ * @author Rotesh Chhabra
  */
-public interface ImanufacturerService {
+public interface IManufacturerService {
 
     List<Manufacturer> getManufacturerList(int manufacturerId);
+
+    void saveManufacturer(Manufacturer manufacturer);
 
     void approveManufacturer(int manufacturerId);
 

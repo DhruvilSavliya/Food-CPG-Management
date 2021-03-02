@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div align="centre">
+    <h2>Registration</h2>
+    <div class="row pl-3">
+        <form class="col-12" th:action="@{/save-manufacturer}" th:object="${manufacturer}" method="post">
+            <div class="row">
+                <div class="col-8 row form-group">
+                <label class="col-form-label col-2">Company Name:</label>
+                <input class="form-control col-4" type="text" th:field="*{companyName}" />
+                <span class="col-4 text-danger" th:text="*{errors['companyName']}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 row form-group">
+                <label class="col-form-label col-2">Email:</label>
+                <input class="form-control col-4" type="email" th:field="*{email}" />
+                <span class="col-4 text-danger" th:text="*{errors['email']}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 row form-group">
+                <label class="col-form-label col-2">Password:</label>
+                <input class="form-control col-4" type="password" th:field="*{password}">
+                <span class="col-4 text-danger" th:text="*{errors['password']}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 row form-group">
+                <label class="col-form-label col-2">Contact Number:</label>
+                <input class="form-control col-4" type="text" th:field="*{contact}" />
+                <span class="col-4 text-danger" th:if="*{errors['contact'] != null}" th:text="*{errors['contact']}"></span>
+                <span class="col-4 text-danger" th:if="${#fields.hasErrors('contact')}" th:text="${'Invalid value'}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 row form-group">
+                <label class="col-form-label col-2">Address:</label>
+                <textarea class="form-control col-4" type="text" th:field="*{address}"></textarea>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <button type="submit">Register</button>
+            </div>
+
+
+</form>
+</div>
+</div>
+</body>
+</html>

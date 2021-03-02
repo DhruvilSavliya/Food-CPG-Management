@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.dao.IManufacturerDAO;
+import com.food.cpg.exceptions.DBException;
+import com.food.cpg.exceptions.ServiceException;
 import com.food.cpg.models.Manufacturer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,23 +18,36 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
-import com.food.cpg.exceptions.DBException;
-import com.food.cpg.exceptions.ServiceException;
 
-/**
- * Vendor DAO implementation
- *
- * @author Dhruvilkumar Savliya
- */
+
 
 @Repository
-public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacturerDAO
+public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacturerDAO
 {
-    private static final Logger LOG = LoggerFactory.getLogger(ManufacutrerDAOImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ManufacturerDAOImpl.class);
 
     @Autowired
-    public ManufacutrerDAOImpl(DataSource dataSource) {
+    public ManufacturerDAOImpl(DataSource dataSource) {
         super(dataSource);
+    }
+
+    @Override
+    public void saveManufacturer(Manufacturer manufacturer) {
+        String insertManufacturerQuery = "insert into manufacturer (manufacturer_company_name, manufacturer_email, manufacturer_contact, manufacturer_address) values (?, ?, ?, ?)";
+        try(Connection connection = getDBConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(insertManufacturerQuery)) {
+                statement.setString(1, manufacturer.getCompanyName());
+                statement.setString(2, manufacturer.getEmail());
+                statement.setLong(3, manufacturer.getContact());
+                statement.setString(4, manufacturer.getAddress());
+
+                statement.executeUpdate();
+            }
+
+
+        } catch (DBException | SQLException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override
@@ -45,9 +60,9 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
                         while(rs.next()) {
                             Manufacturer manufacturer = new Manufacturer();
                             manufacturer.setId(rs.getInt("manufacturer_id"));
-                            manufacturer.setCompanyname(rs.getString("manufacturer_company_name"));
+                            manufacturer.setCompanyName(rs.getString("manufacturer_company_name"));
                             manufacturer.setEmail(rs.getString("manufacturer_email"));
-                            manufacturer.setContact(rs.getString("manufacturer_contact"));
+                            manufacturer.setContact(rs.getLong("manufacturer_contact"));
                             manufacturer.setAddress(rs.getString("manufacturer_address"));
                             manufacturer.setStatus(rs.getString("status"));
                             manufacturerList.add(manufacturer);
@@ -72,9 +87,9 @@ public class ManufacutrerDAOImpl extends AbstractBaseDAO implements IManufacture
                     if (rs != null && rs.next()) {
                         manufacturer = new Manufacturer();
                         manufacturer.setId(rs.getInt("manufacturer_id"));
-                        manufacturer.setCompanyname(rs.getString("manufacturer_company_name"));
+                        manufacturer.setCompanyName(rs.getString("manufacturer_company_name"));
                         manufacturer.setEmail(rs.getString("manufacturer_email"));
-                        manufacturer.setContact(rs.getString("manufacturer_contact"));
+                        manufacturer.setContact(rs.getLong("manufacturer_contact"));
                         manufacturer.setAddress(rs.getString("manufacturer_address"));
                         manufacturer.setStatus(rs.getString("status"));
                     }

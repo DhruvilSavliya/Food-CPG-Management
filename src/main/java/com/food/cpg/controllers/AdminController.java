@@ -2,6 +2,7 @@ package com.food.cpg.controllers;
 
 import java.util.List;
 
+import com.food.cpg.services.IManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.food.cpg.constants.TemplateConstants;
 import com.food.cpg.models.Manufacturer;
-import com.food.cpg.services.ImanufacturerService;
+
 import com.food.cpg.services.impl.ManufacturerService;
 
 
@@ -20,7 +21,7 @@ import com.food.cpg.services.impl.ManufacturerService;
 @Controller
 public class AdminController {
 
-    private final ImanufacturerService manufacturerService;
+    private final IManufacturerService manufacturerService;
 
     @Autowired
     public AdminController(ManufacturerService manufacturerService) {
