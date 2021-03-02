@@ -1,15 +1,26 @@
 package com.food.cpg.models;
 
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * @author Rotesh Chhabra
- */
-public class User implements IUser{
+import org.springframework.util.StringUtils;
 
+public class User {
+    private Integer userId;
     private String email;
     private String password;
     private String role;
-    private String status;
+    private Boolean status;
+
+    private Map<String, String> errors = new HashMap<>();
+
+    public Integer getId() {
+        return userId;
+    }
+
+    public void setId(Integer userid) {
+        this.userId = userid;
+    }
 
     public String getEmail() {
         return email;
@@ -35,11 +46,37 @@ public class User implements IUser{
         this.role = role;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus (Boolean status) {
         this.status = status;
+    }
+
+
+    public Map<String, String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Map<String, String> errors) {
+        this.errors = errors;
+    }
+
+    public boolean isValidUser() {
+        errors = new HashMap<>();
+
+        boolean isValid = true;
+
+        if (StringUtils.isEmpty(getEmail())) {
+            errors.put("email", "Email is required.");
+            isValid = false;
+        }
+
+        if (StringUtils.isEmpty(getPassword())) {
+            errors.put("password", "Password is required.");
+            isValid = false;
+        }
+        return isValid;
     }
 }

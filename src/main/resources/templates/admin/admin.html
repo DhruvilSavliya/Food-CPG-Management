@@ -36,25 +36,29 @@
             <th scope="col">Approve</th>
             <th scope="col">Block</th>
 
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="manufacturer : ${manufacturers}">
-            <td th:text="${manufacturer.id}"></td>
-            <td th:text="${manufacturer.companyName}"></td>
-            <td th:text="${manufacturer.status}"></td>
-            <td class="text-center">
-                <a class="btn btn-primary text-light" th:href="@{/manufacturer-details/{id}(id=${manufacturer.id})}">View</a>
-            </td>
-            <td class="text-center">
-                <a class="btn btn-success text-light" th:href="@{/approve-manufacturer/{id}(id=${manufacturer.id})}">Approve</a>
-            </td>
-            <td class="text-center">
-                <a class="btn btn-danger text-light" th:href="@{/block-manufacturer/{id}(id=${manufacturer.id})}">Block</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="manufacturer : ${manufacturers}">
+                    <td th:text="${manufacturer.id}"></td>
+                    <td th:text="${manufacturer.companyname}"></td>
+                    <td th:text="${manufacturer.status}"></td>
+                    <td class="text-center">
+                        <a class="btn btn-primary text-light" th:href="@{/manufacturer-details/{id}(id=${manufacturer.id})}">View</a>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-success text-light" th:href="@{/approve-manufacturer/{id}(id=${manufacturer.id})}">Approve</a>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-danger text-light" th:href="@{/block-manufacturer/{id}(id=${manufacturer.id})}">Block</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

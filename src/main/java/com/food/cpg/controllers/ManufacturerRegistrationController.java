@@ -1,7 +1,6 @@
 package com.food.cpg.controllers;
 
 import com.food.cpg.constants.ApplicationConstants;
-import com.food.cpg.models.IUser;
 import com.food.cpg.models.Manufacturer;
 import com.food.cpg.models.User;
 import com.food.cpg.services.IManufacturerService;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,12 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ManufacturerRegistrationController {
 
     private final IManufacturerService manufacturerService;
-   private final IUser user;
+
 
     @Autowired
-    public ManufacturerRegistrationController(ManufacturerService manufacturerService, User user) {
+    public ManufacturerRegistrationController(ManufacturerService manufacturerService) {
         this.manufacturerService = manufacturerService;
-        this.user = user;
     }
 
     @GetMapping("/register-manufacturer")

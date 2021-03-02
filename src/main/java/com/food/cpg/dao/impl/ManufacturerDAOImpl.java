@@ -1,5 +1,12 @@
 package com.food.cpg.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.food.cpg.dao.IManufacturerDAO;
 import com.food.cpg.exceptions.DBException;
 import com.food.cpg.exceptions.ServiceException;
@@ -10,23 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 
-/**
- * Manufacturer DAO implementation
- *
- * @author Dhruvilkumar Savliya
- * @author Rotesh Chhabra
- */
+
+
 @Repository
-public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacturerDAO {
-
+public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacturerDAO
+{
     private static final Logger LOG = LoggerFactory.getLogger(ManufacturerDAOImpl.class);
 
     @Autowired
@@ -36,26 +33,17 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
 
     @Override
     public void saveManufacturer(Manufacturer manufacturer) {
-        String insertManufacturerQuery = "insert into manufacturer (manufacturer_company_name, manufacturer_email, manufacturer_contact, manufacturer_address) values (?, ?, ?, ?, ?)";
-        String insertUserQuery = "insert into user (email, password, role) values(?,?,?)";
+        String insertManufacturerQuery = "insert into manufacturer (manufacturer_company_name, manufacturer_email, manufacturer_contact, manufacturer_address) values (?, ?, ?, ?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertManufacturerQuery)) {
                 statement.setString(1, manufacturer.getCompanyName());
                 statement.setString(2, manufacturer.getEmail());
-                statement.setString(3, manufacturer.getPassword());
-                statement.setLong(4, manufacturer.getContact());
-                statement.setString(5, manufacturer.getAddress());
+                statement.setLong(3, manufacturer.getContact());
+                statement.setString(4, manufacturer.getAddress());
 
                 statement.executeUpdate();
             }
-//            try (PreparedStatement statement = connection.prepareStatement(insertUserQuery)) {
-//                statement.setString(1, user.getEmail());
-//                statement.setString(2, manufacturer.getPassword());
-//                statement.setLong(3, manufacturer.getContact());
-//                statement.setString(4, manufacturer.getAddress());
-//
-//                statement.executeUpdate();
-//            }
+
 
         } catch (DBException | SQLException e) {
             throw new ServiceException(e);
@@ -66,7 +54,7 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
     public List<Manufacturer> getManufacturerList(int manufacturerId) {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer")) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer m left join users u on m.manufacturer_email = u.email")) {
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs != null) {
                         while(rs.next()) {
@@ -74,7 +62,6 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
                             manufacturer.setId(rs.getInt("manufacturer_id"));
                             manufacturer.setCompanyName(rs.getString("manufacturer_company_name"));
                             manufacturer.setEmail(rs.getString("manufacturer_email"));
-                            manufacturer.setPassword(rs.getString("manufacturer_password"));
                             manufacturer.setContact(rs.getLong("manufacturer_contact"));
                             manufacturer.setAddress(rs.getString("manufacturer_address"));
                             manufacturer.setStatus(rs.getString("status"));
@@ -94,7 +81,7 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
     public Manufacturer getManufacturer(int manufacturerId) {
         Manufacturer manufacturer = null;
         try(Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer where manufacturer_id = ?")) {
+            try (PreparedStatement statement = connection.prepareStatement("select * from manufacturer m left join users u on m.manufacturer_email = u.email where manufacturer_id = ?")) {
                 statement.setInt(1, manufacturerId);
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs != null && rs.next()) {
@@ -102,7 +89,6 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
                         manufacturer.setId(rs.getInt("manufacturer_id"));
                         manufacturer.setCompanyName(rs.getString("manufacturer_company_name"));
                         manufacturer.setEmail(rs.getString("manufacturer_email"));
-                        manufacturer.setPassword(rs.getString("manufacturer_password"));
                         manufacturer.setContact(rs.getLong("manufacturer_contact"));
                         manufacturer.setAddress(rs.getString("manufacturer_address"));
                         manufacturer.setStatus(rs.getString("status"));
@@ -118,7 +104,7 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
 
     @Override
     public void approveManufacturer(int manufacturerId) {
-        String approveManufacturerQuery = "update manufacturer set status='Approved' where manufacturer_id = ?";
+        String approveManufacturerQuery = "update users set status='Approved' where email in (select manufacturer_email from manufacturer where manufacturer_id = ?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(approveManufacturerQuery)) {
                 statement.setInt(1, manufacturerId);
@@ -131,7 +117,7 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
 
     @Override
     public void blockManufacturer(int manufacturerId) {
-        String blockManufacturerQuery = "update manufacturer set status='Blocked' where manufacturer_id = ?";
+        String blockManufacturerQuery = "update users set status='Blocked' where email in (select manufacturer_email from manufacturer where manufacturer_id = ?)";
         try(Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(blockManufacturerQuery)) {
                 statement.setInt(1, manufacturerId);
@@ -141,5 +127,6 @@ public class ManufacturerDAOImpl extends AbstractBaseDAO implements IManufacture
             throw new ServiceException(e);
         }
     }
+
 
 }
