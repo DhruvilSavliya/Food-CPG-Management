@@ -9,7 +9,6 @@
 <body>
 
 <div >
-
     <div id="page-content-wrapper">
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
             <div class="sidebar-heading">
@@ -45,7 +44,7 @@
                 <tbody>
                 <tr th:each="manufacturer : ${manufacturers}">
                     <td th:text="${manufacturer.id}"></td>
-                    <td th:text="${manufacturer.companyname}"></td>
+                    <td th:text="${manufacturer.companyName}"></td>
                     <td th:text="${manufacturer.status}"></td>
                     <td class="text-center">
                         <a class="btn btn-primary text-light" th:href="@{/manufacturer-details/{id}(id=${manufacturer.id})}">View</a>

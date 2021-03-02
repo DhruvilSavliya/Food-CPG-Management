@@ -36,7 +36,7 @@ public class ManufacturerRegistrationController {
     @PostMapping("/save-manufacturer")
     public String saveManufacturer(Manufacturer manufacturer, BindingResult result, Model model, @RequestParam(required=false,value="action") String action){
         if (ApplicationConstants.CANCEL.equals(action)) {
-            return "redirect:/register-manufacturer";
+            return "redirect:/login";
         }
 
 
