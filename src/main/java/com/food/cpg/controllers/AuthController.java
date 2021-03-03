@@ -59,6 +59,6 @@ public class AuthController {
 
     @GetMapping("/403-error")
     public String unauthorisedError(Model model) {
-        return "/403-error";
+        return "403-error";
     }
 }
