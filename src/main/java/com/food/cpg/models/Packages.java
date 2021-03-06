@@ -18,6 +18,7 @@ public class Packages {
     private Integer retailCost;
     private RawMaterial rawMaterial;
     private Integer rawMaterialId;
+    private Integer manufacturerId;
 
     private Map<String, String> errors = new HashMap<>();
 
@@ -102,6 +103,14 @@ public class Packages {
     public Integer getRawMaterialId() { return rawMaterialId; }
 
     public void setRawMaterialId(Integer rawMaterialId) { this.rawMaterialId = rawMaterialId; }
+
+    public Integer getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(Integer manufacturerId) {
+        this.manufacturerId = manufacturerId;
+    }
 
     public Map<String, String> getErrors() {
         return errors;

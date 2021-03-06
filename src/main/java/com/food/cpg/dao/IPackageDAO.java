@@ -12,7 +12,7 @@ import com.food.cpg.models.Packages;
  */
 public interface IPackageDAO {
 
-    List<Packages> getPackageList(int packageId);
+    List<Packages> getPackageList(int manufacturerId);
 
     Packages getPackages(int packageId);
 

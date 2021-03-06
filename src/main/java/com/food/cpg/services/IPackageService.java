@@ -9,7 +9,7 @@ import com.food.cpg.models.Packages;
  */
 public interface IPackageService {
 
-    List<Packages> getPackageList(int packageId);
+    List<Packages> getPackageList(int manufacturerId);
 
     void savePackages(Packages packages);
 

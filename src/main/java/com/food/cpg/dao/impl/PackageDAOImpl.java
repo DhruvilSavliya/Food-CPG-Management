@@ -37,12 +37,12 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
 
 
     @Override
-    public List<Packages> getPackageList(int packageId) {
-        LOG.info("IN PackageDAOImpl : getPackageList : packageId - {}", packageId);
+    public List<Packages> getPackageList(int manufacturerId) {
+        LOG.info("IN PackageDAOImpl : getPackageList : manufacturerId - {}", manufacturerId);
         List<Packages> packageList = new ArrayList<>();
         try (Connection connection = getDBConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("select * from packages where package_id = ?")) {
-                statement.setInt(1, packageId);
+            try (PreparedStatement statement = connection.prepareStatement("select * from packages where manufacturer_id = ?")) {
+                statement.setInt(1, manufacturerId);
                 try (ResultSet rs = statement.executeQuery()) {
                     if (rs != null) {
                         while (rs.next()) {
@@ -112,8 +112,8 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
     public void savePackages(Packages packages) {
         LOG.info("IN PackageDAOImpl : savePackages");
 
-        String insertQuery = "insert into packages (item_id, package_name, quantity, manufacturing_cost, wholesale_cost, retail_cost) " +
-                "values (?, ?, ?, ?, ?, ?)";
+        String insertQuery = "insert into packages (item_id, package_name, quantity, manufacturing_cost, wholesale_cost, retail_cost, manufacturer_id) " +
+                "values (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
                 statement.setInt(1, packages.getRawMaterialId());
@@ -122,7 +122,7 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
                 statement.setInt(4, packages.getManufacturingCost());
                 statement.setInt(5, packages.getWholesaleCost());
                 statement.setInt(6, packages.getRetailCost());
-
+                statement.setInt(7, 1);
                 statement.executeUpdate();
                 LOG.info("Package saved successfully.");
             }
@@ -136,17 +136,16 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
     public void updatePackages(Packages packages) {
         LOG.info("IN PackageDAOImpl : updatePackages");
 
-        String updateQuery = "update packages set package_id = ?, item_id = ?, package_name = ?, quantity = ?, manufacturing_cost = ?, wholesale_cost = ?, retail_cost = ? where package_id = ?";
+        String updateQuery = "update packages set item_id = ?, package_name = ?, quantity = ?, manufacturing_cost = ?, wholesale_cost = ?, retail_cost = ? where package_id = ?";
         try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-                statement.setInt(1, packages.getPackageId());
-                statement.setInt(2, packages.getItemId());
-                statement.setString(3, packages.getPackageName());
-                statement.setInt(4, packages.getQuantity());
-                statement.setInt(5, packages.getManufacturingCost());
-                statement.setInt(6, packages.getWholesaleCost());
-                statement.setInt(7, packages.getRetailCost());
-                statement.setInt(8, packages.getPackageId());
+                statement.setInt(1, packages.getRawMaterialId());
+                statement.setString(2, packages.getPackageName());
+                statement.setInt(3, packages.getQuantity());
+                statement.setInt(4, packages.getManufacturingCost());
+                statement.setInt(5, packages.getWholesaleCost());
+                statement.setInt(6, packages.getRetailCost());
+                statement.setInt(7, packages.getPackageId());
 
                 statement.executeUpdate();
                 LOG.info("Package updated successfully.");
