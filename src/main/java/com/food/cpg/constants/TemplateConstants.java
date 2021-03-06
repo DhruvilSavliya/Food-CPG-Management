@@ -25,4 +25,6 @@ public final class TemplateConstants {
 
     //Manufacturer Template
     public static final String MANUFACTURER = "manufacturer";
+
+    public static final String PACKAGES = "packages";
 }
