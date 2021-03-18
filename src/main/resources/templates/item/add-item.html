@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org" layout:decorate="~{fragments/main_layout}">
+<head>
+    <title>Items</title>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<!--    <script type="text/javascript">-->
+<!--    var row= '<td><select class="form-control col-4" th:field="*{row.key}"><option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option></select></td><td><input class="form-control col-4" type="number" th:field="*{ingredients[__${row.value}__]}"/></td><td><select class="form-control col-1" th:field="*{ingredients[__${row.value}__]}"><option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option></select></td><td><a th:href="@{/item/delete/{id}(id=${item.itemId})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td></tr>';-->
+<!--    $(function(){-->
+<!--    $("#addRow").click(function(){-->
+<!--        $('tbody').append(row);-->
+<!--        });-->
+<!--     });-->
+<!--</script>-->
+</head>
+<body>
+<div layout:fragment="content" class="container-fluid">
+    <div>
+        <span class="module-heading pl-3">Item Management</span>
+        <div class="row pl-3">
+            <form class="col-12" th:action="@{/save-item}" th:object="${item}" method="post">
+                <div class="row">
+                    <div class="col-8 row form-group">
+                        <label class="col-form-label col-2">Name <sup class="text-danger">*</sup></label>
+                        <input class="form-control col-4" type="text" th:field="*{itemName}"/>
+<!--                        <span class="col-4 text-danger" th:text="*{errors['item_name']}"></span>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 row form-group">
+                        <label class="col-form-label col-2">Ingredients: <sup class="text-danger">*</sup></label>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th scope="col">Raw material</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit</th>
+<!--                        <th scope="col">Edit</th>-->
+<!--                        <th scope="col">Delete</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="ingredient, stat : *{itemIngredientsList}">
+                        <td>
+                            <select class="form-control col-4" th:field="*{itemIngredientsList[__${stat.index}__].rawMaterialId}">
+                                <option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option>
+                            </select>
+<!--                            <select class="form-control col-4" th:field="*{ingredient.rawMaterialId}">-->
+<!--                                <option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option>-->
+<!--                            </select>-->
+                        </td>
+                        <td>
+                            <input class="form-control col-4" type="number" th:field="*{itemIngredientsList[__${stat.index}__].rawMaterialQuantity}"/>
+<!--                            <input class="form-control col-4" type="number" th:field="*{ingredient.rawMaterialQuantity}"/>-->
+                        </td>
+                        <td>
+                            <select class="form-control col-1" th:field="*{itemIngredientsList[__${stat.index}__].rawMaterialMeasurementUOM}">
+
+                                <option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option>
+                            </select>
+<!--                            <select class="form-control col-1" th:field="*{ingredient.rawMaterialMeasurementUOM}">-->
+<!--                                <option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option>-->
+<!--                            </select>-->
+                        </td>
+                        <td><a th:href="@{/item/delete/{id}(id=${item.itemId})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
+                    </tr>
+
+
+<!--<tr >-->
+<!--    <td>-->
+<!--        <select class="form-control col-4" th:field="*{tempRaw}">-->
+<!--            <option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <input class="form-control col-4" type="number" th:field="*{quantity}"/>-->
+<!--    </td>-->
+<!--<td>-->
+<!--        <select class="form-control col-1" th:field="*{tempUnit}">-->
+<!--            <option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td><a th:href="@{/item/delete/{id}(id=${item.item_id})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>-->
+<!--</tr>-->
+<!--<tr >-->
+<!--    <td>-->
+<!--        <select class="form-control col-4" th:field="*{tempRaw}">-->
+<!--            <option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <input class="form-control col-4" type="number" th:field="*{quantity}"/>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <select class="form-control col-1" th:field="*{tempUnit}">-->
+<!--            <option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td><a th:href="@{/item/delete/{id}(id=${item.item_id})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>-->
+<!--</tr>-->
+<!--<tr >-->
+<!--    <td>-->
+<!--        <select class="form-control col-4" th:field="*{tempRaw}">-->
+<!--            <option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <input class="form-control col-4" type="number" th:field="*{quantity}"/>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <select class="form-control col-1" th:field="*{tempUnit}">-->
+<!--            <option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td><a th:href="@{/item/delete/{id}(id=${item.item_id})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>-->
+<!--</tr>-->
+<!--<tr >-->
+<!--    <td>-->
+<!--        <select class="form-control col-4" th:field="*{tempRaw}">-->
+<!--            <option th:each="i : ${rawMaterials}" th:value="${i.id}" th:text="${i.name}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <input class="form-control col-4" type="number" th:field="*{quantity}"/>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <select class="form-control col-1" th:field="*{tempUnit}">-->
+<!--            <option th:each="i : ${units}" th:value="${i.alias}" th:text="${i.alias}"></option>-->
+<!--        </select>-->
+<!--    </td>-->
+<!--    <td><a th:href="@{/item/delete/{id}(id=${item.item_id})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>-->
+
+                    </tbody>
+                </table>
+                        <button id="addRow">+ Add</button>
+<!--                        <div class="col-8 row form-group">-->
+<!--                            <label class="col-form-label col-2">Cooking cost <sup class="text-danger">*</sup></label>-->
+<!--                            <input class="form-control col-4" type="text" th:field="${item.itemCookingCost}"/>-->
+<!--                        </div>-->
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

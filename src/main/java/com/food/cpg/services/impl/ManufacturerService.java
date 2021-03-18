@@ -14,11 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
-/**
- * @author Dhruvilkumar Savliya
- * @author Rotesh Chhabra
- */
 @Service
 public class ManufacturerService implements IManufacturerService
 {
@@ -31,7 +26,6 @@ public class ManufacturerService implements IManufacturerService
         this.manufacturerDAO = manufacturerDAO;
         this.userPersistence = userPersistence;
     }
-
 
 
     @Override
