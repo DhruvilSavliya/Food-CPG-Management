@@ -1,19 +1,18 @@
 package com.food.cpg.models;
 
+import org.springframework.util.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
-/**
- * @author Dhruvilkumar Savliya
- */
 public class Manufacturer
 {
     private Integer id;
-    private String companyname;
+    private String companyName;
     private String email;
     private String password;
-    private String contact;
+    private Long contact;
     private String address;
     private String status;
 
@@ -27,12 +26,12 @@ public class Manufacturer
         this.id = id;
     }
 
-    public String getCompanyname() {
-        return companyname;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getEmail() {
@@ -51,11 +50,11 @@ public class Manufacturer
         this.password = password;
     }
 
-    public String getContact() {
+    public Long getContact() {
         return contact;
     }
 
-    public void setContact(String contact) {
+    public void setContact(Long contact) {
         this.contact = contact;
     }
 
@@ -79,5 +78,41 @@ public class Manufacturer
 
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
+    }
+    public boolean isValidManufacturer() {
+        errors = new HashMap<>();
+
+        boolean isValid = true;
+
+        if (StringUtils.isEmpty(getCompanyName())) {
+            errors.put("companyName", "Company name is required.");
+            isValid = false;
+        }
+
+        if (StringUtils.isEmpty(getEmail())) {
+            errors.put("email", "Email address is required.");
+            isValid = false;
+        }
+
+        if (StringUtils.isEmpty(getPassword())) {
+            errors.put("password", "Password can not be empty.");
+            isValid = false;
+        }
+
+        if (getContact() == null) {
+            errors.put("contact", "Phone number is required.");
+            isValid = false;
+        }
+
+        if (getContact() != null && String.valueOf(getContact()).length() != 10) {
+            errors.put("contactLength", "Invalid phone number.");
+            isValid = false;
+        }
+
+        if(StringUtils.isEmpty(getAddress())){
+            errors.put("address", "Address can not be empty.");
+        }
+
+        return isValid;
     }
 }
