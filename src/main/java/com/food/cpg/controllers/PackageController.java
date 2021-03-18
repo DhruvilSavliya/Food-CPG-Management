@@ -4,7 +4,6 @@ import com.food.cpg.constants.ApplicationConstants;
 import com.food.cpg.constants.TemplateConstants;
 import com.food.cpg.models.Packages;
 
-import com.food.cpg.models.Unit;
 import com.food.cpg.services.IPackageService;
 import com.food.cpg.services.IRawMaterialService;
 import com.food.cpg.services.impl.PackageService;
@@ -46,6 +45,7 @@ public class PackageController {
     @GetMapping("/add-packages")
     public String showAddPackagesForm(Packages packages, Model model){
         model.addAttribute("rawMaterial", rawMaterialService.getRawMaterialsList(1));
+        System.out.println(rawMaterialService.getRawMaterialsList(1));
         return "packages/add-packages";
     }
 
@@ -57,7 +57,7 @@ public class PackageController {
 
         if (result.hasErrors() || !packages.isValidPackage()) {
             model.addAttribute("rawMaterials", rawMaterialService.getRawMaterialsList(1));
-            return "package/add-packages";
+            return "packages/add-packages";
         }
 
         packageService.savePackages(packages);

@@ -54,6 +54,7 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
                             rawMaterial.setId(rs.getInt("item_id"));
                             packages.setRawMaterial(rawMaterial);
                             packages.setItemId(rs.getInt("item_id"));
+//                            packages.setUnitCost(rs.getInt("item_id"));
 
                             packages.setPackageName(rs.getString("package_name"));
                             packages.setQuantity(rs.getInt("quantity"));
@@ -87,10 +88,13 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
                         packages.setPackageId(rs.getInt("package_id"));
                         packages.setPackageName(rs.getString("package_name"));
 
-                        RawMaterial rawMaterial = new RawMaterial();
-                        rawMaterial.setId(rs.getInt("item_id"));
-                        packages.setRawMaterial(rawMaterial);
-                        packages.setItemId(rs.getInt("item_id"));
+//                        RawMaterial rawMaterial = new RawMaterial();
+//                        rawMaterial.setId(rs.getInt("item_id"));
+//                        packages.setRawMaterial(rawMaterial);
+//                        packages.setItemId(rs.getInt("item_id"));
+////                        packages.setUnitCost(rs.getInt("item_id"));
+
+
 
                         packages.setPackageName(rs.getString("package_name"));
                         packages.setQuantity(rs.getInt("quantity"));

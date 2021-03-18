@@ -18,6 +18,7 @@ public class Packages {
     private Integer retailCost;
     private RawMaterial rawMaterial;
     private Integer rawMaterialId;
+    private Integer unitCost;
     private Integer manufacturerId;
 
     private Map<String, String> errors = new HashMap<>();
@@ -104,6 +105,10 @@ public class Packages {
 
     public void setRawMaterialId(Integer rawMaterialId) { this.rawMaterialId = rawMaterialId; }
 
+//    public Integer getUnitCost() { return unitCost; }
+//
+//    public void setUnitCost(Integer unitCost) { this.unitCost = unitCost; }
+
     public Integer getManufacturerId() {
         return manufacturerId;
     }
@@ -131,7 +136,7 @@ public class Packages {
         }
 
         if (this.getRawMaterialId() == null) {
-            errors.put("rawMaterialId", "Valid item is required.");
+            errors.put("item", "Valid item is required.");
             isValid = false;
         }
 
@@ -157,6 +162,5 @@ public class Packages {
 
         return isValid;
     }
-
 
 }
