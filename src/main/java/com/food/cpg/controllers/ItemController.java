@@ -1,12 +1,12 @@
 package com.food.cpg.controllers;
 
 import com.food.cpg.constants.ApplicationConstants;
-import com.food.cpg.models.Item;
-import com.food.cpg.models.ItemIngredient;
-import com.food.cpg.models.Unit;
+import com.food.cpg.models.*;
 import com.food.cpg.services.IItemService;
 import com.food.cpg.services.IRawMaterialService;
+import com.food.cpg.services.IVendorService;
 import com.food.cpg.services.impl.ItemService;
+import com.food.cpg.services.impl.VendorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -25,12 +25,13 @@ public class ItemController {
     private static final Logger LOG = LoggerFactory.getLogger(ItemController.class);
     private final IItemService itemService;
     private final IRawMaterialService rawMaterialService;
+    private final IVendorService vendorService;
 //    private final Item item;
 
-    public ItemController(IRawMaterialService rawMaterialService, ItemService itemService) {
+    public ItemController(IRawMaterialService rawMaterialService, ItemService itemService, VendorService vendorService) {
         this.itemService = itemService;
         this.rawMaterialService = rawMaterialService;
-//        this.item = item;
+        this.vendorService = vendorService;
     }
 
 
@@ -44,14 +45,30 @@ public class ItemController {
     }
 
     @GetMapping("/add-item")
-    public String addItem(Item item, Model model){
-        for (int i=1;i<=3;i++){
-            item.addIngredient(new ItemIngredient());
-        }
+    public String addItem(Item item, ItemIngredient itemIngredient, Model model){
         model.addAttribute("item", item);
         model.addAttribute("units", Unit.values());
+        model.addAttribute("vendors", vendorService.getVendorsList(1));
         model.addAttribute("rawMaterials", rawMaterialService.getRawMaterialsList(1));
         return "item/add-item";
+    }
+
+    @PostMapping("/add-item-ingredient")
+    public String addItemIngredient(Item item, ItemIngredient itemIngredient, Model model) {
+        item.addItemIngredients(itemIngredient);
+        model.addAttribute("units", Unit.values());
+        model.addAttribute("vendors", vendorService.getVendorsList(1));
+        model.addAttribute("rawMaterials", rawMaterialService.getRawMaterialsList(1));
+        return "item/add-item";
+    }
+
+    @PostMapping("/calculateTotal")
+    public String calculateTotal(Item item, ItemIngredient itemIngredient, Model model){
+        item.setItemTotalCost(itemService.calculateTotal(item));
+        model.addAttribute("units", Unit.values());
+        model.addAttribute("vendors", vendorService.getVendorsList(1));
+        model.addAttribute("rawMaterials", rawMaterialService.getRawMaterialsList(1));
+    return "item/add-item";
     }
 
     @PostMapping("/save-item")

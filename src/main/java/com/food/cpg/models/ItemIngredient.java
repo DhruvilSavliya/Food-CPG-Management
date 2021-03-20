@@ -2,10 +2,11 @@ package com.food.cpg.models;
 
 
 public class ItemIngredient {
-    private int itemId;
-    private int rawMaterialId;
+    private Integer itemId;
+    private Integer rawMaterialId;
+    private Integer vendorId;
     private double rawMaterialQuantity;
-    private String rawMaterialMeasurementUOM;
+    private String rawMaterialQuantityUOM;
 
 //    public ItemIngredient(int rawMaterialId, double rawMaterialQuantity, String rawMaterialMeasurementUOM) {
 //        this.rawMaterialId = rawMaterialId;
@@ -13,20 +14,29 @@ public class ItemIngredient {
 //        this.rawMaterialMeasurementUOM = rawMaterialMeasurementUOM;
 //    }
 
-    public int getItemId() {
+
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 
-    public int getRawMaterialId() {
+    public Integer getRawMaterialId() {
         return rawMaterialId;
     }
 
-    public void setRawMaterialId(int rawMaterialId) {
+    public void setRawMaterialId(Integer rawMaterialId) {
         this.rawMaterialId = rawMaterialId;
+    }
+
+    public Integer getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Integer vendorId) {
+        this.vendorId = vendorId;
     }
 
     public double getRawMaterialQuantity() {
@@ -37,11 +47,11 @@ public class ItemIngredient {
         this.rawMaterialQuantity = rawMaterialQuantity;
     }
 
-    public String getRawMaterialMeasurementUOM() {
-        return rawMaterialMeasurementUOM;
+    public String getRawMaterialQuantityUOM() {
+        return rawMaterialQuantityUOM;
     }
 
-    public void setRawMaterialMeasurementUOM(String rawMaterialMeasurementUOM) {
-        this.rawMaterialMeasurementUOM = rawMaterialMeasurementUOM;
+    public void setRawMaterialQuantityUOM(String rawMaterialQuantityUOM) {
+        this.rawMaterialQuantityUOM = rawMaterialQuantityUOM;
     }
 }

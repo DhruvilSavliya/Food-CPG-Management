@@ -9,26 +9,28 @@ import java.util.Map;
 
 
 public class Item {
-    private int itemId;
+    private Integer itemId;
+    private Integer manufacturerId;
     private String itemName;
     private Double itemCookingCost;
     private Double itemTotalCost;
-    private List<ItemIngredient> itemIngredientsList = new ArrayList<ItemIngredient>();
+    private List<ItemIngredient> itemIngredients;
     private Map<String, String> errors = new HashMap<>();
 
-
-//    private ItemIngredient itemIngredients;
-//    private String tempRaw;
-//    private int quantity;
-//    private String tempUnit;
-
-
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    public Integer getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(Integer manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
     public String getItemName() {
@@ -39,7 +41,7 @@ public class Item {
         this.itemName = itemName;
     }
 
-    public double getItemCookingCost() {
+    public Double getItemCookingCost() {
         return itemCookingCost;
     }
 
@@ -47,7 +49,7 @@ public class Item {
         this.itemCookingCost = itemCookingCost;
     }
 
-    public double getItemTotalCost() {
+    public Double getItemTotalCost() {
         return itemTotalCost;
     }
 
@@ -55,18 +57,32 @@ public class Item {
         this.itemTotalCost = itemTotalCost;
     }
 
-    public List<ItemIngredient> getItemIngredientsList() {
-        return itemIngredientsList;
+    public List<ItemIngredient> getItemIngredients() {
+        return itemIngredients;
     }
 
-    public void setItemIngredientsList(List<ItemIngredient> itemIngredientsList) {
-        this.itemIngredientsList = itemIngredientsList;
+    public void setItemIngredients(List<ItemIngredient> itemIngredients) {
+        this.itemIngredients = itemIngredients;
+    }
+
+    public Map<String, String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(Map<String, String> errors) {
+        this.errors = errors;
+    }
+
+    public void addItemIngredients(ItemIngredient itemIngredient) {
+        if (this.itemIngredients == null) {
+            this.itemIngredients = new ArrayList<>();
+        }
+        itemIngredient.setItemId(this.itemId);
+        this.itemIngredients.add(itemIngredient);
     }
 
 
-
-
-//
+    //
 //    public ItemIngredient getItemIngredients() {
 //        return itemIngredients;
 //    }
@@ -100,9 +116,6 @@ public class Item {
 //        this.tempUnit = tempUnit;
 //    }
 
-    public void addIngredient( ItemIngredient itemIngredients){
-        itemIngredientsList.add(itemIngredients);
-    }
 
 
 
