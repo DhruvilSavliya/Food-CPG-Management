@@ -26,7 +26,7 @@ public class PackagesTests {
     @Test
     public void isValidPackageItemTest() {
         Packages packages = new Packages();
-        packages.setRawMaterialId(null);
+        packages.setItemId(null);
 
         boolean isValidItem = packages.isValidPackage();
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.dao.IPackageDAO;
+import com.food.cpg.models.Item;
 import com.food.cpg.models.Packages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,11 +51,16 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
                             packages.setPackageId(rs.getInt("package_id"));
                             packages.setPackageName(rs.getString("package_name"));
 
-                            RawMaterial rawMaterial = new RawMaterial();
-                            rawMaterial.setId(rs.getInt("item_id"));
-                            packages.setRawMaterial(rawMaterial);
-                            packages.setItemId(rs.getInt("item_id"));
+//                            RawMaterial rawMaterial = new RawMaterial();
+//                            rawMaterial.setId(rs.getInt("item_id"));
+//                            packages.setRawMaterial(rawMaterial);
+//                            packages.setItemId(rs.getInt("item_id"));
 //                            packages.setUnitCost(rs.getInt("item_id"));
+
+                            Item item = new Item();
+                            item.setItemId(rs.getInt("item_id"));
+                            packages.setItem(item);
+                            packages.setItemId(rs.getInt("item_id"));
 
                             packages.setPackageName(rs.getString("package_name"));
                             packages.setQuantity(rs.getInt("quantity"));
@@ -94,7 +100,10 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
 //                        packages.setItemId(rs.getInt("item_id"));
 ////                        packages.setUnitCost(rs.getInt("item_id"));
 
-
+                        Item item = new Item();
+                        item.setItemId(rs.getInt("item_id"));
+                        packages.setItem(item);
+                        packages.setItemId(rs.getInt("item_id"));
 
                         packages.setPackageName(rs.getString("package_name"));
                         packages.setQuantity(rs.getInt("quantity"));
@@ -120,7 +129,7 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
                 "values (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-                statement.setInt(1, packages.getRawMaterialId());
+                statement.setInt(1, packages.getItemId());
                 statement.setString(2, packages.getPackageName());
                 statement.setInt(3, packages.getQuantity());
                 statement.setInt(4, packages.getManufacturingCost());
@@ -143,7 +152,7 @@ public class PackageDAOImpl extends AbstractBaseDAO implements IPackageDAO
         String updateQuery = "update packages set item_id = ?, package_name = ?, quantity = ?, manufacturing_cost = ?, wholesale_cost = ?, retail_cost = ? where package_id = ?";
         try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-                statement.setInt(1, packages.getRawMaterialId());
+                statement.setInt(1, packages.getItemId());
                 statement.setString(2, packages.getPackageName());
                 statement.setInt(3, packages.getQuantity());
                 statement.setInt(4, packages.getManufacturingCost());

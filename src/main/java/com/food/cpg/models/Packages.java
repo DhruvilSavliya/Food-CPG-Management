@@ -20,6 +20,7 @@ public class Packages {
     private Integer rawMaterialId;
     private Integer unitCost;
     private Integer manufacturerId;
+    private Item item;
 
     private Map<String, String> errors = new HashMap<>();
 
@@ -94,16 +95,9 @@ public class Packages {
         this.retailCost = retailCost;
     }
 
-    public RawMaterial getRawMaterial() { return rawMaterial; }
+    public Item getItem() { return item; }
 
-    public void setRawMaterial(RawMaterial rawMaterial)
-    {
-        this.rawMaterial = rawMaterial;
-    }
-
-    public Integer getRawMaterialId() { return rawMaterialId; }
-
-    public void setRawMaterialId(Integer rawMaterialId) { this.rawMaterialId = rawMaterialId; }
+    public void setItem(Item item) { this.item = item; }
 
 //    public Integer getUnitCost() { return unitCost; }
 //
@@ -135,7 +129,7 @@ public class Packages {
             isValid = false;
         }
 
-        if (this.getRawMaterialId() == null) {
+        if (this.getItemId() == null) {
             errors.put("item", "Valid item is required.");
             isValid = false;
         }

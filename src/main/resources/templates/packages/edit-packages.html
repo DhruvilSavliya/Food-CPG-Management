@@ -16,8 +16,8 @@
                 <div class="row">
                     <div class="col-8 row form-group">
                         <label class="col-form-label col-2">Item <sup class="text-danger">*</sup></label>
-                        <select class="form-control col-4" th:field="*{rawMaterialId}">
-                            <option th:each="i : ${rawMaterial}" th:value="${i.id}" th:text="${i.name}"></option>
+                        <select class="form-control col-4" th:field="*{itemId}">
+                            <option th:each="i : ${item}" th:value="${i.itemId}" th:text="${i.itemName}"></option>
                         </select>
                         <span class="col-4 text-danger" th:text="*{errors['item']}"></span>
                     </div>

@@ -4,8 +4,8 @@ import com.food.cpg.constants.ApplicationConstants;
 import com.food.cpg.constants.TemplateConstants;
 import com.food.cpg.models.Packages;
 
+import com.food.cpg.services.IItemService;
 import com.food.cpg.services.IPackageService;
-import com.food.cpg.services.IRawMaterialService;
 import com.food.cpg.services.impl.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,12 +25,12 @@ import java.util.List;
 public class PackageController {
 
     private final IPackageService packageService;
-    private final IRawMaterialService rawMaterialService;
+    private final IItemService itemService;
 
     @Autowired
-    public PackageController(PackageService packageService, IRawMaterialService rawMaterialService) {
+    public PackageController(PackageService packageService, IItemService itemService) {
         this.packageService = packageService;
-        this.rawMaterialService = rawMaterialService;
+        this.itemService = itemService;
     }
 
     @GetMapping("/packages")
@@ -44,8 +44,7 @@ public class PackageController {
 
     @GetMapping("/add-packages")
     public String showAddPackagesForm(Packages packages, Model model){
-        model.addAttribute("rawMaterial", rawMaterialService.getRawMaterialsList(1));
-        System.out.println(rawMaterialService.getRawMaterialsList(1));
+        model.addAttribute("item", itemService.getItemsList(1));
         return "packages/add-packages";
     }
 
@@ -56,7 +55,7 @@ public class PackageController {
         }
 
         if (result.hasErrors() || !packages.isValidPackage()) {
-            model.addAttribute("rawMaterials", rawMaterialService.getRawMaterialsList(1));
+            model.addAttribute("item", itemService.getItemsList(1));
             return "packages/add-packages";
         }
 
@@ -83,7 +82,7 @@ public class PackageController {
     public String editPackages(@PathVariable("packageId") int packageId, Model model) {
         Packages packages = packageService.getPackages(packageId);
         model.addAttribute(TemplateConstants.PACKAGES, packages);
-        model.addAttribute("rawMaterial", rawMaterialService.getRawMaterialsList(1));
+        model.addAttribute("item", itemService.getItemsList(1));
         return "packages/edit-packages";
     }
 
