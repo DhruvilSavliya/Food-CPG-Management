@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.food.cpg.constants.ApplicationConstants;
 import com.food.cpg.models.PurchaseOrder;
 import com.food.cpg.models.PurchaseOrderRawMaterial;
 import com.food.cpg.models.Unit;
@@ -64,10 +63,6 @@ public class PurchaseOrderController {
 
     @PostMapping("/save-purchase-order")
     public String savePurchaseOrder(PurchaseOrder purchaseOrder, BindingResult result, Model model, @RequestParam(value = "action") String action) {
-        if (ApplicationConstants.CANCEL.equals(action)) {
-            return "redirect:/purchase-orders";
-        }
-
         purchaseOrderService.save(purchaseOrder);
         return "redirect:/purchase-orders";
     }

@@ -15,7 +15,6 @@ import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
 
-import com.food.cpg.constants.StringConstants;
 import com.food.cpg.dao.IPurchaseOrderRawMaterialDAO;
 import com.food.cpg.exceptions.DBException;
 import com.food.cpg.exceptions.ServiceException;
@@ -25,6 +24,8 @@ import com.food.cpg.models.PurchaseOrderRawMaterial;
 public class PurchaseOrderRawMaterialDAOImpl extends AbstractBaseDAO implements IPurchaseOrderRawMaterialDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderRawMaterialDAOImpl.class);
+
+    public static final String PLACEHOLDER_DELIMITER = ",";
 
     @Autowired
     public PurchaseOrderRawMaterialDAOImpl(DataSource dataSource) {
@@ -40,7 +41,7 @@ public class PurchaseOrderRawMaterialDAOImpl extends AbstractBaseDAO implements 
         }
 
         List<Object> placeholderValues = new ArrayList<>();
-        StringJoiner placeholderJoiner = new StringJoiner(StringConstants.COMMA);
+        StringJoiner placeholderJoiner = new StringJoiner(PLACEHOLDER_DELIMITER);
         for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderRawMaterials) {
             placeholderValues.add(purchaseOrderRawMaterial.getPurchaseOrderNumber());
             placeholderValues.add(purchaseOrderRawMaterial.getRawMaterialId());

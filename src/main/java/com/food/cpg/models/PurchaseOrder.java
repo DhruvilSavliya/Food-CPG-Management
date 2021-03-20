@@ -6,11 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.food.cpg.constants.StringConstants;
-
 public class PurchaseOrder {
     private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmm";
-    private static final String PO_PREFIX = "PO";
+    private static final String PO_PREFIX = "PO-";
 
     private String orderNumber;
     private Integer manufacturerId;
@@ -113,6 +111,6 @@ public class PurchaseOrder {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedCurrentDateTime = dateTimeFormatter.format(currentDateTime);
 
-        return PO_PREFIX + StringConstants.HYPHEN + formattedCurrentDateTime;
+        return PO_PREFIX + formattedCurrentDateTime;
     }
 }

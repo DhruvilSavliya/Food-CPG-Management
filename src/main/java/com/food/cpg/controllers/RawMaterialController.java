@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.food.cpg.constants.ApplicationConstants;
-import com.food.cpg.constants.TemplateConstants;
 import com.food.cpg.models.RawMaterial;
 import com.food.cpg.models.Unit;
 import com.food.cpg.services.IRawMaterialService;
@@ -26,6 +24,8 @@ import com.food.cpg.services.impl.VendorService;
 @Controller
 public class RawMaterialController {
 
+    private static final String VIEW_RAW_MATERIAL_KEY = "rawMaterial";
+
     private final IRawMaterialService rawMaterialService;
     private final IVendorService vendorService;
 
@@ -36,7 +36,7 @@ public class RawMaterialController {
     }
 
     @GetMapping("/raw-materials")
-    public String showRawMaterials(Model model){
+    public String showRawMaterials(Model model) {
         List<RawMaterial> rawMaterialsList = rawMaterialService.getRawMaterialsList(1);
         if (rawMaterialsList.size() > 0) {
             model.addAttribute("rawMaterials", rawMaterialsList);
@@ -52,11 +52,7 @@ public class RawMaterialController {
     }
 
     @PostMapping("/save-raw-material")
-    public String saveRawMaterial(RawMaterial rawMaterial, BindingResult result, Model model, @RequestParam(value="action") String action) {
-        if (ApplicationConstants.CANCEL.equals(action)) {
-            return "redirect:/raw-materials";
-        }
-
+    public String saveRawMaterial(RawMaterial rawMaterial, BindingResult result, Model model, @RequestParam(value = "action") String action) {
         if (result.hasErrors() || !rawMaterial.isValidRawMaterial()) {
             model.addAttribute("units", Unit.values());
             model.addAttribute("vendors", vendorService.getVendorsList(1));
@@ -69,11 +65,7 @@ public class RawMaterialController {
 
     @PostMapping("/save-raw-material/{rawMaterialId}")
     public String updateRawMaterial(RawMaterial rawMaterial, BindingResult result, Model model,
-                               @PathVariable("rawMaterialId") int rawMaterialId, @RequestParam(value="action") String action) {
-        if (ApplicationConstants.CANCEL.equals(action)) {
-            return "redirect:/raw-materials";
-        }
-
+                                    @PathVariable("rawMaterialId") int rawMaterialId, @RequestParam(value = "action") String action) {
         if (result.hasErrors() || !rawMaterial.isValidRawMaterial()) {
             return "raw-material/edit-raw-material";
         }
@@ -85,7 +77,7 @@ public class RawMaterialController {
     @GetMapping("/raw-materials/edit/{rawMaterialId}")
     public String editRawMaterial(@PathVariable("rawMaterialId") int rawMaterialId, Model model) {
         RawMaterial rawMaterial = rawMaterialService.getRawMaterial(rawMaterialId);
-        model.addAttribute(TemplateConstants.RAW_MATERIAL, rawMaterial);
+        model.addAttribute(VIEW_RAW_MATERIAL_KEY, rawMaterial);
         model.addAttribute("units", Unit.values());
         model.addAttribute("vendors", vendorService.getVendorsList(1));
         return "raw-material/edit-raw-material";
