@@ -9,7 +9,8 @@ import org.mockito.junit.MockitoJUnitRunner;
  * @author Kartik Gevariya
  */
 @RunWith(MockitoJUnitRunner.class)
-public class VendorTests {
+public class
+VendorTests {
 
     @Test
     public void isValidVendorNameTest() {

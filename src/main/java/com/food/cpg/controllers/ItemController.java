@@ -97,7 +97,7 @@ public class ItemController {
         }
 
         itemService.saveItem(item);
-        return "item/items";
+        return "redirect:/item/items";
     }
 
 }
