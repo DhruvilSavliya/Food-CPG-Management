@@ -16,9 +16,6 @@ public class Packages {
     private Integer manufacturingCost;
     private Integer wholesaleCost;
     private Integer retailCost;
-    private RawMaterial rawMaterial;
-    private Integer rawMaterialId;
-    private Integer unitCost;
     private Integer manufacturerId;
     private Item item;
 
@@ -98,10 +95,6 @@ public class Packages {
     public Item getItem() { return item; }
 
     public void setItem(Item item) { this.item = item; }
-
-//    public Integer getUnitCost() { return unitCost; }
-//
-//    public void setUnitCost(Integer unitCost) { this.unitCost = unitCost; }
 
     public Integer getManufacturerId() {
         return manufacturerId;

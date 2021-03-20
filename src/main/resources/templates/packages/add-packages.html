@@ -16,7 +16,7 @@
                     <div class="col-8 row form-group">
                         <label class="col-form-label col-2">Item <sup class="text-danger">*</sup></label>
                         <select class="form-control col-4" th:field="*{itemId}">
-                            <option th:each="i : ${item}" th:selected="selected" th:value="${i.itemId}" th:text="${i.itemName}" ></option>
+                            <option th:each="i : ${item}" th:value="${i.itemId}" th:text="${i.itemName}"></option>
                         </select>
                         <span class="col-4 text-danger" th:text="*{errors['item']}"></span>
                     </div>
@@ -33,12 +33,6 @@
                         <label class="col-form-label col-2">Quantity <sup class="text-danger">*</sup></label>
                         <input class="form-control col-4" type="text" th:field="*{quantity}"/>
                         <span class="col-4 text-danger" th:text="*{errors['quantity']}"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-8 row form-group">
-                        <label class="col-form-label col-2">Cost <sup class="text-danger">*</sup></label>
-                        <input class="form-control col-4" type="text" th:readonly="readonly" th:text="${item.itemTotalCost}"/>
                     </div>
                 </div>
                 <div class="row">
