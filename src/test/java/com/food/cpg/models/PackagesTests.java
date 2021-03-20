@@ -32,7 +32,7 @@ public class PackagesTests {
 
         Assert.assertFalse(isValidItem);
         Assert.assertFalse(packages.getErrors().isEmpty());
-        Assert.assertNotNull(packages.getErrors().get("rawMaterialId"));
+        Assert.assertNotNull(packages.getErrors().get("item"));
     }
 
     @Test
