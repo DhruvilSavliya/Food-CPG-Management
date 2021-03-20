@@ -66,5 +66,21 @@ public class PurchaseOrderRawMaterialDAOImpl extends AbstractBaseDAO implements 
             throw new ServiceException(e);
         }
         LOG.info("OUT PurchaseOrderRawMaterialDAOImpl : save");
+
+
+    }
+    @Override
+    public void delete(String orderNumber){
+        LOG.info("IN PurchaseOrderRawMaterialDAOImpl : delete");
+        try (Connection connection = getDBConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("delete from purchase_order_raw_materials where purchase_order_number = ?" )) {
+                statement.setString(1, orderNumber);
+                statement.executeUpdate();
+            }
+        } catch (DBException | SQLException e) {
+            throw new ServiceException(e);
+        }
+        LOG.info("OUT PurchaseOrderRawMaterialDAOImpl : delete");
+
     }
 }

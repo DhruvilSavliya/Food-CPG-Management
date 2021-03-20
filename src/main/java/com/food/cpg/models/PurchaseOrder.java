@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.food.cpg.PurchaseOrder.PurchaseOrderStatus;
 import com.food.cpg.constants.StringConstants;
 
 public class PurchaseOrder {
@@ -15,7 +16,7 @@ public class PurchaseOrder {
     private String orderNumber;
     private Integer manufacturerId;
     private Integer vendorId;
-    private String orderStatus;
+    private PurchaseOrderStatus orderStatus;
     private Timestamp orderCreationDate;
     private Timestamp orderPlacedDate;
     private Timestamp orderReceivedDate;
@@ -52,11 +53,11 @@ public class PurchaseOrder {
         this.vendorId = vendorId;
     }
 
-    public String getOrderStatus() {
+    public PurchaseOrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(PurchaseOrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 

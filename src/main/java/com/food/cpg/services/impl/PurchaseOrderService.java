@@ -26,9 +26,20 @@ public class PurchaseOrderService implements IPurchaseOrderService {
     }
 
     @Override
-    public List<PurchaseOrder> getAll(int manufacturerId) {
-        return new ArrayList<>();
+    public List<PurchaseOrder> getPurchaseOrder(int manufacturerId) {
+        return purchaseOrderDAO.getPurchaseOrder(manufacturerId);
     }
+
+    @Override
+    public List<PurchaseOrder> getPlacedOrder(int manufacturerId){
+        return purchaseOrderDAO.getPlacedOrder(manufacturerId);
+    }
+
+    @Override
+    public List<PurchaseOrder> getReceivedOrder(int manufacturerId){
+        return purchaseOrderDAO.getReceivedOrder(manufacturerId);
+    }
+
 
     @Override
     public void save(PurchaseOrder purchaseOrder) {
@@ -38,6 +49,9 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 
     @Override
     public void delete(String purchaseOrderNumber) {
+        purchaseOrderDAO.delete(purchaseOrderNumber);
+        purchaseOrderRawMaterialDAO.delete(purchaseOrderNumber);
+
 
     }
 }

@@ -6,4 +6,6 @@ import com.food.cpg.models.PurchaseOrderRawMaterial;
 
 public interface IPurchaseOrderRawMaterialDAO {
     void save(List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials);
+
+    void delete (String orderNumber);
 }
