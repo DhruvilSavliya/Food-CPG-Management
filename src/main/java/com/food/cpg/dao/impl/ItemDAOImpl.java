@@ -5,6 +5,7 @@ import com.food.cpg.exceptions.DBException;
 import com.food.cpg.exceptions.ServiceException;
 import com.food.cpg.models.Item;
 import com.food.cpg.models.ItemIngredient;
+import com.food.cpg.models.Manufacturer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +64,32 @@ public class ItemDAOImpl extends AbstractBaseDAO implements IItemDAO {
     }
 
     @Override
+    public Integer getItemIdByName(String itemName){
+        Integer itemId = null;
+        String getQuery = "select item_id from items where item_name = ? and manufacturer_id = ?";
+        try (Connection connection = getDBConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(getQuery)) {
+                statement.setString(1, itemName);
+                statement.setInt(2, 1);
+                try (ResultSet rs = statement.executeQuery()) {
+                    if (rs != null && rs.next()) {
+                       itemId = rs.getInt("item_id");
+                    }
+                }
+            }
+        }catch (DBException | SQLException e) {
+            throw new ServiceException(e);
+        }
+        return itemId;
+    }
+
+    @Override
     public void saveItem(Item item) {
         LOG.info("IN ItemDAOImpl : saveItem");
 
         String insertQuery = "insert into items (item_name, item_cooking_cost, item_total_cost, manufacturer_id) " +
                 "values (?, ?, ?, ?)";
-        String insertIngredientQuery = "insert into item_ingredients(raw_material_id, raw_material_quantity, raw_material_quantity_uom) values (?,?,?)";
+//        String insertIngredientQuery = "insert into item_ingredients(raw_material_id, raw_material_quantity, raw_material_quantity_uom) values (?,?,?)";
         try (Connection connection = getDBConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
                 statement.setString(1, item.getItemName());
@@ -78,16 +99,17 @@ public class ItemDAOImpl extends AbstractBaseDAO implements IItemDAO {
 
                 statement.executeUpdate();
             }
-            try (PreparedStatement statement = connection.prepareStatement(insertIngredientQuery)) {
-                for(ItemIngredient itemIngredients : item.getItemIngredientsList()) {
-                    statement.setInt(1, itemIngredients.getRawMaterialId());
-                    statement.setDouble(2, itemIngredients.getRawMaterialQuantity());
-                    statement.setString(3, itemIngredients.getRawMaterialMeasurementUOM());
-                    statement.executeUpdate();
-                }
-
-                LOG.info("Item saved successfully.");
-            }
+//            try (PreparedStatement statement = connection.prepareStatement(insertIngredientQuery)) {
+//                for(ItemIngredient itemIngredients : item.getItemIngredients()) {
+//                    statement.setInt(1, itemIngredients.getRawMaterialId());
+//                    statement.setDouble(2, itemIngredients.getRawMaterialQuantity());
+//                    statement.setString(3, itemIngredients.getRawMaterialQuantityUOM());
+//                    statement.executeUpdate();
+//                }
+//
+//
+//            }
+            LOG.info("Item saved successfully.");
         } catch (DBException | SQLException e) {
             throw new ServiceException(e);
         }

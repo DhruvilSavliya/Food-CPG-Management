@@ -16,5 +16,7 @@ public interface IItemDAO {
     void updateItem(Item item);
 
     void deleteItem(int itemId);
+
+    Integer getItemIdByName(String itemName);
 }
 
