@@ -7,9 +7,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.food.cpg.models.Unit;
 
-/**
- * @author Kartik Gevariya
- */
 @RunWith(MockitoJUnitRunner.class)
 public class RawMaterialTests {
 
