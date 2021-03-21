@@ -27,24 +27,4 @@ public class RawMaterialService implements IRawMaterialService {
     public List<RawMaterial> getRawMaterialsList(int manufacturerId) {
         return rawMaterialDAO.getRawMaterialsList(manufacturerId);
     }
-
-    @Override
-    public void saveRawMaterial(RawMaterial rawMaterial) {
-        rawMaterialDAO.saveRawMaterial(rawMaterial);
-    }
-
-    @Override
-    public RawMaterial getRawMaterial(int rawMaterialId) {
-        return rawMaterialDAO.getRawMaterial(rawMaterialId);
-    }
-
-    @Override
-    public void updateRawMaterial(RawMaterial rawMaterial) {
-        rawMaterialDAO.updateRawMaterial(rawMaterial);
-    }
-
-    @Override
-    public void deleteRawMaterial(int rawMaterialId) {
-        rawMaterialDAO.deleteRawMaterial(rawMaterialId);
-    }
 }
