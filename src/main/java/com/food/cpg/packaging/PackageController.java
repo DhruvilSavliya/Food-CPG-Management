@@ -1,4 +1,4 @@
-package com.food.cpg.controllers;
+package com.food.cpg.packaging;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
