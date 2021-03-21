@@ -1,4 +1,4 @@
-package com.food.cpg.controllers;
+package com.food.cpg.packaging;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author Kartik Gevariya
  */
 @Controller
-public class ItemController {
+public class PackageController {
 
-    @GetMapping("/items")
-    public String showItems(){
-        return "items";
+    @GetMapping("/packages")
+    public String showPackages(){
+        return "packages";
     }
 }

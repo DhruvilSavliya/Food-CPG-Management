@@ -1,10 +1,13 @@
-package com.food.cpg.models;
+package com.food.cpg.purchaseorder;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class PurchaseOrder {
     private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmm";
@@ -106,11 +109,31 @@ public class PurchaseOrder {
         this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
     }
 
-    public String generateOrderNumber() {
+    private String generateOrderNumber() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(PO_ORDER_TIME_FORMAT);
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedCurrentDateTime = dateTimeFormatter.format(currentDateTime);
 
         return PO_PREFIX + formattedCurrentDateTime;
+    }
+
+    public void save() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+
+        getPersistence().save(this);
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
+            purchaseOrderRawMaterial.save();
+        }
+    }
+
+    private IPurchaseOrderPersistence getPersistence() {
+        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
+        return persistenceFactory.getPurchaseOrderPersistence();
+    }
+
+    private int getLoggedInManufacturerId() {
+        AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
+        return authenticationSessionDetails.getAuthenticatedUserId();
     }
 }

@@ -1,4 +1,4 @@
-package com.food.cpg.controllers;
+package com.food.cpg.analytics;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author Kartik Gevariya
  */
 @Controller
-public class PackageController {
+public class AnalyticsController {
 
-    @GetMapping("/packages")
-    public String showPackages(){
-        return "packages";
+    @GetMapping("/analytics")
+    public String showAnalytics(){
+        return "analytics";
     }
 }

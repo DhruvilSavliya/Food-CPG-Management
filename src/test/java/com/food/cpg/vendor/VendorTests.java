@@ -1,4 +1,4 @@
-package com.food.cpg.models;
+package com.food.cpg.vendor;
 
 import org.junit.Assert;
 import org.junit.Test;

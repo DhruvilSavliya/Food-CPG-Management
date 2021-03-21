@@ -1,4 +1,6 @@
-package com.food.cpg.models;
+package com.food.cpg.purchaseorder;
+
+import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class PurchaseOrderRawMaterial {
     private String purchaseOrderNumber;
@@ -36,5 +38,14 @@ public class PurchaseOrderRawMaterial {
 
     public void setRawMaterialQuantityUOM(String rawMaterialQuantityUOM) {
         this.rawMaterialQuantityUOM = rawMaterialQuantityUOM;
+    }
+
+    public void save() {
+        getPersistence().save(this);
+    }
+
+    private IPurchaseOrderRawMaterialPersistence getPersistence() {
+        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
+        return persistenceFactory.getPurchaseOrderRawMaterialPersistence();
     }
 }

@@ -5,6 +5,10 @@ import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.ManufacturerDatabasePersistence;
 import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
 import com.food.cpg.manufacturer.registration.RegistrationDatabasePersistence;
+import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
+import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
+import com.food.cpg.purchaseorder.PurchaseOrderDatabasePersistence;
+import com.food.cpg.purchaseorder.PurchaseOrderRawMaterialDatabasePersistence;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
 import com.food.cpg.rawmaterial.RawMaterialDatabasePersistence;
 import com.food.cpg.vendor.IVendorPersistence;
@@ -32,5 +36,15 @@ public class DatabasePersistenceFactory extends PersistenceFactory {
     @Override
     public IRawMaterialPersistence getRawMaterialPersistence() {
         return new RawMaterialDatabasePersistence(commonDatabaseOperation);
+    }
+
+    @Override
+    public IPurchaseOrderPersistence getPurchaseOrderPersistence() {
+        return new PurchaseOrderDatabasePersistence(commonDatabaseOperation);
+    }
+
+    @Override
+    public IPurchaseOrderRawMaterialPersistence getPurchaseOrderRawMaterialPersistence() {
+        return new PurchaseOrderRawMaterialDatabasePersistence(commonDatabaseOperation);
     }
 }
