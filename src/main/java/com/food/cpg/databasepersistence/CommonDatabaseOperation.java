@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
-import com.food.cpg.handlers.ApplicationBeanHandler;
+import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
 import com.mysql.cj.exceptions.ConnectionIsClosedException;
 
 @Repository

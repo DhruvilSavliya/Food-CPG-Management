@@ -1,4 +1,4 @@
-package com.food.cpg.handlers;
+package com.food.cpg.applicationhandlers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

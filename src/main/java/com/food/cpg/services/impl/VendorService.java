@@ -27,24 +27,4 @@ public class VendorService implements IVendorService {
     public List<Vendor> getVendorsList(int manufacturerId) {
         return vendorDAO.getVendorsList(manufacturerId);
     }
-
-    @Override
-    public void saveVendor(Vendor vendor) {
-        vendorDAO.saveVendor(vendor);
-    }
-
-    @Override
-    public Vendor getVendor(int vendorId) {
-        return vendorDAO.getVendor(vendorId);
-    }
-
-    @Override
-    public void updateVendor(Vendor vendor) {
-        vendorDAO.updateVendor(vendor);
-    }
-
-    @Override
-    public void deleteVendor(int vendorId) {
-        vendorDAO.deleteVendor(vendorId);
-    }
 }

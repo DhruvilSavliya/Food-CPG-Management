@@ -1,4 +1,4 @@
-package com.food.cpg.handlers;
+package com.food.cpg.applicationhandlers;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

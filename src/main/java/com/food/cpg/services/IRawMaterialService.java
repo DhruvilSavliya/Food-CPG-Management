@@ -10,12 +10,4 @@ import com.food.cpg.models.RawMaterial;
 public interface IRawMaterialService {
 
     List<RawMaterial> getRawMaterialsList(int manufacturerId);
-
-    void saveRawMaterial(RawMaterial rawMaterial);
-
-    RawMaterial getRawMaterial(int rawMaterialId);
-
-    void updateRawMaterial(RawMaterial rawMaterial);
-
-    void deleteRawMaterial(int rawMaterialId);
 }

@@ -10,12 +10,4 @@ import com.food.cpg.models.Vendor;
 public interface IVendorService {
 
     List<Vendor> getVendorsList(int manufacturerId);
-
-    void saveVendor(Vendor vendor);
-
-    Vendor getVendor(int vendorId);
-
-    void updateVendor(Vendor vendor);
-
-    void deleteVendor(int vendorId);
 }
