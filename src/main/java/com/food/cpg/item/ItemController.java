@@ -26,14 +26,14 @@ public class ItemController {
     private static final String VIEW_VENDORS_KEY = "vendors";
 
     @GetMapping("/items")
-    public String showItems(Item item, Model model){
+    public String showItems(Item item, Model model) {
         List<Item> itemList = item.getAll();
         model.addAttribute(VIEW_ITEMS_KEY, itemList);
         return SHOW_ITEMS_ROUTE;
     }
 
     @GetMapping("/add-item")
-    public String addItem(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model){
+    public String addItem(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         model.addAttribute(VIEW_UNITS_KEY, Unit.values());
         model.addAttribute(VIEW_VENDORS_KEY, vendor.getAll());
         model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
@@ -50,7 +50,7 @@ public class ItemController {
     }
 
     @PostMapping("/calculate-total-item-cost")
-    public String calculateTotalCost(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model){
+    public String calculateTotalCost(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         item.calculateTotalCost();
         model.addAttribute("units", Unit.values());
         model.addAttribute("vendors", vendor.getAll());

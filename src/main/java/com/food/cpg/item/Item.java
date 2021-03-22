@@ -83,7 +83,7 @@ public class Item {
     public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
-       Integer itemId = getPersistence().save(this);
+        Integer itemId = getPersistence().save(this);
         for (ItemRawMaterial itemRawMaterial : getItemRawMaterials()) {
             itemRawMaterial.setItemId(itemId);
             itemRawMaterial.save();
@@ -100,7 +100,7 @@ public class Item {
         getPersistence().delete(this.getId());
     }
 
-    public void addItemRawMaterial(ItemRawMaterial itemRawMaterial){
+    public void addItemRawMaterial(ItemRawMaterial itemRawMaterial) {
         if (this.itemRawMaterials == null) {
             this.itemRawMaterials = new ArrayList<>();
         }

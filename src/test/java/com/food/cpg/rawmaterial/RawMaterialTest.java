@@ -7,8 +7,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.food.cpg.models.Unit;
 
-@RunWith(MockitoJUnitRunner.class)
-public class RawMaterialTests {
+public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialNameTest() {
