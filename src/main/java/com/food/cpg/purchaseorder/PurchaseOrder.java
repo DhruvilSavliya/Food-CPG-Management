@@ -16,12 +16,12 @@ public class PurchaseOrder {
     private String orderNumber;
     private Integer manufacturerId;
     private Integer vendorId;
-    private String orderStatus;
     private Timestamp orderCreationDate;
     private Timestamp orderPlacedDate;
     private Timestamp orderReceivedDate;
     private Double totalCost;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
+    private PurchaseOrderStatus purchaseOrderStatus;
 
     public PurchaseOrder() {
         String generatedOrderNumber = generateOrderNumber();
@@ -53,12 +53,12 @@ public class PurchaseOrder {
         this.vendorId = vendorId;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public PurchaseOrderStatus getOrderStatus() {
+        return purchaseOrderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setOrderStatus(PurchaseOrderStatus purchaseOrderStatus) {
+        this.purchaseOrderStatus = purchaseOrderStatus;
     }
 
     public Timestamp getOrderCreationDate() {
@@ -132,8 +132,40 @@ public class PurchaseOrder {
         return persistenceFactory.getPurchaseOrderPersistence();
     }
 
+
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
+
+    public List<PurchaseOrder> getOpenPurchaseOrder() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getOpenPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getPlacedPurchaseOrder(){
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getPlacedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getReceivedPurchaseOrder(){
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public void delete() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+        getPersistence().delete(this);
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
+            purchaseOrderRawMaterial.delete();
+        }
+    }
+
+    public void moveOrder()
+    {
+        String orderNumber = getOrderNumber();
+        purchaseOrderStatus.moveOrder(orderNumber);
+    }
+
 }

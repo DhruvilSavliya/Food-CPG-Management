@@ -44,6 +44,8 @@ public class PurchaseOrderRawMaterial {
         getPersistence().save(this);
     }
 
+    public void delete(){getPersistence().delete(this);}
+
     private IPurchaseOrderRawMaterialPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderRawMaterialPersistence();

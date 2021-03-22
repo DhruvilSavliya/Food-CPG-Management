@@ -32,4 +32,17 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
             throw new ServiceException(e);
         }
     }
+    @Override
+    public void delete(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
+
+        String sql = "delete from purchase_order_raw_materials where purchase_order_number = ?";
+
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(purchaseOrderRawMaterial.getPurchaseOrderNumber());
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 import com.food.cpg.exceptions.ServiceException;
 
-public class VendorDatabasePersistence implements IVendorPersistence {
+public class  VendorDatabasePersistence implements IVendorPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
