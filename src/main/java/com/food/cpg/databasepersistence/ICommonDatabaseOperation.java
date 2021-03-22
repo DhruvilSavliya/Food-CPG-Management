@@ -12,4 +12,6 @@ public interface ICommonDatabaseOperation {
     void loadPlaceholderValues(PreparedStatement preparedStatement, List<Object> placeholderValues) throws SQLException;
 
     void executeUpdate(String sql, List<Object> placeholderValues) throws SQLException;
+
+    Integer executeUpdateGetId(String sql, List<Object> placeholderValues) throws SQLException;
 }

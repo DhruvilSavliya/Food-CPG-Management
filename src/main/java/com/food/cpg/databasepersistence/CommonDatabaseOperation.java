@@ -1,16 +1,16 @@
 package com.food.cpg.databasepersistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
-
+import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
+import com.mysql.cj.exceptions.ConnectionIsClosedException;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-
-import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
-import com.mysql.cj.exceptions.ConnectionIsClosedException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class CommonDatabaseOperation implements ICommonDatabaseOperation {
@@ -45,5 +45,25 @@ public class CommonDatabaseOperation implements ICommonDatabaseOperation {
                 statement.executeUpdate();
             }
         }
+    }
+
+    @Override
+    public Integer executeUpdateGetId(String sql, List<Object> placeholderValues) throws SQLException {
+        Integer itemId = null;
+        try (Connection connection = getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                int index = 0;
+                for (Object placeHolderValue : placeholderValues) {
+                    statement.setObject(++index, placeHolderValue);
+                }
+                statement.executeUpdate();
+
+                ResultSet rs = statement.getGeneratedKeys();
+                if (rs.next()) {
+                    itemId = rs.getInt(1);
+                }
+            }
+        }
+        return itemId;
     }
 }
