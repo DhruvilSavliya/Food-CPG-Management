@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -24,46 +21,57 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(Vendor.class)
 public class VendorTest {
 
-    @Mock
-    IVendorPersistence vendorPersistence;
+    private static final String EMPTY_STRING = "";
+    private static final String NAME_ATTRIBUTE = "name";
+    private static final String CONTACT_NAME_ATTRIBUTE = "contactPersonName";
+    private static final String CONTACT_EMAIL_ATTRIBUTE = "contactPersonEmail";
+    private static final String CONTACT_PHONE_ATTRIBUTE = "contactPersonPhone";
+    private static final Integer TEST_MANUFACTURER_ID = 1;
+    private static final Integer TEST_VENDOR_ID = 1;
+    private static final String TEST_VENDOR_NAME = "Test Vendor 1";
+    private static final String TEST_CONTACT_NAME = "Kartik";
+    private static final String TEST_CONTACT_EMAIL = "kartik@testvendor.com";
+    private static final Long TEST_CONTACT_PHONE = 9876543210L;
+    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
 
     @Mock
-    ICommonDatabaseOperation commonDatabaseOperation;
+    IVendorPersistence vendorPersistence;
 
     @Test
     public void isValidVendorNameTest() {
         Vendor vendor = new Vendor();
-        vendor.setName("");
+        vendor.setName(EMPTY_STRING);
 
         boolean isValidName = vendor.isValidVendor();
 
         Assert.assertFalse(isValidName);
         Assert.assertFalse(vendor.getErrors().isEmpty());
-        Assert.assertNotNull(vendor.getErrors().get("name"));
+        Assert.assertNotNull(vendor.getErrors().get(NAME_ATTRIBUTE));
     }
 
     @Test
     public void isValidVendorContactPersonNameTest() {
         Vendor vendor = new Vendor();
-        vendor.setContactPersonName("");
+        vendor.setContactPersonName(EMPTY_STRING);
 
         boolean isValidContact = vendor.isValidVendor();
 
         Assert.assertFalse(isValidContact);
         Assert.assertFalse(vendor.getErrors().isEmpty());
-        Assert.assertNotNull(vendor.getErrors().get("contactPersonName"));
+        Assert.assertNotNull(vendor.getErrors().get(CONTACT_NAME_ATTRIBUTE));
     }
 
     @Test
     public void isValidVendorContactPersonEmailTest() {
         Vendor vendor = new Vendor();
-        vendor.setContactPersonEmail("");
+        vendor.setContactPersonEmail(EMPTY_STRING);
 
         boolean isValidContactEmail = vendor.isValidVendor();
 
         Assert.assertFalse(isValidContactEmail);
         Assert.assertFalse(vendor.getErrors().isEmpty());
-        Assert.assertNotNull(vendor.getErrors().get("contactPersonEmail"));
+        Assert.assertNotNull(vendor.getErrors().get(CONTACT_EMAIL_ATTRIBUTE));
     }
 
     @Test
@@ -74,7 +82,7 @@ public class VendorTest {
 
         Assert.assertFalse(isValidContactPhone);
         Assert.assertFalse(vendor.getErrors().isEmpty());
-        Assert.assertNotNull(vendor.getErrors().get("contactPersonPhone"));
+        Assert.assertNotNull(vendor.getErrors().get(CONTACT_PHONE_ATTRIBUTE));
     }
 
     @Test
@@ -86,16 +94,16 @@ public class VendorTest {
 
         Assert.assertFalse(isValidContactPhone);
         Assert.assertFalse(vendor.getErrors().isEmpty());
-        Assert.assertNotNull(vendor.getErrors().get("contactPersonPhone"));
+        Assert.assertNotNull(vendor.getErrors().get(CONTACT_PHONE_ATTRIBUTE));
     }
 
     @Test
     public void allVendorPropertiesValidTest() {
         Vendor vendor = new Vendor();
-        vendor.setName("Test vendor 1");
-        vendor.setContactPersonName("Kartik");
-        vendor.setContactPersonEmail("kartik@testvendor.com");
-        vendor.setContactPersonPhone(9876567432L);
+        vendor.setName(TEST_VENDOR_NAME);
+        vendor.setContactPersonName(TEST_CONTACT_NAME);
+        vendor.setContactPersonEmail(TEST_CONTACT_EMAIL);
+        vendor.setContactPersonPhone(TEST_CONTACT_PHONE);
 
         boolean isValidVendor = vendor.isValidVendor();
 
@@ -103,56 +111,51 @@ public class VendorTest {
         Assert.assertTrue(vendor.getErrors().isEmpty());
     }
 
-    @Before
-    public void setUp() {
-        vendorPersistence = spy(new VendorDatabasePersistence(commonDatabaseOperation));
-    }
-
     @Test
     public void getAllTest() throws Exception {
         Vendor vendor = spy(new Vendor());
-        vendor.setManufacturerId(1);
-        vendor.setName("Test Vendor 1");
+        vendor.setManufacturerId(TEST_MANUFACTURER_ID);
+        vendor.setName(TEST_VENDOR_NAME);
 
         List<Vendor> vendors = new ArrayList<>();
         vendors.add(vendor);
 
-        PowerMockito.doReturn(vendorPersistence).when(vendor, "getPersistence");
+        PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(vendors).when(vendorPersistence).getAll(anyInt());
 
         List<Vendor> vendorsResult = vendor.getAll();
         Assert.assertNotNull(vendorsResult);
         Assert.assertEquals(1, vendorsResult.size());
-        Assert.assertEquals("Test Vendor 1", vendorsResult.get(0).getName());
+        Assert.assertEquals(TEST_VENDOR_NAME, vendorsResult.get(0).getName());
     }
 
     @Test
     public void saveTest() throws Exception {
         Vendor vendor = spy(new Vendor());
-        vendor.setManufacturerId(1);
-        vendor.setName("Test Vendor 1");
+        vendor.setManufacturerId(TEST_MANUFACTURER_ID);
+        vendor.setName(TEST_VENDOR_NAME);
 
-        PowerMockito.doReturn(vendorPersistence).when(vendor, "getPersistence");
+        PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(vendorPersistence).save(vendor);
-        PowerMockito.doReturn(1).when(vendor, "getLoggedInManufacturerId");
+        PowerMockito.doReturn(1).when(vendor, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
 
         vendor.save();
-        verifyPrivate(vendor).invoke("getPersistence");
+        verifyPrivate(vendor).invoke(GET_PERSISTENCE_METHOD);
         verify(vendorPersistence, times(1)).save(vendor);
     }
 
     @Test
     public void loadSuccessTest() throws Exception {
         Vendor vendor = spy(new Vendor());
-        vendor.setId(1);
-        vendor.setManufacturerId(1);
-        vendor.setName("Test Vendor 1");
+        vendor.setId(TEST_VENDOR_ID);
+        vendor.setManufacturerId(TEST_MANUFACTURER_ID);
+        vendor.setName(TEST_VENDOR_NAME);
 
-        PowerMockito.doReturn(vendorPersistence).when(vendor, "getPersistence");
+        PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(vendorPersistence).load(vendor);
 
         vendor.load();
-        verifyPrivate(vendor).invoke("getPersistence");
+        verifyPrivate(vendor).invoke(GET_PERSISTENCE_METHOD);
         verify(vendorPersistence, times(1)).load(vendor);
     }
 
@@ -160,10 +163,10 @@ public class VendorTest {
     public void loadFailTest() throws Exception {
         Vendor vendor = spy(new Vendor());
         vendor.setId(0);
-        vendor.setManufacturerId(1);
-        vendor.setName("Test Vendor 1");
+        vendor.setManufacturerId(TEST_MANUFACTURER_ID);
+        vendor.setName(TEST_VENDOR_NAME);
 
-        PowerMockito.doReturn(vendorPersistence).when(vendor, "getPersistence");
+        PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(vendorPersistence).load(vendor);
 
         vendor.load();
@@ -171,17 +174,31 @@ public class VendorTest {
     }
 
     @Test
+    public void updateTest() throws Exception {
+        Vendor vendor = spy(new Vendor());
+        vendor.setManufacturerId(TEST_MANUFACTURER_ID);
+        vendor.setName(TEST_VENDOR_NAME);
+
+        PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(vendorPersistence).update(vendor);
+
+        vendor.update();
+        verifyPrivate(vendor).invoke(GET_PERSISTENCE_METHOD);
+        verify(vendorPersistence, times(1)).update(vendor);
+    }
+
+    @Test
     public void deleteTest() throws Exception {
         Vendor vendor = spy(new Vendor());
-        vendor.setId(1);
-        vendor.setManufacturerId(1);
-        vendor.setName("Test Vendor 1");
+        vendor.setId(TEST_VENDOR_ID);
+        vendor.setManufacturerId(TEST_MANUFACTURER_ID);
+        vendor.setName(TEST_VENDOR_NAME);
 
-        PowerMockito.doReturn(vendorPersistence).when(vendor, "getPersistence");
+        PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(vendorPersistence).delete(anyInt());
 
         vendor.delete();
-        verifyPrivate(vendor).invoke("getPersistence");
+        verifyPrivate(vendor).invoke(GET_PERSISTENCE_METHOD);
         verify(vendorPersistence, times(1)).delete(vendor.getId());
     }
 }
