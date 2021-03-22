@@ -1,6 +1,8 @@
 package com.food.cpg.databasepersistence;
 
 import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
+import com.food.cpg.inventory.IRawMaterialInventoryPersistence;
+import com.food.cpg.inventory.RawMaterialInventoryDatabasePersistence;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.ManufacturerDatabasePersistence;
 import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
@@ -46,5 +48,11 @@ public class DatabasePersistenceFactory extends PersistenceFactory {
     @Override
     public IPurchaseOrderRawMaterialPersistence getPurchaseOrderRawMaterialPersistence() {
         return new PurchaseOrderRawMaterialDatabasePersistence(commonDatabaseOperation);
+    }
+
+    @Override
+    public IRawMaterialInventoryPersistence getRawMaterialInventoryPersistence() {
+        return new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation) {
+        };
     }
 }
