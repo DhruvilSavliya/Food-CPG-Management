@@ -47,7 +47,6 @@ public class RegistrationDatabasePersistenceTest {
     @Test
     public void getAllTest() throws SQLException {
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
-        doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(1);

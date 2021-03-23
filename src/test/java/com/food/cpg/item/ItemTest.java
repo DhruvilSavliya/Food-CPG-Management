@@ -88,18 +88,23 @@ public class ItemTest {
     public void saveTest() throws Exception {
         Item item = spy(new Item());
         ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
-        item.setManufacturerId(1);
-        item.addItemRawMaterial(itemRawMaterial);
+        item.setId(TEST_ITEM_ID);
+        item.setTotalCost(TEST_TOTAL_COST);
+        itemRawMaterial.setItemId(TEST_ITEM_ID);
+        List<ItemRawMaterial> itemRawMaterialList = new ArrayList<>();
+        itemRawMaterialList.add(itemRawMaterial);
 
+        item.setItemRawMaterials(itemRawMaterialList);
+
+        PowerMockito.doNothing().when(item).addItemRawMaterial(itemRawMaterial);
+        PowerMockito.doNothing().when(itemRawMaterial).save();
         PowerMockito.doReturn(itemPersistence).when(item, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doReturn(1).when(itemPersistence).save(item);
         PowerMockito.doReturn(1).when(item, GET_MANUFACTURER_ID_METHOD_NAME);
-        PowerMockito.doNothing().when(itemRawMaterial).save();
 
         item.save();
         verifyPrivate(item).invoke(GET_PERSISTENCE_METHOD_NAME);
         verify(itemPersistence, times(1)).save(item);
-        verify(itemRawMaterial, times(1)).save();
     }
 
     @Test

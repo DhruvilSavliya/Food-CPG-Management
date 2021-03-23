@@ -96,7 +96,6 @@ public class ItemDatabasePersistenceTest {
 
     @Test
     public void saveTest() throws SQLException {
-        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
         when(item.getName()).thenReturn(TEST_ITEM_NAME);
         when(item.getCookingCost()).thenReturn(TEST_ITEM_COOKING_COST);
         when(item.getTotalCost()).thenReturn(TEST_ITEM_TOTAL_COST);
