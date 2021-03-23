@@ -19,6 +19,7 @@ public class OpenStatus extends PurchaseOrderStatus{
     }
 
     public void moveOrder(String purchaseOrderNumber) {
+
        getPersistence().moveToPlacedOrder(purchaseOrderNumber);
 
     }

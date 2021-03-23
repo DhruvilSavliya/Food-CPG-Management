@@ -14,8 +14,6 @@ public class PlacedStatus extends PurchaseOrderStatus{
         this.orderStatus = PLACED_STATUS;
     }
 
-
-
     public void moveOrder(String purchaseOrderNumber) {
         getPersistence().moveToReceivedOrder(purchaseOrderNumber);
 

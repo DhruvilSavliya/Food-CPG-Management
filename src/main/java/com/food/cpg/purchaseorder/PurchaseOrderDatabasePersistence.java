@@ -109,10 +109,10 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
     }
 
     @Override
-    public void moveToPlacedOrder(String orderNumber) {
+    public void moveToPlacedOrder(String purchaseOrderNumber) {
         String sql ="update purchase_orders set order_status = 'Placed', order_placed_date = current_timestamp() where order_number = ?";
         List<Object> placeholderValues = new ArrayList<>();
-        placeholderValues.add(orderNumber);
+        placeholderValues.add(purchaseOrderNumber);
         try {
             commonDatabaseOperation.executeUpdate(sql,placeholderValues);
         } catch (SQLException e) {
@@ -122,10 +122,10 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
 
     }
     @Override
-    public void moveToReceivedOrder(String orderNumber) {
+    public void moveToReceivedOrder(String purchaseOrderNumber) {
         String sql ="update purchase_orders set order_status = 'Received', order_received_date = current_timestamp() where order_number = ?";
         List<Object> placeholderValues = new ArrayList<>();
-        placeholderValues.add(orderNumber);
+        placeholderValues.add(purchaseOrderNumber);
         try {
             commonDatabaseOperation.executeUpdate(sql,placeholderValues);
         } catch (SQLException e) {

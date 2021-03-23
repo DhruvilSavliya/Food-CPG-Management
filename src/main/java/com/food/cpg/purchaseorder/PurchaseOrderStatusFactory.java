@@ -1,8 +1,6 @@
 package com.food.cpg.purchaseorder;
 
 public class PurchaseOrderStatusFactory {
-
-
     public static PurchaseOrderStatus getPurchaseOrderStatus(String orderStatus) {
         PurchaseOrderStatus result;
         switch(orderStatus){
@@ -22,3 +20,4 @@ public class PurchaseOrderStatusFactory {
         return result;
     }
 }
+ 

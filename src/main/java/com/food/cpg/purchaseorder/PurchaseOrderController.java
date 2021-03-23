@@ -73,23 +73,25 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/purchase-orders/delete/{purchaseOrderNumber}")
-    public String deletePurchaseOrder(@PathVariable("purchaseOrderNumber") String purchaseOrderNumber,PurchaseOrder purchaseOrder) {
+    public String deletePurchaseOrder(@PathVariable("purchaseOrderNumber") String purchaseOrderNumber,PurchaseOrder purchaseOrder,PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
         purchaseOrder.setOrderNumber(purchaseOrderNumber);
+        purchaseOrderRawMaterial.setPurchaseOrderNumber(purchaseOrderNumber);
         purchaseOrder.delete();
+        purchaseOrderRawMaterial.delete();
         return redirectToPurchaseOrders();
     }
 
     @GetMapping("/purchase-orders/place/{purchaseOrderNumber}")
     public String placeOrder(@PathVariable("purchaseOrderNumber") String purchaseOrderNumber, PurchaseOrder purchaseOrder) {
         purchaseOrder.setOrderNumber(purchaseOrderNumber);
-        purchaseOrder.moveOrder();
+        purchaseOrder.moveOrderToPlaced();
         return redirectToPurchaseOrders();
     }
 
     @GetMapping("/purchase-orders/receive/{purchaseOrderNumber}")
     public String receiveOrder(@PathVariable("purchaseOrderNumber") String purchaseOrderNumber, PurchaseOrder purchaseOrder){
         purchaseOrder.setOrderNumber(purchaseOrderNumber);
-        purchaseOrder.moveOrder();
+        purchaseOrder.moveOrderToReceived();
         return redirectToPurchaseOrders();
     }
 }

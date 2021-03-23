@@ -157,14 +157,19 @@ public class PurchaseOrder {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
         getPersistence().delete(this);
-        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
-            purchaseOrderRawMaterial.delete();
         }
-    }
 
-    public void moveOrder()
+    public void moveOrderToPlaced()
     {
         String orderNumber = getOrderNumber();
+        purchaseOrderStatus = new OpenStatus();
+        purchaseOrderStatus.moveOrder(orderNumber);
+    }
+
+    public void moveOrderToReceived()
+    {
+        String orderNumber = getOrderNumber();
+        purchaseOrderStatus = new PlacedStatus();
         purchaseOrderStatus.moveOrder(orderNumber);
     }
 
