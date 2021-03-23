@@ -88,7 +88,7 @@ public class VendorTest {
     @Test
     public void isValidVendorContactPersonPhoneDigitTest() {
         Vendor vendor = new Vendor();
-        vendor.setContactPersonPhone(987656743L);
+        vendor.setContactPersonPhone(98765432L);
 
         boolean isValidContactPhone = vendor.isValidVendor();
 
