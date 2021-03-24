@@ -1,0 +1,219 @@
+package com.food.cpg.rawmaterial;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.food.cpg.models.Unit;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(RawMaterial.class)
+public class RawMaterialTest {
+
+    private static final String EMPTY_STRING = "";
+    private static final String NAME_ATTRIBUTE = "name";
+    private static final String VENDOR_ATTRIBUTE = "vendor";
+    private static final String UNIT_COST_ATTRIBUTE = "unitCost";
+    private static final String UNIT_MEASUREMENT_ATTRIBUTE = "unitMeasurement";
+    private static final String REORDER_QUANTITY_ATTRIBUTE = "reorderPointQuantity";
+    private static final Integer TEST_MANUFACTURER_ID = 1;
+    private static final Integer TEST_RAW_MATERIAL_ID = 1;
+    private static final String TEST_RAW_MATERIAL_NAME = "Test raw material 1";
+    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
+
+    @Mock
+    IRawMaterialPersistence rawMaterialPersistence;
+
+    @Test
+    public void isValidRawMaterialNameTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setName(EMPTY_STRING);
+
+        boolean isValidName = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidName);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(NAME_ATTRIBUTE));
+    }
+
+    @Test
+    public void isValidRawMaterialVendorTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setVendorId(null);
+
+        boolean isValidVendor = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidVendor);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(VENDOR_ATTRIBUTE));
+    }
+
+    @Test
+    public void isValidRawMaterialUnitCostTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setUnitCost(null);
+
+        boolean isValidUnitCost = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidUnitCost);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(UNIT_COST_ATTRIBUTE));
+    }
+
+    @Test
+    public void isValidRawMaterialUnitMeasurementTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setUnitMeasurement(null);
+        rawMaterial.setUnitMeasurementUOM(Unit.GRAM.getAlias());
+
+        boolean isValidUnitMeasurement = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidUnitMeasurement);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(UNIT_MEASUREMENT_ATTRIBUTE));
+    }
+
+    @Test
+    public void isValidRawMaterialUnitMeasurementUOMTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setUnitMeasurement(20.5);
+        rawMaterial.setUnitMeasurementUOM(null);
+
+        boolean isValidUnitMeasurement = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidUnitMeasurement);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(UNIT_MEASUREMENT_ATTRIBUTE));
+    }
+
+    @Test
+    public void isValidRawMaterialReorderPointTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setReorderPointQuantity(null);
+        rawMaterial.setReorderPointQuantityUOM(Unit.FL_OZ.getAlias());
+
+        boolean isValidReorderPoint = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidReorderPoint);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(REORDER_QUANTITY_ATTRIBUTE));
+    }
+
+    @Test
+    public void isValidRawMaterialReorderPointUOMTest() {
+        RawMaterial rawMaterial = new RawMaterial();
+        rawMaterial.setReorderPointQuantity(25.10);
+        rawMaterial.setReorderPointQuantityUOM(null);
+
+        boolean isValidReorderPoint = rawMaterial.isValidRawMaterial();
+
+        Assert.assertFalse(isValidReorderPoint);
+        Assert.assertFalse(rawMaterial.getErrors().isEmpty());
+        Assert.assertNotNull(rawMaterial.getErrors().get(REORDER_QUANTITY_ATTRIBUTE));
+    }
+
+    @Test
+    public void getAllTest() throws Exception {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
+
+        List<RawMaterial> rawMaterials = new ArrayList<>();
+        rawMaterials.add(rawMaterial);
+
+        PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
+        PowerMockito.doReturn(rawMaterials).when(rawMaterialPersistence).getAll(anyInt());
+
+        List<RawMaterial> rawMaterialsResult = rawMaterial.getAll();
+        Assert.assertNotNull(rawMaterialsResult);
+        Assert.assertEquals(1, rawMaterialsResult.size());
+        Assert.assertEquals(TEST_RAW_MATERIAL_NAME, rawMaterialsResult.get(0).getName());
+    }
+
+    @Test
+    public void saveTest() throws Exception {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
+
+        PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialPersistence).save(rawMaterial);
+        PowerMockito.doReturn(1).when(rawMaterial, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
+
+        rawMaterial.save();
+        verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);
+        verify(rawMaterialPersistence, times(1)).save(rawMaterial);
+    }
+
+    @Test
+    public void loadSuccessTest() throws Exception {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setId(TEST_RAW_MATERIAL_ID);
+        rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
+
+        PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialPersistence).load(rawMaterial);
+
+        rawMaterial.load();
+        verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);
+        verify(rawMaterialPersistence, times(1)).load(rawMaterial);
+    }
+
+    @Test
+    public void loadFailTest() throws Exception {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setId(0);
+        rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
+
+        PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialPersistence).load(rawMaterial);
+
+        rawMaterial.load();
+        verify(rawMaterialPersistence, times(0)).load(rawMaterial);
+    }
+
+    @Test
+    public void updateTest() throws Exception {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
+
+        PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialPersistence).update(rawMaterial);
+
+        rawMaterial.update();
+        verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);
+        verify(rawMaterialPersistence, times(1)).update(rawMaterial);
+    }
+
+    @Test
+    public void deleteTest() throws Exception {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setId(TEST_RAW_MATERIAL_ID);
+        rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
+
+        PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialPersistence).delete(anyInt());
+
+        rawMaterial.delete();
+        verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);
+        verify(rawMaterialPersistence, times(1)).delete(rawMaterial.getId());
+    }
+}
