@@ -2,7 +2,6 @@ package com.food.cpg.item;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 import com.food.cpg.exceptions.ServiceException;
-import com.food.cpg.vendor.Vendor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
