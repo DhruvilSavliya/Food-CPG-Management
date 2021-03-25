@@ -1,5 +1,8 @@
 package com.food.cpg.purchaseorder;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +32,31 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
+        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = new ArrayList<>();
+
+        String sql = "select * from item_raw_materials where item_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(itemId);
+        try (Connection connection = commonDatabaseOperation.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
+                try (ResultSet rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+                        purchaseOrderRawMaterial.setRawMaterialId(rs.getInt("raw_material_id"));
+                        purchaseOrderRawMaterial.setRawMaterialQuantity(rs.getDouble("raw_material_quantity"));
+                        purchaseOrderRawMaterial.setRawMaterialQuantityUOM(rs.getString("raw_material_quantity_uom"));
+                        purchaseOrderItemRawMaterials.add(purchaseOrderRawMaterial);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+        return purchaseOrderItemRawMaterials;
     }
 }

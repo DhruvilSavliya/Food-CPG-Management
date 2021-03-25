@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.item.Item;
+import com.food.cpg.item.ItemRawMaterial;
 
 public class PurchaseOrder {
     private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmm";
@@ -16,6 +18,8 @@ public class PurchaseOrder {
     private String orderNumber;
     private Integer manufacturerId;
     private Integer vendorId;
+    private Integer itemId;
+    private Integer itemQuantity;
     private String orderStatus;
     private Timestamp orderCreationDate;
     private Timestamp orderPlacedDate;
@@ -101,12 +105,37 @@ public class PurchaseOrder {
         this.purchaseOrderRawMaterials = purchaseOrderRawMaterials;
     }
 
+    public Integer getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
+
+    public Integer getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public void setItemQuantity(Integer itemQuantity) {
+        this.itemQuantity = itemQuantity;
+    }
+
     public void addPurchaseOrderRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
         if (this.purchaseOrderRawMaterials == null) {
             this.purchaseOrderRawMaterials = new ArrayList<>();
         }
         purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
         this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
+    }
+
+    public void addPurchaseOrderByItemRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial, Integer itemId) {
+        if (this.purchaseOrderRawMaterials == null) {
+            this.purchaseOrderRawMaterials = new ArrayList<>();
+        }
+        purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
+        this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
+        this.purchaseOrderRawMaterials.addAll(getPurchaseOrderItemRawMaterial(this.getItemId()));
     }
 
     private String generateOrderNumber() {
@@ -135,5 +164,10 @@ public class PurchaseOrder {
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
+    }
+
+    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
+        return getPersistence().getPurchaseOrderItemRawMaterial(itemId);
+
     }
 }
