@@ -9,9 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Kartik Gevariya
  */
 @SpringBootTest
-public class FoodCPGApplicationTests {
+public class FoodCPGApplicationTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FoodCPGApplicationTests.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FoodCPGApplicationTest.class);
 
     @Test
     public void contextLoads() {

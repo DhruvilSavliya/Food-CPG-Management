@@ -8,6 +8,7 @@ public class RawMaterialInventory {
     private Double rawMaterialQuantity;
     private String rawMaterialQuantityUOM;
     private Integer manufacturerId;
+    private String manufacturerEmail;
 
     public Integer getRawMaterialId() {
         return rawMaterialId;
@@ -55,5 +56,13 @@ public class RawMaterialInventory {
 
     public void setManufacturerId(Integer manufacturerId) {
         this.manufacturerId = manufacturerId;
+    }
+
+    public String getManufacturerEmail() {
+        return manufacturerEmail;
+    }
+
+    public void setManufacturerEmail(String manufacturerEmail) {
+        this.manufacturerEmail = manufacturerEmail;
     }
 }
