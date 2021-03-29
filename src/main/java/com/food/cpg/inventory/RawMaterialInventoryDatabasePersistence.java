@@ -70,6 +70,21 @@ public class RawMaterialInventoryDatabasePersistence  implements IRawMaterialInv
         return rawMaterialInventoryList;
     }
 
+    @Override
+    public void save(RawMaterialInventory rawMaterialInventory) {
+        String sql = "update raw_material_inventory set quantity = quantity + ?, quantity_uom = ? where raw_material_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(rawMaterialInventory.getRawMaterialQuantity());
+        placeholderValues.add(rawMaterialInventory.getRawMaterialQuantityUOM());
+        placeholderValues.add(rawMaterialInventory.getRawMaterialId());
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     private void loadRawMaterialInventoryDefaulterDetailsFromResultSet(ResultSet resultSet, RawMaterialInventory rawMaterialInventory) throws SQLException {
         rawMaterialInventory.setRawMaterialId(resultSet.getInt("raw_material_id"));
         rawMaterialInventory.setRawMaterialQuantity(resultSet.getDouble("quantity"));

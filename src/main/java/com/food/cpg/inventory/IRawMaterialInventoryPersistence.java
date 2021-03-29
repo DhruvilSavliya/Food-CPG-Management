@@ -8,4 +8,6 @@ public interface IRawMaterialInventoryPersistence {
 
     List<RawMaterialInventory> getAll(int manufacturerId);
 
+    void save(RawMaterialInventory rawMaterialInventory);
+
 }
