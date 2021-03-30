@@ -2,19 +2,12 @@ package com.food.cpg.salesorder;
 
 public class SalesOpenOrderStatus extends SalesOrderStatus {
 
-    private static final String OPEN = "Open";
-
     public SalesOpenOrderStatus() {
-        setOrderStatus();
+        this.orderStatus = Status.OPEN;
     }
 
     @Override
-    public void setOrderStatus() {
-        this.orderStatus = OPEN;
-    }
-
-    @Override
-    public void moveOrder() {
-
+    public void moveOrder(String orderNumber) {
+        getPersistence().changeStatus(orderNumber, Status.PACKAGED.name());
     }
 }
