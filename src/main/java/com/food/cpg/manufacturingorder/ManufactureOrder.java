@@ -26,6 +26,8 @@ public class ManufactureOrder {
     private Double manufacturingCost;
     private Double tax;
     private Double cost;
+    private ManufactureOrderStatus manufactureOrderStatus;
+    private Timestamp statusChangeDate;
 
     public ManufactureOrder() {
         String generatedOrderNumber = generateOrderNumber();
@@ -136,6 +138,22 @@ public class ManufactureOrder {
         this.cost = cost;
     }
 
+    public ManufactureOrderStatus getManufactureOrderStatus() {
+        return manufactureOrderStatus;
+    }
+
+    public void setManufactureOrderStatus(ManufactureOrderStatus manufactureOrderStatus) {
+        this.manufactureOrderStatus = manufactureOrderStatus;
+    }
+
+    public Timestamp getStatusChangeDate() {
+        return statusChangeDate;
+    }
+
+    public void setStatusChangeDate(Timestamp statusChangeDate) {
+        this.statusChangeDate = statusChangeDate;
+    }
+
     private String generateOrderNumber() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(MO_TIME_FORMAT);
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -144,10 +162,32 @@ public class ManufactureOrder {
         return MO_PREFIX + formattedCurrentDateTime;
     }
 
+    public List<ManufactureOrder> getAllOpenOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllOpenOrders(loggedInManufacturerId);
+    }
+
+    public List<ManufactureOrder> getAllManufacturedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllManufacturedOrders(loggedInManufacturerId);
+    }
+
+    public List<ManufactureOrder> getAllPackagedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllPackagedOrders(loggedInManufacturerId);
+    }
+
+    public void load(){
+        getPersistence().load(this);
+    }
+
+    public void delete() {
+        getPersistence().delete(this.getOrderNumber());
+    }
+
     public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
-        this.setOrderStatus("open");
         getPersistence().save(this);
     }
 
@@ -161,9 +201,13 @@ public class ManufactureOrder {
             }
         }
         totalCost += (totalCost * tax/100);
-        System.out.println(totalCost);
         this.setCost(totalCost);
     }
+
+    public void moveOrderToNextStage() {
+        this.getManufactureOrderStatus().moveOrder(this.getOrderNumber());
+    }
+
 
     private IManufactureOrderPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();

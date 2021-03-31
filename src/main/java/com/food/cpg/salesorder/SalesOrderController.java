@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SalesOrderController {
 
+    private static final String SHOW_SALES_ORDERS_ROUTE = "sales-order/sales-orders";
+
     @GetMapping("/sales-orders")
     public String showSalesOrders(){
-        return "sales-orders";
+        return SHOW_SALES_ORDERS_ROUTE;
     }
 }
