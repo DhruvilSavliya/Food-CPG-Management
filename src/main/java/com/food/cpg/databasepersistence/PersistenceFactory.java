@@ -5,6 +5,7 @@ import com.food.cpg.item.IItemPersistence;
 import com.food.cpg.item.IItemRawMaterialPersistence;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
+import com.food.cpg.manufacturingorder.IManufactureOrderPersistence;
 import com.food.cpg.packaging.IPackagesPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
@@ -28,6 +29,8 @@ public abstract class PersistenceFactory {
     public abstract IPurchaseOrderPersistence getPurchaseOrderPersistence();
 
     public abstract IPurchaseOrderRawMaterialPersistence getPurchaseOrderRawMaterialPersistence();
+
+    public abstract IManufactureOrderPersistence getManufactureOrderPersistence();
 
     public abstract IPackagesPersistence getPackagesPersistence();
 
