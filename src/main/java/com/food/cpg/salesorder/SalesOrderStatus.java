@@ -1,13 +1,23 @@
 package com.food.cpg.salesorder;
 
-public abstract class SalesOrderStatus {
-    protected String orderStatus;
+import com.food.cpg.databasepersistence.PersistenceFactory;
 
-    public String getOrderStatus() {
+public abstract class SalesOrderStatus {
+
+    enum Status {
+        OPEN, PACKAGED, SHIPPED, PAID
+    }
+
+    protected SalesOrderStatus.Status orderStatus;
+
+    public SalesOrderStatus.Status getOrderStatus() {
         return this.orderStatus;
     }
 
-    public abstract void setOrderStatus();
+    public abstract void moveOrder(String orderNumber);
 
-    public abstract void moveOrder();
+    protected ISalesOrderPersistence getPersistence() {
+        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
+        return persistenceFactory.getSalesOrderPersistence();
+    }
 }
