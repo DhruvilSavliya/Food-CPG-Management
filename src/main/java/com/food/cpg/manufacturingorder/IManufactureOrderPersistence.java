@@ -20,6 +20,8 @@ public interface IManufactureOrderPersistence {
 
     void delete(String orderNumber);
 
+    Double loadItemCost(int itemId);
+
     void changeStatus(String orderNumber, String orderStatus);
 
 }

@@ -25,9 +25,13 @@ public class ManufactureOrderTest {
 
     private static final double DELTA = 1e-15;
     private static final String TEST_ORDER_NUMBER = "MO-123456";
+    private static final Integer TEST_ITEM_ID = 1;
+    private static final Double TEST_MANUFACTURING_COST = 10.00;
+    private static final Double TEST_MANUFACTURE_ORDER_TAX = 10.00;
+    private static final Double TEST_MANUFACTURE_ORDER_ITEM_QUANTITY= 1.00;
     private static final String ORDER_NUMBER_PREFIX = "MO-";
+    private static final Double TEST_MANUFACTURE_ORDER_COST = 10.00;
     private static final Integer TEST_MANUFACTURER_ID = 1;
-    private static final double TEST_SALES_ORDER_COST = 10.0;
     private static final String GET_PERSISTENCE_METHOD= "getPersistence";
     private static final String GET_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
 
@@ -41,7 +45,7 @@ public class ManufactureOrderTest {
     public void getAllOpenOrdersTest() throws Exception {
         ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
-        manufactureOrder.setCost(TEST_SALES_ORDER_COST);
+        manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
         List<ManufactureOrder> manufactureOrders = new ArrayList<>();
         manufactureOrders.add(manufactureOrder);
@@ -58,14 +62,14 @@ public class ManufactureOrderTest {
         Assert.assertNotNull(manufactureOrdersResult);
         Assert.assertEquals(1, manufactureOrdersResult.size());
         Assert.assertEquals(TEST_MANUFACTURER_ID, manufactureOrdersResult.get(0).getManufacturerId());
-        Assert.assertEquals(TEST_SALES_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
+        Assert.assertEquals(TEST_MANUFACTURE_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
     }
 
     @Test
     public void getAllManufacturedOrdersTest() throws Exception {
         ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
-        manufactureOrder.setCost(TEST_SALES_ORDER_COST);
+        manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
         List<ManufactureOrder> manufactureOrders = new ArrayList<>();
         manufactureOrders.add(manufactureOrder);
@@ -82,14 +86,14 @@ public class ManufactureOrderTest {
         Assert.assertNotNull(manufactureOrdersResult);
         Assert.assertEquals(1, manufactureOrdersResult.size());
         Assert.assertEquals(TEST_MANUFACTURER_ID, manufactureOrdersResult.get(0).getManufacturerId());
-        Assert.assertEquals(TEST_SALES_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
+        Assert.assertEquals(TEST_MANUFACTURE_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
     }
 
     @Test
     public void getAllPackagedOrdersTest() throws Exception {
         ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
-        manufactureOrder.setCost(TEST_SALES_ORDER_COST);
+        manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
         List<ManufactureOrder> manufactureOrders = new ArrayList<>();
         manufactureOrders.add(manufactureOrder);
@@ -106,14 +110,14 @@ public class ManufactureOrderTest {
         Assert.assertNotNull(manufactureOrdersResult);
         Assert.assertEquals(1, manufactureOrdersResult.size());
         Assert.assertEquals(TEST_MANUFACTURER_ID, manufactureOrdersResult.get(0).getManufacturerId());
-        Assert.assertEquals(TEST_SALES_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
+        Assert.assertEquals(TEST_MANUFACTURE_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
     }
 
     @Test
     public void loadTest() throws Exception {
         ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
-        manufactureOrder.setCost(TEST_SALES_ORDER_COST);
+        manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(manufactureOrderPersistence).load(manufactureOrder);
@@ -129,7 +133,7 @@ public class ManufactureOrderTest {
         ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setOrderNumber(TEST_ORDER_NUMBER);
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
-        manufactureOrder.setCost(TEST_SALES_ORDER_COST);
+        manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(manufactureOrderPersistence).delete(anyString());
@@ -177,11 +181,24 @@ public class ManufactureOrderTest {
         verify(manufactureOrderPersistence, times(1)).save(manufactureOrder);
     }
 
-//    @Test
-//    public void calculateTotalCostTest() throws Exception{
-//        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
-//
-//    }
+    @Test
+    public void calculateTotalCostTest() throws Exception{
+        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        manufactureOrder.setOrderNumber(TEST_ORDER_NUMBER);
+        manufactureOrder.setManufacturingCost(TEST_MANUFACTURING_COST);
+        manufactureOrder.setTax(TEST_MANUFACTURE_ORDER_TAX);
+        manufactureOrder.setItemId(TEST_ITEM_ID);
+        manufactureOrder.setItemQuantity(TEST_MANUFACTURE_ORDER_ITEM_QUANTITY);
+
+        PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
+        PowerMockito.doReturn(30.0).when(manufactureOrderPersistence).loadItemCost(TEST_ITEM_ID);
+
+        manufactureOrder.calculateTotalCost();
+        verifyPrivate(manufactureOrder).invoke(GET_PERSISTENCE_METHOD);
+        verify(manufactureOrderPersistence, times(1)).loadItemCost(TEST_ITEM_ID);
+        Assert.assertNotNull(manufactureOrder.getCost());
+        Assert.assertEquals(44.0, manufactureOrder.getCost().doubleValue(), DELTA);
+    }
 
 
 }

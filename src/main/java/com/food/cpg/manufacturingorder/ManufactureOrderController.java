@@ -55,7 +55,6 @@ public class ManufactureOrderController {
         return redirectToManufactureOrders();
     }
 
-
     @GetMapping("/add-manufacture-order")
     public String addManufactureOrderForm(ManufactureOrder manufactureOrder, Item item, Model model) {
         model.addAttribute(VIEW_UNITS_KEY, Unit.values());
@@ -65,7 +64,7 @@ public class ManufactureOrderController {
 
     @PostMapping("/calculate-total")
     public String calculateTotalCost(ManufactureOrder manufactureOrder, Item item, Model model) {
-        manufactureOrder.calculateTotalCost(item.getAll());
+        manufactureOrder.calculateTotalCost();
         model.addAttribute(VIEW_UNITS_KEY, Unit.values());
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
         return SHOW_ADD_MANUFACTURE_ORDER_FORM_ROUTE;

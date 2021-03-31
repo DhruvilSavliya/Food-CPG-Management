@@ -133,6 +133,27 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
 
     }
 
+    public Double loadItemCost(int itemId){
+        Double itemCost = null;
+        String sql = "select item_total_cost from items where item_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(itemId);
+
+        try (Connection connection = commonDatabaseOperation.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
+                try (ResultSet rs = preparedStatement.executeQuery()) {
+                    if (rs.next()) {
+                        itemCost = rs.getDouble("item_total_cost");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+        return itemCost;
+    }
+
     private void loadManufactureOrderDetailsFromResultSet(ResultSet resultSet, ManufactureOrder manufactureOrder) throws SQLException {
         manufactureOrder.setOrderNumber(resultSet.getString("order_number"));
         manufactureOrder.setItemId(resultSet.getInt("item_id"));

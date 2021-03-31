@@ -191,15 +191,14 @@ public class ManufactureOrder {
         getPersistence().save(this);
     }
 
-    public void calculateTotalCost(List<Item> itemList) {
+    public void calculateTotalCost() {
         Double totalCost = 0.0;
+        totalCost = getPersistence().loadItemCost(this.itemId);
+        this.setCost(totalCost);
+        Double costForAllQauntities = this.getCost() * this.getItemQuantity();
+        totalCost = costForAllQauntities;
         totalCost += this.getManufacturingCost();
         Double tax = this.getTax();
-        for(Item item :itemList){
-            if(item.getId() == this.getItemId()){
-                totalCost += (item.getTotalCost() * this.getItemQuantity());
-            }
-        }
         totalCost += (totalCost * tax/100);
         this.setCost(totalCost);
     }
