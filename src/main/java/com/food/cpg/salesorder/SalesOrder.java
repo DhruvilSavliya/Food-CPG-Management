@@ -1,10 +1,15 @@
 package com.food.cpg.salesorder;
 
 import java.sql.Timestamp;
+import java.util.List;
+
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class SalesOrder {
     private String orderNumber;
     private SalesOrderStatus salesOrderStatus;
+    private int manufacturerId;
     private int itemId;
     private int packageId;
     private double packageCost;
@@ -21,6 +26,14 @@ public class SalesOrder {
 
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public int getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(int manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
     public int getItemId() {
@@ -101,5 +114,47 @@ public class SalesOrder {
 
     public void setStatusChangeDate(Timestamp statusChangeDate) {
         this.statusChangeDate = statusChangeDate;
+    }
+
+    public List<SalesOrder> getAllOpenOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllOpenOrders(loggedInManufacturerId);
+    }
+
+    public List<SalesOrder> getAllPackagedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllPackagedOrders(loggedInManufacturerId);
+    }
+
+    public List<SalesOrder> getAllShippedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllShippedOrders(loggedInManufacturerId);
+    }
+
+    public List<SalesOrder> getAllPaidOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllPaidOrders(loggedInManufacturerId);
+    }
+
+    public void load() {
+        getPersistence().load(this);
+    }
+
+    public void delete() {
+        getPersistence().delete(this.getOrderNumber());
+    }
+
+    public void moveOrderToNextStage() {
+        this.getSalesOrderStatus().moveOrder(this.getOrderNumber());
+    }
+
+    private ISalesOrderPersistence getPersistence() {
+        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
+        return persistenceFactory.getSalesOrderPersistence();
+    }
+
+    private int getLoggedInManufacturerId() {
+        AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
+        return authenticationSessionDetails.getAuthenticatedUserId();
     }
 }

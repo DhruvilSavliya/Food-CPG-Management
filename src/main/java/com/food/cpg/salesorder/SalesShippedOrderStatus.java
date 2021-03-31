@@ -2,19 +2,12 @@ package com.food.cpg.salesorder;
 
 public class SalesShippedOrderStatus extends SalesOrderStatus {
 
-    private static final String SHIPPED = "Shipped";
-
     public SalesShippedOrderStatus() {
-        setOrderStatus();
+        this.orderStatus = Status.SHIPPED;
     }
 
     @Override
-    public void setOrderStatus() {
-        this.orderStatus = SHIPPED;
-    }
-
-    @Override
-    public void moveOrder() {
-
+    public void moveOrder(String orderNumber) {
+        getPersistence().changeStatus(orderNumber, Status.PAID.name());
     }
 }
