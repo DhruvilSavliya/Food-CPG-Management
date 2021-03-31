@@ -43,18 +43,18 @@ public class ItemController {
     @PostMapping("/add-item-raw-material")
     public String addItemRawMaterial(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         item.addItemRawMaterial(itemRawMaterial);
-        model.addAttribute("units", Unit.values());
-        model.addAttribute("vendors", vendor.getAll());
-        model.addAttribute("rawMaterials", rawMaterial.getAll());
+        model.addAttribute(VIEW_UNITS_KEY, Unit.values());
+        model.addAttribute(VIEW_VENDORS_KEY, vendor.getAll());
+        model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
         return SHOW_ADD_ITEM_FORM_ROUTE;
     }
 
     @PostMapping("/calculate-total-item-cost")
     public String calculateTotalCost(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         item.calculateTotalCost();
-        model.addAttribute("units", Unit.values());
-        model.addAttribute("vendors", vendor.getAll());
-        model.addAttribute("rawMaterials", rawMaterial.getAll());
+        model.addAttribute(VIEW_UNITS_KEY, Unit.values());
+        model.addAttribute(VIEW_VENDORS_KEY, vendor.getAll());
+        model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
         return SHOW_ADD_ITEM_FORM_ROUTE;
     }
 
