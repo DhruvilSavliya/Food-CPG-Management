@@ -33,18 +33,10 @@ public class ItemInventoryDatabasePersistenceTest {
     @Mock
     PreparedStatement preparedStatement;
 
-    @Mock
-    ResultSet resultSet;
 
     @Mock
     ItemInventory itemInventory;
 
-    @Before
-    public void setUp() throws SQLException {
-        when(commonDatabaseOperation.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-    }
 
     @Test
     public void increaseQuantityTest() throws SQLException {
