@@ -12,6 +12,7 @@ import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.vendor.IVendorPersistence;
+import com.food.cpg.inventory.IItemInventoryPersistence;
 
 public abstract class PersistenceFactory {
     public abstract IVendorPersistence getVendorPersistence();
@@ -38,7 +39,10 @@ public abstract class PersistenceFactory {
 
     public abstract ISalesOrderPersistence getSalesOrderPersistence();
 
+    public abstract IItemInventoryPersistence getItemInventoryPersistence();
+
     public static PersistenceFactory getPersistenceFactory() {
         return new DatabasePersistenceFactory();
     }
+
 }
