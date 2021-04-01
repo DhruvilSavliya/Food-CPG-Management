@@ -31,7 +31,7 @@ public class ItemInventoryController {
         return SHOW_ITEM_INVENTORY_QUANTITY_FORM_ROUTE;
     }
 
-    @PostMapping("/save-raw-materials-inventory-quantity")
+    @PostMapping("/save-items-inventory-quantity")
     public String saveItemInventoryQuantity(ItemInventory itemInventory, Model model) {
         itemInventory.increaseQuantity();
         return redirectToItemInventory();
