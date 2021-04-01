@@ -27,12 +27,6 @@ public class ItemInventoryDatabasePersistenceTest {
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
 
-    @Mock
-    Connection connection;
-
-    @Mock
-    PreparedStatement preparedStatement;
-
 
     @Mock
     ItemInventory itemInventory;
