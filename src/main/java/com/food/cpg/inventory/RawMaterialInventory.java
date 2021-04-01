@@ -82,7 +82,6 @@ public class RawMaterialInventory {
     public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
-
         getPersistence().save(this);
     }
 

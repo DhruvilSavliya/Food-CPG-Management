@@ -96,4 +96,5 @@ public class DatabasePersistenceFactory extends PersistenceFactory {
     public ISalesOrderPersistence getSalesOrderPersistence() {
         return new SalesOrderDatabasePersistence(commonDatabaseOperation);
     }
+
 }

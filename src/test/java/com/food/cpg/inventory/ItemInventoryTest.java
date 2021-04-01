@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ItemInventory.class)
@@ -45,4 +48,28 @@ public class ItemInventoryTest extends TestCase {
         Assert.assertEquals(1, itemInventoriesResult.size());
         Assert.assertEquals(ITEM_NAME, itemInventoriesResult.get(0).getItemName());
     }
+
+    public void increaseQuantityTest() throws Exception {
+        ItemInventory itemInventory = spy(new ItemInventory());
+
+        PowerMockito.doReturn(itemInventoryPersistence).when(itemInventory, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(itemInventoryPersistence).increaseQuantity(itemInventory);
+
+        itemInventory.increaseQuantity();
+        verifyPrivate(itemInventory).invoke(GET_PERSISTENCE_METHOD);
+        verify(itemInventoryPersistence, times(1)).increaseQuantity(itemInventory);
+    }
+
+    @Test
+    public void decreaseQuantityTest() throws Exception {
+        ItemInventory itemInventory = spy(new ItemInventory());
+
+        PowerMockito.doReturn(itemInventoryPersistence).when(itemInventory, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(itemInventoryPersistence).decreaseQuantity(itemInventory);
+
+        itemInventory.decreaseQuantity();
+        verifyPrivate(itemInventory).invoke(GET_PERSISTENCE_METHOD);
+        verify(itemInventoryPersistence, times(1)).decreaseQuantity(itemInventory);
+    }
+
 }

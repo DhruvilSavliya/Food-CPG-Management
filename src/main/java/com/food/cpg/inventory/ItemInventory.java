@@ -31,7 +31,9 @@ public class ItemInventory {
         return itemQuantity;
     }
 
-    public void setItemQuantity(Double itemQuantity) { this.itemQuantity = itemQuantity; }
+    public void setItemQuantity(Double itemQuantity) {
+        this.itemQuantity = itemQuantity;
+    }
 
     public Integer getManufacturerId() {
         return manufacturerId;
@@ -54,5 +56,13 @@ public class ItemInventory {
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
+    }
+
+    public void increaseQuantity() {
+        getPersistence().increaseQuantity(this);
+    }
+
+    public void decreaseQuantity() {
+        getPersistence().decreaseQuantity(this);
     }
 }

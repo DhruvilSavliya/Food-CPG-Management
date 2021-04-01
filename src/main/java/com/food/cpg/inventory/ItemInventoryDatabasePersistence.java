@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemInventoryDatabasePersistence implements IItemInventoryPersistence{
+public class ItemInventoryDatabasePersistence implements IItemInventoryPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
@@ -48,6 +48,31 @@ public class ItemInventoryDatabasePersistence implements IItemInventoryPersisten
         itemInventory.setItemId(resultSet.getInt("item_id"));
         itemInventory.setItemQuantity(resultSet.getDouble("quantity"));
         itemInventory.setItemName(resultSet.getString("item_name"));
+    }
 
+    public void increaseQuantity(ItemInventory itemInventory) {
+        String sql = "update item_inventory set quantity = quantity + ? where item_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(itemInventory.getItemQuantity());
+        placeholderValues.add(itemInventory.getItemId());
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    public void decreaseQuantity(ItemInventory itemInventory) {
+        String sql = "update item_inventory set quantity = quantity - ? where item_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(itemInventory.getItemQuantity());
+        placeholderValues.add(itemInventory.getItemId());
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
     }
 }
