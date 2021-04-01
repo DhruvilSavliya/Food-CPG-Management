@@ -1,5 +1,6 @@
 package com.food.cpg.databasepersistence;
 
+import com.food.cpg.inventory.IItemInventoryPersistence;
 import com.food.cpg.inventory.IRawMaterialInventoryPersistence;
 import com.food.cpg.item.IItemPersistence;
 import com.food.cpg.item.IItemRawMaterialPersistence;
@@ -31,6 +32,8 @@ public abstract class PersistenceFactory {
     public abstract IPackagesPersistence getPackagesPersistence();
 
     public abstract IRawMaterialInventoryPersistence getRawMaterialInventoryPersistence();
+
+    public abstract IItemInventoryPersistence getItemInventoryPersistence();
 
     public static PersistenceFactory getPersistenceFactory() {
         return new DatabasePersistenceFactory();
