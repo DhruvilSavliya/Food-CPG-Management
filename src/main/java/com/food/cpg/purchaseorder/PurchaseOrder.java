@@ -19,12 +19,13 @@ public class PurchaseOrder {
     private Integer manufacturerId;
     private Integer vendorId;
     private Integer itemId;
-    private Integer itemQuantity;
+    private Double itemQuantity;
     private String orderStatus;
     private Timestamp orderCreationDate;
     private Timestamp orderPlacedDate;
     private Timestamp orderReceivedDate;
     private Double totalCost;
+    private Double totalQuantity;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
 
     public PurchaseOrder() {
@@ -113,12 +114,20 @@ public class PurchaseOrder {
         this.itemId = itemId;
     }
 
-    public Integer getItemQuantity() {
+    public Double getItemQuantity() {
         return itemQuantity;
     }
 
-    public void setItemQuantity(Integer itemQuantity) {
+    public void setItemQuantity(Double itemQuantity) {
         this.itemQuantity = itemQuantity;
+    }
+
+    public Double getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Double totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     public void addPurchaseOrderRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
@@ -129,13 +138,19 @@ public class PurchaseOrder {
         this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
     }
 
-    public void addPurchaseOrderByItemRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial, Integer itemId) {
+    public void addPurchaseOrderByItemRawMaterials() {
         if (this.purchaseOrderRawMaterials == null) {
             this.purchaseOrderRawMaterials = new ArrayList<>();
         }
-        purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
-        this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
-        this.purchaseOrderRawMaterials.addAll(getPurchaseOrderItemRawMaterial(this.getItemId()));
+        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials)
+        {
+            purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
+            Double rawMaterialQuantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
+            totalQuantity = itemQuantity*rawMaterialQuantity;
+            purchaseOrderRawMaterial.setRawMaterialQuantity(totalQuantity);
+            this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
+        }
     }
 
     private String generateOrderNumber() {
@@ -151,17 +166,20 @@ public class PurchaseOrder {
         this.setManufacturerId(loggedInManufacturerId);
 
         getPersistence().save(this);
-        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials())
+        {
             purchaseOrderRawMaterial.save();
         }
     }
 
-    private IPurchaseOrderPersistence getPersistence() {
+    private IPurchaseOrderPersistence getPersistence()
+    {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderPersistence();
     }
 
-    private int getLoggedInManufacturerId() {
+    private int getLoggedInManufacturerId()
+    {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
@@ -170,4 +188,5 @@ public class PurchaseOrder {
         return getPersistence().getPurchaseOrderItemRawMaterial(itemId);
 
     }
+
 }

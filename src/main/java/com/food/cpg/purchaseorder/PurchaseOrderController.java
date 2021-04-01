@@ -55,8 +55,8 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/save-purchase-order-byitem")
-    public String savePurchaseOrderByitem(Integer itemId, PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
-        purchaseOrder.addPurchaseOrderByItemRawMaterials(purchaseOrderRawMaterial,itemId);
+    public String savePurchaseOrderByitem( PurchaseOrder purchaseOrder) {
+        purchaseOrder.addPurchaseOrderByItemRawMaterials();
         purchaseOrder.save();
         return redirectToPurchaseOrders();
     }

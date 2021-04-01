@@ -1,6 +1,11 @@
 package com.food.cpg.purchaseorder;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,12 +27,22 @@ public class PurchaseOrderDatabasePersistenceTest {
     private static final Integer TEST_PURCHASE_ORDER_VENDOR_ID = 1;
     private static final Integer TEST_PURCHASE_ORDER_MANUFACTURER_ID = 1;
     private static final Double TEST_PURCHASE_ORDER_COST = 10.0;
+    private static final Integer TEST_ITEM_ID = 10;
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
 
     @Mock
     PurchaseOrder purchaseOrder;
+
+    @Mock
+    Connection connection;
+
+    @Mock
+    PreparedStatement preparedStatement;
+
+    @Mock
+    ResultSet resultSet;
 
     @Test
     public void saveTest() throws SQLException {
