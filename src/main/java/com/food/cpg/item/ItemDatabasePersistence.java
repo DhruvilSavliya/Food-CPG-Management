@@ -69,7 +69,9 @@ public class ItemDatabasePersistence implements IItemPersistence{
     public Integer save(Item item) {
         Integer itemId = null;
         String sql = "insert into items (item_name, item_cooking_cost, item_total_cost, manufacturer_id) values (?, ?, ?, ?)";
+        String inventorySql= "insert into item_inventory (item_id) values(?)";
         List<Object> placeholderValues = new ArrayList<>();
+        List<Object> placeholderValuesInventory = new ArrayList<>();
         placeholderValues.add(item.getName());
         placeholderValues.add(item.getCookingCost());
         placeholderValues.add(item.getTotalCost());
@@ -77,6 +79,13 @@ public class ItemDatabasePersistence implements IItemPersistence{
 
         try {
            itemId = commonDatabaseOperation.executeUpdateGetId(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+
+        placeholderValuesInventory.add(itemId);
+        try {
+            commonDatabaseOperation.executeUpdate(inventorySql, placeholderValuesInventory);
         } catch (SQLException e) {
             throw new ServiceException(e);
         }

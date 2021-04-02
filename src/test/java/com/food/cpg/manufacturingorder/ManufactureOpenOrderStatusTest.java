@@ -33,11 +33,14 @@ public class ManufactureOpenOrderStatusTest{
     @Test
     public void moveOrderTest() throws Exception {
         ManufactureOpenOrderStatus manufactureOpenOrderStatus = spy(new ManufactureOpenOrderStatus());
+        ManufactureOrder manufactureOrder = new ManufactureOrder();
+        manufactureOrder.setItemId(1);
+        manufactureOrder.setItemQuantity(2.00);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOpenOrderStatus, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(manufactureOrderPersistence).changeStatus(anyString(), anyString());
 
-        manufactureOpenOrderStatus.moveOrder(anyString());
+        manufactureOpenOrderStatus.moveOrder(manufactureOrder);
         verify(manufactureOrderPersistence, times(1)).changeStatus(anyString(), anyString());
     }
 

@@ -204,7 +204,7 @@ public class ManufactureOrder {
     }
 
     public void moveOrderToNextStage() {
-        this.getManufactureOrderStatus().moveOrder(this.getOrderNumber());
+        this.getManufactureOrderStatus().moveOrder(this);
     }
 
 

@@ -4,7 +4,7 @@ import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class ItemInventory {
     private Integer itemId;
-    private Integer itemQuantity;
+    private Double itemQuantity;
 
     public Integer getItemId() {
         return itemId;
@@ -14,11 +14,11 @@ public class ItemInventory {
         this.itemId = itemId;
     }
 
-    public Integer getItemQuantity() {
+    public Double getItemQuantity() {
         return itemQuantity;
     }
 
-    public void setItemQuantity(Integer itemQuantity) {
+    public void setItemQuantity(Double itemQuantity) {
         this.itemQuantity = itemQuantity;
     }
 
@@ -35,6 +35,5 @@ public class ItemInventory {
     public void decreaseQuantity() {
         getPersistence().decreaseQuantity(this);
     }
-
 
 }

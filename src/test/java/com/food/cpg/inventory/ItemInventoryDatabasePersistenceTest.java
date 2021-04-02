@@ -20,7 +20,7 @@ import static org.mockito.Mockito.times;
 public class ItemInventoryDatabasePersistenceTest {
 
     private static final Integer TEST_ITEM_ID = 10;
-    private static final Integer TEST_ITEM_QUANTITY = 2;
+    private static final Double TEST_ITEM_QUANTITY = 2.00;
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
