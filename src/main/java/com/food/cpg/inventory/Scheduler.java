@@ -28,6 +28,7 @@ public class Scheduler {
                 String to = rawMaterialInventory.getManufacturerEmail();
                 String subject = "Inventory is low for- " + rawMaterialInventory.getRawMaterialName();
                 System.out.println("Sending mail to- " + rawMaterialInventory.getManufacturerEmail());
+
                 System.out.println(message);
                 mailSender.sendEmail(to, subject, message);
 
