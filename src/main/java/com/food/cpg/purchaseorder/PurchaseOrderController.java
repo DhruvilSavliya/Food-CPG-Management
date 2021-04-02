@@ -1,6 +1,5 @@
 package com.food.cpg.purchaseorder;
 
-import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +29,7 @@ public class PurchaseOrderController {
     private static final String SHOW_ADD_PURCHASE_ORDER_BYITEM_FORM_ROUTE = "purchase-order/add-purchase-order-byitem";
 
     @GetMapping("/purchase-orders")
-    public String showPurchaseOrders(PurchaseOrder purchaseOrder,Model model) {
+    public String showPurchaseOrders(PurchaseOrder purchaseOrder, Model model) {
         model.addAttribute(VIEW_OPEN_PURCHASE_ORDERS_KEY, purchaseOrder.getAllOpenOrders());
         model.addAttribute(VIEW_PLACED_PURCHASE_ORDERS_KEY, purchaseOrder.getAllPlacedOrders());
         model.addAttribute(VIEW_RECEIVED_PURCHASE_ORDERS_KEY, purchaseOrder.getAllReceivedOrders());
@@ -44,11 +43,13 @@ public class PurchaseOrderController {
         model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
         return SHOW_ADD_PURCHASE_ORDER_FORM_ROUTE;
     }
+
     @GetMapping("/add-purchase-order-byitem")
     public String showAddPurchaseOrderByItemForm(PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial, Item item, Model model) {
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
         return SHOW_ADD_PURCHASE_ORDER_BYITEM_FORM_ROUTE;
     }
+
     @PostMapping("/add-po-raw-material")
     public String addPurchaseOrderRawMaterial(PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
@@ -59,7 +60,7 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/save-purchase-order-byitem")
-    public String savePurchaseOrderByitem( PurchaseOrder purchaseOrder,PurchaseOrderByItem purchaseOrderByItem) {
+    public String savePurchaseOrderByitem(PurchaseOrder purchaseOrder, PurchaseOrderByItem purchaseOrderByItem) {
         purchaseOrderByItem.addPurchaseOrderByItemRawMaterials();
         return redirectToPurchaseOrders();
     }
@@ -74,21 +75,20 @@ public class PurchaseOrderController {
         return REDIRECT_NOTATION + PURCHASE_ORDERS_END_POINT;
     }
 
-    @GetMapping("/purchase-orders/delete/{purchaseOrderNumber}")
-    public String deletePurchaseOrder(@PathVariable("purchaseOrderNumber") String purchaseOrderNumber, PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
-        purchaseOrder.setOrderNumber(purchaseOrderNumber);
-        purchaseOrderRawMaterial.setPurchaseOrderNumber(purchaseOrderNumber);
+    @GetMapping("/purchase-orders/delete/{orderNumber}")
+    public String deletePurchaseOrder(@PathVariable("orderNumber") String orderNumber, PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
+        purchaseOrder.setOrderNumber(orderNumber);
+        purchaseOrderRawMaterial.setPurchaseOrderNumber(orderNumber);
         purchaseOrder.delete();
         purchaseOrderRawMaterial.delete();
         return redirectToPurchaseOrders();
     }
 
-    @GetMapping("/purchase-orders/move/{purchaseOrderNumber}")
-    public String movePurchaseOrder(@PathVariable("purchaseOrderNumber") String orderNumber, PurchaseOrder purchaseOrder) {
+    @GetMapping("/purchase-orders/move/{orderNumber}")
+    public String movePurchaseOrder(@PathVariable("orderNumber") String orderNumber, PurchaseOrder purchaseOrder) {
         purchaseOrder.setOrderNumber(orderNumber);
         purchaseOrder.load();
         purchaseOrder.moveOrderToNextStage();
-
         return redirectToPurchaseOrders();
     }
 

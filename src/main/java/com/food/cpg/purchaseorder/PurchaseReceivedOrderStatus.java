@@ -1,6 +1,6 @@
 package com.food.cpg.purchaseorder;
 
-public class PurchaseReceivedOrderStatus extends PurchaseOrderStatus{
+public class PurchaseReceivedOrderStatus extends PurchaseOrderStatus {
 
     public PurchaseReceivedOrderStatus() {
         this.orderStatus = Status.RECEIVED;

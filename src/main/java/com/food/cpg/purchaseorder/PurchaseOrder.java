@@ -17,11 +17,8 @@ public class PurchaseOrder {
     private Integer manufacturerId;
     private Integer vendorId;
     private Integer itemId;
+    private Timestamp statusChangeDate;
     private Double itemQuantity;
-    private String orderStatus;
-    private Timestamp orderCreationDate;
-    private Timestamp orderPlacedDate;
-    private Timestamp orderReceivedDate;
     private Double totalCost;
     private Double totalQuantity;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
@@ -57,38 +54,6 @@ public class PurchaseOrder {
         this.vendorId = vendorId;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public Timestamp getOrderCreationDate() {
-        return orderCreationDate;
-    }
-
-    public void setOrderCreationDate(Timestamp orderCreationDate) {
-        this.orderCreationDate = orderCreationDate;
-    }
-
-    public Timestamp getOrderPlacedDate() {
-        return orderPlacedDate;
-    }
-
-    public void setOrderPlacedDate(Timestamp orderPlacedDate) {
-        this.orderPlacedDate = orderPlacedDate;
-    }
-
-    public Timestamp getOrderReceivedDate() {
-        return orderReceivedDate;
-    }
-
-    public void setOrderReceivedDate(Timestamp orderReceivedDate) {
-        this.orderReceivedDate = orderReceivedDate;
-    }
-
     public Double getTotalCost() {
         return totalCost;
     }
@@ -96,6 +61,15 @@ public class PurchaseOrder {
     public void setTotalCost(Double totalCost) {
         this.totalCost = totalCost;
     }
+
+    public Timestamp getStatusChangeDate() {
+        return statusChangeDate;
+    }
+
+    public void setStatusChangeDate(Timestamp statusChangeDate) {
+        this.statusChangeDate = statusChangeDate;
+    }
+
 
     public List<PurchaseOrderRawMaterial> getPurchaseOrderRawMaterials() {
         return purchaseOrderRawMaterials;
@@ -202,10 +176,6 @@ public class PurchaseOrder {
     public void moveOrderToNextStage() {
         this.getPurchaseOrderStatus().moveOrder(this.getOrderNumber());
     }
-
-
-
-
 
 
 }

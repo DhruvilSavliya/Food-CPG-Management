@@ -51,7 +51,7 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
 
     @Override
     public void changeStatus(String orderNumber, String orderStatus) {
-        String sql = "update purchase_orders set order_status = ?, order_received_date = current_timestamp() where order_number = ?";
+        String sql = "update purchase_orders set order_status = ?, status_change_date = current_timestamp() where order_number = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderStatus);
         placeholderValues.add(orderNumber);
@@ -125,6 +125,7 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
     private void loadPurchaseOrderDetailsFromResultSet(ResultSet resultSet, PurchaseOrder purchaseOrder) throws SQLException {
         purchaseOrder.setOrderNumber(resultSet.getString("order_number"));
         purchaseOrder.setTotalCost(resultSet.getDouble("total_cost"));
+        purchaseOrder.setStatusChangeDate(resultSet.getTimestamp("status_change_date"));
         String orderStatus = resultSet.getString("order_status");
         PurchaseOrderStatus purchaseOrderStatus = PurchaseOrderStatusFactory.getInstance().makeOrderStatus(orderStatus);
         purchaseOrder.setPurchaseOrderStatus(purchaseOrderStatus);

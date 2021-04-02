@@ -7,6 +7,7 @@ import java.util.List;
 
 public class PurchaseOrderByItem {
 
+    private String orderNumber;
     private Integer itemId;
     private Double itemQuantity;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
@@ -44,6 +45,14 @@ public class PurchaseOrderByItem {
         this.purchaseOrder = purchaseOrder;
     }
 
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     private IPurchaseOrderRawMaterialPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderRawMaterialPersistence();
@@ -57,9 +66,9 @@ public class PurchaseOrderByItem {
         if (this.purchaseOrderRawMaterials == null) {
             this.purchaseOrderRawMaterials = new ArrayList<>();
         }
-        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(purchaseOrder.getItemId());
+        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());
         for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials) {
-            purchaseOrderRawMaterial.setPurchaseOrderNumber(purchaseOrder.getOrderNumber());
+            purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
             Double rawMaterialQuantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
             Double totalQuantity = itemQuantity * rawMaterialQuantity;
             purchaseOrderRawMaterial.setRawMaterialQuantity(totalQuantity);
