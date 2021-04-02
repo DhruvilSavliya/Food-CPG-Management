@@ -8,8 +8,6 @@ import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.item.Item;
-import com.food.cpg.item.ItemRawMaterial;
 
 public class PurchaseOrder {
     private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmm";
@@ -27,6 +25,7 @@ public class PurchaseOrder {
     private Double totalCost;
     private Double totalQuantity;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
+    private PurchaseOrderStatus purchaseOrderStatus;
 
     public PurchaseOrder() {
         String generatedOrderNumber = generateOrderNumber();
@@ -106,6 +105,15 @@ public class PurchaseOrder {
         this.purchaseOrderRawMaterials = purchaseOrderRawMaterials;
     }
 
+    public PurchaseOrderStatus getPurchaseOrderStatus() {
+        return purchaseOrderStatus;
+    }
+
+    public void setPurchaseOrderStatus(PurchaseOrderStatus purchaseOrderStatus) {
+        this.purchaseOrderStatus = purchaseOrderStatus;
+    }
+
+
     public Integer getItemId() {
         return itemId;
     }
@@ -138,21 +146,6 @@ public class PurchaseOrder {
         this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
     }
 
-    public void addPurchaseOrderByItemRawMaterials() {
-        if (this.purchaseOrderRawMaterials == null) {
-            this.purchaseOrderRawMaterials = new ArrayList<>();
-        }
-        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());
-        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials)
-        {
-            purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
-            Double rawMaterialQuantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
-            totalQuantity = itemQuantity*rawMaterialQuantity;
-            purchaseOrderRawMaterial.setRawMaterialQuantity(totalQuantity);
-            this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
-        }
-    }
-
     private String generateOrderNumber() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(PO_ORDER_TIME_FORMAT);
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -166,27 +159,53 @@ public class PurchaseOrder {
         this.setManufacturerId(loggedInManufacturerId);
 
         getPersistence().save(this);
-        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials())
-        {
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
             purchaseOrderRawMaterial.save();
         }
     }
 
-    private IPurchaseOrderPersistence getPersistence()
-    {
+    private IPurchaseOrderPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderPersistence();
     }
 
-    private int getLoggedInManufacturerId()
-    {
+    private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
 
-    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
-        return getPersistence().getPurchaseOrderItemRawMaterial(itemId);
-
+    public List<PurchaseOrder> getAllOpenOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getOpenPurchaseOrder(loggedInManufacturerId);
     }
+
+    public List<PurchaseOrder> getAllPlacedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getPlacedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getAllReceivedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public void delete() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+        getPersistence().delete(this);
+    }
+
+    public void load() {
+        getPersistence().load(this);
+    }
+
+    public void moveOrderToNextStage() {
+        this.getPurchaseOrderStatus().moveOrder(this.getOrderNumber());
+    }
+
+
+
+
+
 
 }

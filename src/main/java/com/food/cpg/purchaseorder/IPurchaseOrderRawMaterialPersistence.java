@@ -6,4 +6,8 @@ public interface IPurchaseOrderRawMaterialPersistence {
 
     void save(PurchaseOrderRawMaterial purchaseOrderRawMaterials);
 
+    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int  itemId);
+
+    void delete(String PurchaseOrderNumber);
+
 }

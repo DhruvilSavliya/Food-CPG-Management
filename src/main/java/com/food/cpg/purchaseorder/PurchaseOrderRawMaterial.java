@@ -2,8 +2,6 @@ package com.food.cpg.purchaseorder;
 
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
-import java.util.List;
-
 public class PurchaseOrderRawMaterial {
     private String purchaseOrderNumber;
     private Integer rawMaterialId;
@@ -44,6 +42,10 @@ public class PurchaseOrderRawMaterial {
 
     public void save() {
         getPersistence().save(this);
+    }
+
+    public void delete() {
+        getPersistence().delete(this.getPurchaseOrderNumber());
     }
 
     private IPurchaseOrderRawMaterialPersistence getPersistence() {

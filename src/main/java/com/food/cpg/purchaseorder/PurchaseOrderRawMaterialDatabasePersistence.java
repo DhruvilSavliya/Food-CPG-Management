@@ -36,4 +36,45 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
         }
     }
 
+    @Override
+    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
+        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = new ArrayList<>();
+
+        String sql = "select * from item_raw_materials where item_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(itemId);
+        try (Connection connection = commonDatabaseOperation.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
+                try (ResultSet rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+                        purchaseOrderRawMaterial.setRawMaterialId(rs.getInt("raw_material_id"));
+                        purchaseOrderRawMaterial.setRawMaterialQuantity(rs.getDouble("raw_material_quantity"));
+                        purchaseOrderRawMaterial.setRawMaterialQuantityUOM(rs.getString("raw_material_quantity_uom"));
+                        purchaseOrderItemRawMaterials.add(purchaseOrderRawMaterial);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+        return purchaseOrderItemRawMaterials;
+    }
+
+    @Override
+    public void delete(String purchaseOrderNumber) {
+
+        String sql = "delete from purchase_order_raw_materials where purchase_order_number = ?";
+
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(purchaseOrderNumber);
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+
 }

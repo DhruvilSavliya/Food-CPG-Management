@@ -6,5 +6,17 @@ public interface IPurchaseOrderPersistence {
 
     void save(PurchaseOrder purchaseOrder);
 
-    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int  itemId);
+    void delete(PurchaseOrder purchaseOrder);
+
+    void changeStatus(String orderNumber, String orderStatus);
+
+    void load(PurchaseOrder purchaseOrder);
+
+    public List<PurchaseOrder> getOpenPurchaseOrder(int manufacturerId);
+
+    public List<PurchaseOrder> getPlacedPurchaseOrder(int manufacturerId);
+
+    public List<PurchaseOrder> getReceivedPurchaseOrder(int manufacturerId);
+
+
 }
