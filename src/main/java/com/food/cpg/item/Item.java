@@ -90,11 +90,14 @@ public class Item {
             itemRawMaterial.setItemId(itemId);
             itemRawMaterial.save();
         }
-        ItemInventory itemInventory = new ItemInventory();
-        itemInventory.setItemId(id);
-        itemInventory.setItemQuantity(initialQuantity);
-        itemInventory.save();
+        saveItemInventory(this.getId());
+    }
 
+    public void saveItemInventory(int itemId) {
+        ItemInventory itemInventory = new ItemInventory();
+        itemInventory.setItemId(itemId);
+        itemInventory.setItemQuantity(0.0);
+        itemInventory.save();
     }
 
     public void load() {
