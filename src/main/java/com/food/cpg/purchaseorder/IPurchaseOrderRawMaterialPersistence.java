@@ -5,4 +5,8 @@ import java.util.List;
 public interface IPurchaseOrderRawMaterialPersistence {
 
     void save(PurchaseOrderRawMaterial purchaseOrderRawMaterials);
+
+    List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId);
+
+    void delete(String purchaseOrderNumber);
 }

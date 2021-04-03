@@ -2,6 +2,8 @@ package com.food.cpg.databasepersistence;
 
 import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
 import com.mysql.cj.exceptions.ConnectionIsClosedException;
+
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -13,6 +15,7 @@ import java.sql.Statement;
 import java.util.List;
 
 @Repository
+@DependsOn("ApplicationBeanHandler")
 public class CommonDatabaseOperation implements ICommonDatabaseOperation {
 
     DataSource dataSource = ApplicationBeanHandler.getBean(DataSource.class);
@@ -49,7 +52,7 @@ public class CommonDatabaseOperation implements ICommonDatabaseOperation {
 
     @Override
     public Integer executeUpdateGetId(String sql, List<Object> placeholderValues) throws SQLException {
-        Integer itemId = null;
+        Integer id = null;
         try (Connection connection = getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 int index = 0;
@@ -60,10 +63,10 @@ public class CommonDatabaseOperation implements ICommonDatabaseOperation {
 
                 ResultSet rs = statement.getGeneratedKeys();
                 if (rs.next()) {
-                    itemId = rs.getInt(1);
+                    id = rs.getInt(1);
                 }
             }
         }
-        return itemId;
+        return id;
     }
 }
