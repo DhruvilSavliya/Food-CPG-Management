@@ -39,7 +39,9 @@ public class PurchaseOrderController {
 
     @PostMapping("/add-po-raw-material")
     public String addPurchaseOrderRawMaterial(PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
+        purchaseOrderRawMaterial.loadCost(rawMaterial);
         purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
+
         model.addAttribute(VIEW_UNITS_KEY, Unit.values());
         model.addAttribute(VIEW_VENDORS_KEY, vendor.getAll());
         model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
