@@ -45,7 +45,7 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/add-purchase-order-byitem")
-    public String showAddPurchaseOrderByItemForm(PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial, Item item, Model model) {
+    public String showAddPurchaseOrderByItemForm(PurchaseOrderByItem purchaseOrderByItem, PurchaseOrderRawMaterial purchaseOrderRawMaterial, Item item, Model model) {
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
         return SHOW_ADD_PURCHASE_ORDER_BYITEM_FORM_ROUTE;
     }
@@ -60,8 +60,9 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/save-purchase-order-byitem")
-    public String savePurchaseOrderByitem(PurchaseOrder purchaseOrder, PurchaseOrderByItem purchaseOrderByItem) {
+    public String savePurchaseOrderByitem(PurchaseOrderByItem purchaseOrderByItem) {
         purchaseOrderByItem.addPurchaseOrderByItemRawMaterials();
+        purchaseOrderByItem.createPurchaseOrderByItem();
         return redirectToPurchaseOrders();
     }
 

@@ -16,11 +16,8 @@ public class PurchaseOrder {
     private String orderNumber;
     private Integer manufacturerId;
     private Integer vendorId;
-    private Integer itemId;
     private Timestamp statusChangeDate;
-    private Double itemQuantity;
     private Double totalCost;
-    private Double totalQuantity;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
     private PurchaseOrderStatus purchaseOrderStatus;
 
@@ -85,31 +82,6 @@ public class PurchaseOrder {
 
     public void setPurchaseOrderStatus(PurchaseOrderStatus purchaseOrderStatus) {
         this.purchaseOrderStatus = purchaseOrderStatus;
-    }
-
-
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
-
-    public Double getItemQuantity() {
-        return itemQuantity;
-    }
-
-    public void setItemQuantity(Double itemQuantity) {
-        this.itemQuantity = itemQuantity;
-    }
-
-    public Double getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setTotalQuantity(Double totalQuantity) {
-        this.totalQuantity = totalQuantity;
     }
 
     public void addPurchaseOrderRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
