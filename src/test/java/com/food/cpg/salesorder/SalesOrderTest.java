@@ -1,5 +1,8 @@
 package com.food.cpg.salesorder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,9 +10,6 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +26,6 @@ public class SalesOrderTest {
     private static final String TEST_ORDER_NUMBER = "SO-123456";
     private static final String ORDER_NUMBER_PREFIX = "SO-";
     private static final int TEST_MANUFACTURER_ID = 1;
-    private static final Integer TEST_PACKAGE_ID = 11;
     private static final Double TEST_PACKAGE_COST = 200.00;
     private static final Double TEST_SHIPPING_COST = 200.00;
     private static final Double TEST_SALES_ORDER_TAX = 10.00;
@@ -214,7 +213,6 @@ public class SalesOrderTest {
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
 
         salesOrder.calculateTotalCost();
-        Assert.assertNotNull(salesOrder.getTotalCost());
         Assert.assertEquals(440.0, salesOrder.getTotalCost(), DELTA);
     }
 }

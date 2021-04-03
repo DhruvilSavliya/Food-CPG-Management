@@ -1,14 +1,14 @@
 package com.food.cpg.salesorder;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.exceptions.ServiceException;
 
 public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
 
@@ -17,7 +17,6 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
     public SalesOrderDatabasePersistence(ICommonDatabaseOperation commonDatabaseOperation) {
         this.commonDatabaseOperation = commonDatabaseOperation;
     }
-
 
     @Override
     public List<SalesOrder> getAllOpenOrders(int manufacturerId) {

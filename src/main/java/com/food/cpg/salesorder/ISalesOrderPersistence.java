@@ -1,6 +1,5 @@
 package com.food.cpg.salesorder;
 
-
 import java.util.List;
 
 public interface ISalesOrderPersistence {
