@@ -57,7 +57,7 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
     @Override
     public Double loadUnitCost(Integer rawMaterialId) {
 
-        Double unitCost = null;
+        Double unitCost = 0.0;
         String sql = "select unit_cost from raw_materials where raw_material_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialId);
@@ -65,9 +65,9 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
         try (Connection connection = commonDatabaseOperation.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
-                try (ResultSet rs = preparedStatement.executeQuery()) {
-                    if (rs.next()) {
-                        unitCost = rs.getDouble("unit_cost");
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        unitCost = resultSet.getDouble("unit_cost");
 
                     }
                 }

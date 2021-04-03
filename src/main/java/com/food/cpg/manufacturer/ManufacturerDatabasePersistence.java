@@ -1,5 +1,8 @@
 package com.food.cpg.manufacturer;
 
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.exceptions.ServiceException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,15 +10,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-
 public class ManufacturerDatabasePersistence implements IManufacturerPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
     public ManufacturerDatabasePersistence(ICommonDatabaseOperation commonDatabaseOperation) {
         this.commonDatabaseOperation = commonDatabaseOperation;
+    }
+
+    @Override
+    public List<Manufacturer> getAll() {
+        List<Manufacturer> manufacturers = new ArrayList<>();
+
+        String sql = "select * from manufacturer";
+
+        try (Connection connection = commonDatabaseOperation.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try (ResultSet rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        Manufacturer manufacturer = new Manufacturer();
+                        loadManufacturerDetailsFromResultSet(rs, manufacturer);
+
+                        manufacturers.add(manufacturer);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+        return manufacturers;
     }
 
     @Override
@@ -37,11 +60,7 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     if (rs.next()) {
-                        manufacturer.setId(rs.getInt("manufacturer_id"));
-                        manufacturer.setCompanyName(rs.getString("manufacturer_company_name"));
-                        manufacturer.setEmail(rs.getString("manufacturer_email"));
-                        manufacturer.setContact(rs.getLong("manufacturer_contact"));
-                        manufacturer.setAddress(rs.getString("manufacturer_address"));
+                        loadManufacturerDetailsFromResultSet(rs, manufacturer);
                     }
                 }
             }
@@ -78,5 +97,13 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
+    }
+
+    public void loadManufacturerDetailsFromResultSet(ResultSet resultSet, Manufacturer manufacturer) throws SQLException {
+        manufacturer.setId(resultSet.getInt("manufacturer_id"));
+        manufacturer.setCompanyName(resultSet.getString("manufacturer_company_name"));
+        manufacturer.setEmail(resultSet.getString("manufacturer_email"));
+        manufacturer.setContact(resultSet.getLong("manufacturer_contact"));
+        manufacturer.setAddress(resultSet.getString("manufacturer_address"));
     }
 }

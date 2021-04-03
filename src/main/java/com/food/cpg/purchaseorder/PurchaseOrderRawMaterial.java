@@ -1,10 +1,12 @@
 package com.food.cpg.purchaseorder;
 
 import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.rawmaterial.RawMaterial;
 
 public class PurchaseOrderRawMaterial {
     private String purchaseOrderNumber;
     private Integer rawMaterialId;
+    private Double rawMaterialCost;
     private Double rawMaterialQuantity;
     private String rawMaterialQuantityUOM;
 
@@ -22,6 +24,14 @@ public class PurchaseOrderRawMaterial {
 
     public void setRawMaterialId(Integer rawMaterialId) {
         this.rawMaterialId = rawMaterialId;
+    }
+
+    public Double getRawMaterialCost() {
+        return rawMaterialCost;
+    }
+
+    public void setRawMaterialCost(Double rawMaterialCost) {
+        this.rawMaterialCost = rawMaterialCost;
     }
 
     public Double getRawMaterialQuantity() {
@@ -44,6 +54,11 @@ public class PurchaseOrderRawMaterial {
         getPersistence().save(this);
     }
 
+    public void loadCost(RawMaterial rawMaterial) {
+        double cost = rawMaterial.getCost(this.getRawMaterialId());
+        this.setRawMaterialCost(cost * getRawMaterialQuantity());
+    }
+
     public void delete() {
         getPersistence().delete(this.getPurchaseOrderNumber());
     }
@@ -52,5 +67,4 @@ public class PurchaseOrderRawMaterial {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderRawMaterialPersistence();
     }
-
 }

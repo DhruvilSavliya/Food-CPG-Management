@@ -1,12 +1,13 @@
 package com.food.cpg.item;
 
-import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.inventory.ItemInventory;
 
 public class Item {
 
@@ -88,6 +89,14 @@ public class Item {
             itemRawMaterial.setItemId(itemId);
             itemRawMaterial.save();
         }
+        saveItemInventory(itemId);
+    }
+
+    public void saveItemInventory(int itemId) {
+        ItemInventory itemInventory = new ItemInventory();
+        itemInventory.setItemId(itemId);
+        itemInventory.setItemQuantity(0.0);
+        itemInventory.save();
     }
 
     public void load() {
