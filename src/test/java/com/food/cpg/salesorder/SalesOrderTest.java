@@ -24,7 +24,11 @@ public class SalesOrderTest {
 
     private static final double DELTA = 1e-15;
     private static final String TEST_ORDER_NUMBER = "SO-123456";
+    private static final String ORDER_NUMBER_PREFIX = "SO-";
     private static final int TEST_MANUFACTURER_ID = 1;
+    private static final Double TEST_PACKAGE_COST = 200.00;
+    private static final Double TEST_SHIPPING_COST = 200.00;
+    private static final Double TEST_SALES_ORDER_TAX = 10.00;
     private static final double TEST_SALES_ORDER_COST = 10.0;
     private static final String GET_PERSISTENCE_METHOD = "getPersistence";
     private static final String GET_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
@@ -174,5 +178,41 @@ public class SalesOrderTest {
         salesOrder.moveOrderToNextStage();
 
         verify(salesOrderStatus, times(1)).moveOrder(salesOrder.getOrderNumber());
+    }
+
+    @Test
+    public void generateOrderNumberTest() throws Exception {
+        SalesOrder salesOrder = new SalesOrder();
+
+        Assert.assertNotNull(salesOrder.getOrderNumber());
+        Assert.assertTrue(salesOrder.getOrderNumber().contains(ORDER_NUMBER_PREFIX));
+    }
+
+    @Test
+    public void saveTest() throws Exception {
+        SalesOrder salesOrder = spy(new SalesOrder());
+        salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+
+        PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(salesOrderPersistence).save(salesOrder);
+        PowerMockito.doReturn(1).when(salesOrder, GET_MANUFACTURER_ID_METHOD);
+
+        salesOrder.save();
+        verifyPrivate(salesOrder).invoke(GET_PERSISTENCE_METHOD);
+        verify(salesOrderPersistence, times(1)).save(salesOrder);
+    }
+
+    @Test
+    public void calculateTotalCostTest() throws Exception {
+        SalesOrder salesOrder = spy(new SalesOrder());
+        salesOrder.setOrderNumber(TEST_ORDER_NUMBER);
+        salesOrder.setPackageCost(TEST_PACKAGE_COST);
+        salesOrder.setShippingCost(TEST_SHIPPING_COST);
+        salesOrder.setTax(TEST_SALES_ORDER_TAX);
+
+        PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
+
+        salesOrder.calculateTotalCost();
+        Assert.assertEquals(440.0, salesOrder.getTotalCost(), DELTA);
     }
 }

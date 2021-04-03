@@ -14,6 +14,8 @@ public interface ISalesOrderPersistence {
 
     void load(SalesOrder salesOrder);
 
+    void save(SalesOrder salesOrder);
+
     void delete(String orderNumber);
 
     void changeStatus(String orderNumber, String orderStatus);

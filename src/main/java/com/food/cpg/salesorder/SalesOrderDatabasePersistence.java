@@ -18,7 +18,6 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
         this.commonDatabaseOperation = commonDatabaseOperation;
     }
 
-
     @Override
     public List<SalesOrder> getAllOpenOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, SalesOrderStatus.Status.OPEN.name());
@@ -54,6 +53,29 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
                     }
                 }
             }
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void save(SalesOrder salesOrder) {
+
+        String sql = "insert into sales_orders (order_number, item_id, package_id, package_cost, shipping_cost, tax, total_cost, is_for_charity, buyer_details, manufacturer_id) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(salesOrder.getOrderNumber());
+        placeholderValues.add(salesOrder.getItemId());
+        placeholderValues.add(salesOrder.getPackageId());
+        placeholderValues.add(salesOrder.getPackageCost());
+        placeholderValues.add(salesOrder.getShippingCost());
+        placeholderValues.add(salesOrder.getTax());
+        placeholderValues.add(salesOrder.getTotalCost());
+        placeholderValues.add(salesOrder.getIsForCharity());
+        placeholderValues.add(salesOrder.getBuyerDetails());
+        placeholderValues.add(salesOrder.getManufacturerId());
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
@@ -118,7 +140,7 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
         salesOrder.setItemId(resultSet.getInt("item_id"));
         salesOrder.setPackageId(resultSet.getInt("package_id"));
         salesOrder.setTotalCost(resultSet.getDouble("total_cost"));
-        salesOrder.setForCharity(resultSet.getBoolean("is_for_charity"));
+        salesOrder.setIsForCharity(resultSet.getBoolean("is_for_charity"));
 
         String orderStatus = resultSet.getString("order_status");
         SalesOrderStatus salesOrderStatus = SalesOrderStatusFactory.getInstance().makeOrderStatus(orderStatus);
