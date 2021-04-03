@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.food.cpg.packaging.PackagesDatabasePersistence;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,15 @@ import static org.mockito.Mockito.when;
 public class SalesOrderDatabasePersistenceTest {
 
     private static final String TEST_ORDER_NUMBER = "SO-123456";
+    private static final Integer TEST_MANUFACTURER_ID = 1;
+    private static final Integer TEST_PACKAGE_ID = 1;
+    private static final Integer TEST_ITEM_ID = 1;
+    private static final String TEST_BUYER_DETAILS = "I am the buyer";
+    private static final Double TEST_PACKAGE_COST = 200.0;
+    private static final Double TEST_SHIPPING_COST = 150.0;
+    private static final Double TEST_TAX = 10.0;
+    private static final Double TEST_TOTAL_COST = 385.0;
+    private static final boolean TEST_IS_FOR_CHARITY = true;
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -168,6 +178,37 @@ public class SalesOrderDatabasePersistenceTest {
         verify(resultSet, times(2)).getInt(anyString());
         verify(resultSet, times(1)).getDouble(anyString());
         verify(resultSet, times(1)).getTimestamp(anyString());
+    }
+
+    @Test
+    public void saveTest() throws SQLException {
+        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+        when(salesOrder.getOrderNumber()).thenReturn(TEST_ORDER_NUMBER);
+        when(salesOrder.getItemId()).thenReturn(TEST_ITEM_ID);
+        when(salesOrder.getPackageId()).thenReturn(TEST_PACKAGE_ID);
+        when(salesOrder.getPackageCost()).thenReturn(TEST_PACKAGE_COST);
+        when(salesOrder.getShippingCost()).thenReturn(TEST_SHIPPING_COST);
+        when(salesOrder.getTax()).thenReturn(TEST_TAX);
+        when(salesOrder.getTotalCost()).thenReturn(TEST_TOTAL_COST);
+        when(salesOrder.getIsForCharity()).thenReturn(TEST_IS_FOR_CHARITY);
+        when(salesOrder.getBuyerDetails()).thenReturn(TEST_BUYER_DETAILS);
+        when(salesOrder.getManufacturerId()).thenReturn(TEST_MANUFACTURER_ID);
+
+        SalesOrderDatabasePersistence salesOrderDatabasePersistence = new SalesOrderDatabasePersistence(commonDatabaseOperation);
+
+        salesOrderDatabasePersistence.save(salesOrder);
+
+        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
+        verify(salesOrder, times(1)).getOrderNumber();
+        verify(salesOrder, times(1)).getItemId();
+        verify(salesOrder, times(1)).getPackageId();
+        verify(salesOrder, times(1)).getPackageCost();
+        verify(salesOrder, times(1)).getShippingCost();
+        verify(salesOrder, times(1)).getTax();
+        verify(salesOrder, times(1)).getTotalCost();
+        verify(salesOrder, times(1)).getIsForCharity();
+        verify(salesOrder, times(1)).getBuyerDetails();
+        verify(salesOrder, times(1)).getManufacturerId();
     }
 
     @Test

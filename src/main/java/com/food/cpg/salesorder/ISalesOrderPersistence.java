@@ -1,5 +1,6 @@
 package com.food.cpg.salesorder;
 
+
 import java.util.List;
 
 public interface ISalesOrderPersistence {
@@ -12,7 +13,11 @@ public interface ISalesOrderPersistence {
 
     List<SalesOrder> getAllPaidOrders(int manufacturerId);
 
+    Double loadPackageCost(int packageId);
+
     void load(SalesOrder salesOrder);
+
+    void save(SalesOrder salesOrder);
 
     void delete(String orderNumber);
 
