@@ -89,7 +89,7 @@ public class Item {
             itemRawMaterial.setItemId(itemId);
             itemRawMaterial.save();
         }
-        saveItemInventory(this.getId());
+        saveItemInventory(itemId);
     }
 
     public void saveItemInventory(int itemId) {
