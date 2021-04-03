@@ -1,8 +1,6 @@
 package com.food.cpg.salesorder;
 
 import com.food.cpg.item.Item;
-import com.food.cpg.manufacturingorder.ManufactureOrder;
-import com.food.cpg.models.Unit;
 import com.food.cpg.packaging.Packages;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +42,6 @@ public class SalesOrderController {
 
     @GetMapping("/add-sales-order")
     public String addSalesOrderForm(SalesOrder salesOrder, Item item, Packages packages, Model model) {
-//        model.addAttribute(VIEW_UNITS_KEY, Unit.values());
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
         model.addAttribute(VIEW_PACKAGES_KEY, packages.getAll());
         return SHOW_ADD_SALES_ORDER_FORM_ROUTE;
@@ -60,14 +57,15 @@ public class SalesOrderController {
     }
 
     @PostMapping("/calculate-sales-total")
-    public String calculateTotalCost(SalesOrder salesOrder, Item item, Model model) {
+    public String calculateTotalCost(SalesOrder salesOrder, Item item, Packages packages, Model model) {
         salesOrder.calculateTotalCost();
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
+        model.addAttribute(VIEW_PACKAGES_KEY, packages.getAll());
         return SHOW_ADD_SALES_ORDER_FORM_ROUTE;
     }
 
     @PostMapping("/save-sales-order")
-    public String saveSalesOrder(SalesOrder salesOrder){
+    public String saveSalesOrder(SalesOrder salesOrder) {
         salesOrder.save();
         return redirectToSalesOrders();
     }

@@ -1,12 +1,12 @@
 package com.food.cpg.salesorder;
 
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.databasepersistence.PersistenceFactory;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class SalesOrder {
 
@@ -171,11 +171,10 @@ public class SalesOrder {
 
     public void calculateTotalCost() {
         Double cost = 0.0;
-        cost = getPersistence().loadPackageCost(this.packageId);
-        this.setPackageCost(cost);
+        cost = this.getPackageCost();
         cost += this.getShippingCost();
         Double tax = this.getTax();
-        cost += (cost * tax/100);
+        cost += (cost * tax / 100);
         this.setTotalCost(cost);
     }
 

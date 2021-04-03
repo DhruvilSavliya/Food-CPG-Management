@@ -1,9 +1,5 @@
 package com.food.cpg.salesorder;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.food.cpg.manufacturingorder.ManufactureOrder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +7,9 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -205,21 +204,17 @@ public class SalesOrderTest {
     }
 
     @Test
-    public void calculateTotalCostTest() throws Exception{
+    public void calculateTotalCostTest() throws Exception {
         SalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setOrderNumber(TEST_ORDER_NUMBER);
         salesOrder.setPackageCost(TEST_PACKAGE_COST);
         salesOrder.setShippingCost(TEST_SHIPPING_COST);
         salesOrder.setTax(TEST_SALES_ORDER_TAX);
-        salesOrder.setPackageId(TEST_PACKAGE_ID);
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
-        PowerMockito.doReturn(150.0).when(salesOrderPersistence).loadPackageCost(TEST_PACKAGE_ID);
 
         salesOrder.calculateTotalCost();
-        verifyPrivate(salesOrder).invoke(GET_PERSISTENCE_METHOD);
-        verify(salesOrderPersistence, times(1)).loadPackageCost(TEST_PACKAGE_ID);
         Assert.assertNotNull(salesOrder.getTotalCost());
-        Assert.assertEquals(385.0, salesOrder.getTotalCost(), DELTA);
+        Assert.assertEquals(440.0, salesOrder.getTotalCost(), DELTA);
     }
 }

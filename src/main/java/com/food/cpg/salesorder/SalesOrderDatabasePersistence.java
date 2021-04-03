@@ -1,15 +1,14 @@
 package com.food.cpg.salesorder;
 
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.exceptions.ServiceException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-import com.food.cpg.manufacturingorder.ManufactureOrder;
 
 public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
 
@@ -81,27 +80,6 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
-    }
-
-    public Double loadPackageCost(int packageId){
-        Double packageManufacturingCost = null;
-        String sql = "select manufacturing_cost from packages where package_id = ?";
-        List<Object> placeholderValues = new ArrayList<>();
-        placeholderValues.add(packageId);
-
-        try (Connection connection = commonDatabaseOperation.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
-                try (ResultSet rs = preparedStatement.executeQuery()) {
-                    if (rs.next()) {
-                        packageManufacturingCost = rs.getDouble("manufacturing_cost");
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new ServiceException(e);
-        }
-        return packageManufacturingCost;
     }
 
     @Override

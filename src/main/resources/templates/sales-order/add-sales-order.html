@@ -33,15 +33,9 @@
                         <label class="col-form-label col-4">Package Cost: <sup class="text-danger">*</sup></label>
                         <input class="form-control col-4" type="text" th:field="*{packageCost}"/>
                     </div>
-<!--                    <div class="row mt-2">-->
-<!--                        <label class="col-form-label col-4">Price :</label>-->
-<!--                        <select class="form-control col-4" th:field="*{packageCost}">-->
-<!--                            <option th:each="p : ${packages}" th:value="${p.packageId}" th:text="${p.manufacturingCost}"></option>-->
-<!--                        </select>-->
-<!--                    </div>-->
                     <div class="row mt-2">
                         <label class="col-form-label col-4">Buyer details: <sup class="text-danger">*</sup></label>
-                        <textarea class="form-control col-4" rows = "5" th:field="*{buyerDetails}"/>
+                        <textarea class="form-control col-4" rows = "5" th:field="*{buyerDetails}"></textarea>
                     </div>
                 </div>
                 <div class="col-6">
