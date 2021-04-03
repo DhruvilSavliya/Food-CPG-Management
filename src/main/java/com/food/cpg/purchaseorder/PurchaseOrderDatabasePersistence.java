@@ -128,6 +128,5 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
         String orderStatus = resultSet.getString("order_status");
         PurchaseOrderStatus purchaseOrderStatus = PurchaseOrderStatusFactory.getInstance().makeOrderStatus(orderStatus);
         purchaseOrder.setPurchaseOrderStatus(purchaseOrderStatus);
-
     }
 }
