@@ -54,6 +54,7 @@
                             <th scope="col">Raw Material Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Unit of Measurement</th>
+                            <th scope="col">Cost</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -65,9 +66,18 @@
                             <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].rawMaterialQuantity}"/>
                             <td th:text="${rawMaterial.rawMaterialQuantityUOM}"></td>
                             <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].rawMaterialQuantityUOM}"/>
+                            <td th:text="${rawMaterial.rawMaterialCost}"></td>
+                            <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].rawMaterialCost}"/>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="pl-3 col-8">
+                    <div class="row">
+                        <label class="col-form-label col-2">Order total cost: <sup class="text-danger">*</sup></label>
+                        <input class="form-control col-4" type="hidden" th:field="*{totalCost}"/>
+                        <label class="col-form-label col-4 pl-0" th:text="*{totalCost}"></label>
+                    </div>
                 </div>
                 <div class="col-6">
                     <a class="col-1 float-right mr-1" href="/purchase-orders"><button class="btn btn-primary" type="button">Cancel</button></a>

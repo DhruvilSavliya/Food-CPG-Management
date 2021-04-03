@@ -107,6 +107,7 @@ public class PurchaseOrder {
         }
         purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
         this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
+        this.calculateTotalCost();
     }
 
     private String generateOrderNumber() {
@@ -125,6 +126,16 @@ public class PurchaseOrder {
         for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
             purchaseOrderRawMaterial.save();
         }
+    }
+
+    public void calculateTotalCost() {
+        double poRawMaterialCost = 0.0;
+
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
+            poRawMaterialCost += purchaseOrderRawMaterial.getRawMaterialCost();
+        }
+
+        this.setTotalCost(poRawMaterialCost);
     }
 
     private IPurchaseOrderPersistence getPersistence() {
