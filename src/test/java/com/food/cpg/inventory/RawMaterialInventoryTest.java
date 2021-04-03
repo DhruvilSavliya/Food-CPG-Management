@@ -24,7 +24,6 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 public class RawMaterialInventoryTest extends TestCase {
 
     public static final String GET_PERSISTENCE_METHOD = "getPersistence";
-    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final Integer TEST_MANUFACTURER_ID = 1;
     private static final Integer RAW_MATERIAL_ID = 1;
     private static final String RAW_MATERIAL_NAME = "Test raw material";
@@ -59,7 +58,6 @@ public class RawMaterialInventoryTest extends TestCase {
 
         PowerMockito.doReturn(rawMaterialInventoryPersistence).when(rawMaterialInventory, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(rawMaterialInventoryPersistence).increaseQuantity(rawMaterialInventory);
-//        PowerMockito.doReturn(1).when(rawMaterialInventory, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
 
         rawMaterialInventory.increaseQuantity();
         verifyPrivate(rawMaterialInventory).invoke(GET_PERSISTENCE_METHOD);

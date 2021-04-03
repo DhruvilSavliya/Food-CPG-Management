@@ -80,9 +80,6 @@ public class RawMaterialInventory {
      }
 
     public void increaseQuantity() {
-//        int loggedInManufacturerId = getLoggedInManufacturerId();
-//        this.setManufacturerId(loggedInManufacturerId);
-
         getPersistence().increaseQuantity(this);
     }
 
