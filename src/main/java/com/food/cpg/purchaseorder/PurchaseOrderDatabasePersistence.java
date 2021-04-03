@@ -94,7 +94,6 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
         }
     }
 
-
     private List<PurchaseOrder> getPurchaseOrders(int manufacturerId, String orderStatus) {
         List<PurchaseOrder> purchaseOrders = new ArrayList<>();
 
@@ -131,6 +130,4 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
         purchaseOrder.setPurchaseOrderStatus(purchaseOrderStatus);
 
     }
-
-
 }

@@ -75,6 +75,4 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
             throw new ServiceException(e);
         }
     }
-
-
 }
