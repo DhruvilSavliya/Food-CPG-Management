@@ -18,16 +18,17 @@ import static java.util.Calendar.DATE;
 public class BalanceSheet {
 
     private static final int DAYS_BETWEEN_START_DATE_AND_TODAY = 7;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private double expenditure;
     private double revenue;
     private double amountUsedForCharity;
     private double netIncome;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = DATE_FORMAT)
     private Date startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = DATE_FORMAT)
     private Date endDate;
 
     public BalanceSheet() {
@@ -132,12 +133,12 @@ public class BalanceSheet {
         return false;
     }
 
-    public IPurchaseOrderPersistence getPurchaseOrderPersistence() {
+    private IPurchaseOrderPersistence getPurchaseOrderPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderPersistence();
     }
 
-    public ISalesOrderPersistence getSalesOrderPersistence() {
+    private ISalesOrderPersistence getSalesOrderPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getSalesOrderPersistence();
     }
