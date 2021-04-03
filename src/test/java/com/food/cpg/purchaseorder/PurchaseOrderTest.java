@@ -1,5 +1,6 @@
 package com.food.cpg.purchaseorder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -21,6 +22,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(PurchaseOrder.class)
 public class PurchaseOrderTest {
 
+    private static final double DELTA = 1e-15;
     private static final String ORDER_NUMBER_PREFIX = "PO-";
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
     private static final String GET_MANUFACTURER_ID_METHOD_NAME = "getLoggedInManufacturerId";
@@ -39,6 +41,7 @@ public class PurchaseOrderTest {
         Assert.assertNull(purchaseOrder.getPurchaseOrderRawMaterials());
 
         PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+        purchaseOrderRawMaterial.setRawMaterialCost(10.0);
 
         purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
 
@@ -71,5 +74,22 @@ public class PurchaseOrderTest {
         verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
         verify(purchaseOrderPersistence, times(1)).save(purchaseOrder);
         verify(purchaseOrderRawMaterial, times(1)).save();
+    }
+
+    @Test
+    public void calculateTotalCostTest() {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+
+        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+        purchaseOrderRawMaterial.setRawMaterialCost(10.0);
+
+        List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials = new ArrayList<>();
+        purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
+
+        PowerMockito.doReturn(purchaseOrderRawMaterials).when(purchaseOrder).getPurchaseOrderRawMaterials();
+
+        purchaseOrder.calculateTotalCost();
+
+        Assert.assertEquals(10.0, purchaseOrder.getTotalCost(), DELTA);
     }
 }

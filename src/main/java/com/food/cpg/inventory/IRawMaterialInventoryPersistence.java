@@ -8,6 +8,8 @@ public interface IRawMaterialInventoryPersistence {
 
     List<RawMaterialInventory> getAll(int manufacturerId);
 
-    void save(RawMaterialInventory rawMaterialInventory);
+    void increaseQuantity(RawMaterialInventory rawMaterialInventory);
+
+    void decreaseQuantity(RawMaterialInventory rawMaterialInventory);
 
 }

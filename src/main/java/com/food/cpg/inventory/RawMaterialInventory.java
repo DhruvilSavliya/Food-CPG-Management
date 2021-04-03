@@ -1,12 +1,9 @@
 package com.food.cpg.inventory;
 
+import java.util.List;
+
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.item.IItemPersistence;
-import com.food.cpg.item.Item;
-import com.food.cpg.item.ItemRawMaterial;
-
-import java.util.List;
 
 public class RawMaterialInventory {
 
@@ -75,14 +72,16 @@ public class RawMaterialInventory {
     }
 
     public List<RawMaterialInventory> getAll() {
-    int loggedInManufacturerId = getLoggedInManufacturerId();
-    return getPersistence().getAll(loggedInManufacturerId);
-     }
-
-    public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
-        this.setManufacturerId(loggedInManufacturerId);
-        getPersistence().save(this);
+        return getPersistence().getAll(loggedInManufacturerId);
+    }
+
+    public void increaseQuantity() {
+        getPersistence().increaseQuantity(this);
+    }
+
+    public void decreaseQuantity() {
+        getPersistence().decreaseQuantity(this);
     }
 
     private IRawMaterialInventoryPersistence getPersistence() {

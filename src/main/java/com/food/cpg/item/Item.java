@@ -1,13 +1,13 @@
 package com.food.cpg.item;
 
-import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.inventory.ItemInventory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.inventory.ItemInventory;
 
 public class Item {
 
@@ -16,7 +16,6 @@ public class Item {
     private String name;
     private Double cookingCost;
     private Double totalCost;
-    private Double initialQuantity = 0.0;
     private List<ItemRawMaterial> itemRawMaterials;
 
     private Map<String, String> errors = new HashMap<>();

@@ -1,9 +1,9 @@
 package com.food.cpg.inventory;
 
+import java.util.List;
+
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
-
-import java.util.List;
 
 public class ItemInventory {
     private Integer itemId;
@@ -48,7 +48,9 @@ public class ItemInventory {
         return getPersistence().getAll(loggedInManufacturerId);
     }
 
-    public void save() { getPersistence().save(this); }
+    public void save() {
+        getPersistence().save(this);
+    }
 
     private IItemInventoryPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();

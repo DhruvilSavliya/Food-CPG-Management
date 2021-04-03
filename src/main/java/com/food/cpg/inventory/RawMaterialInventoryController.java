@@ -33,7 +33,7 @@ public class RawMaterialInventoryController {
 
     @PostMapping("/save-raw-materials-inventory-quantity")
     public String saveRawMaterialInventoryQuantity(RawMaterialInventory rawMaterialInventory, Model model){
-        rawMaterialInventory.save();
+        rawMaterialInventory.increaseQuantity();
         return redirectToRawMaterialInventory();
     }
 
