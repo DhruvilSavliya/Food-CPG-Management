@@ -10,5 +10,4 @@ public class PurchaseOpenOrderStatus extends PurchaseOrderStatus {
     public void moveOrder(String orderNumber) {
         getPersistence().changeStatus(orderNumber, Status.PLACED.name());
     }
-
 }

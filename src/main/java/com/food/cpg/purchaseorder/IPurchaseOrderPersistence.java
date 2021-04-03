@@ -12,11 +12,9 @@ public interface IPurchaseOrderPersistence {
 
     void load(PurchaseOrder purchaseOrder);
 
-    public List<PurchaseOrder> getOpenPurchaseOrder(int manufacturerId);
+    List<PurchaseOrder> getOpenPurchaseOrder(int manufacturerId);
 
-    public List<PurchaseOrder> getPlacedPurchaseOrder(int manufacturerId);
+    List<PurchaseOrder> getPlacedPurchaseOrder(int manufacturerId);
 
-    public List<PurchaseOrder> getReceivedPurchaseOrder(int manufacturerId);
-
-
+    List<PurchaseOrder> getReceivedPurchaseOrder(int manufacturerId);
 }

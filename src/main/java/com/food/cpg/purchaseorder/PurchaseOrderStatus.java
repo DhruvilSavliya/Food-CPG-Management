@@ -7,9 +7,9 @@ public abstract class PurchaseOrderStatus {
         OPEN, PLACED, RECEIVED, PAID
     }
 
-    protected PurchaseOrderStatus.Status orderStatus;
+    protected Status orderStatus;
 
-    public PurchaseOrderStatus.Status getOrderStatus() {
+    public Status getOrderStatus() {
         return this.orderStatus;
     }
 
@@ -19,5 +19,4 @@ public abstract class PurchaseOrderStatus {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderPersistence();
     }
-
 }

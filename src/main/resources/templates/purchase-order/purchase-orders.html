@@ -9,7 +9,7 @@
 
         <p></p>
         <a href="/add-purchase-order-byitem"><button class="btn btn-primary float-right mb-2">Create Item Order</button></a>
-        <a href="/add-purchase-order"><button class="btn btn-primary float-right mb-2">Create New Order</button></a>
+        <a href="/add-purchase-order"><button class="btn btn-primary float-right mb-2 mr-2">Create New Order</button></a>
         <div class="pl-3" th:switch="${purchaseOrder}">
             <h5 th:case="null">No Purchase Order , Create a new Order.</h5>
             <div th:case="*">

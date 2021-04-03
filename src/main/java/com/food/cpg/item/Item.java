@@ -63,10 +63,10 @@ public class Item {
     public List<ItemRawMaterial> getItemRawMaterials() {
         return itemRawMaterials;
     }
+
     public void setItemRawMaterials(List<ItemRawMaterial> itemRawMaterials) {
         this.itemRawMaterials = itemRawMaterials;
     }
-
 
     public Map<String, String> getErrors() {
         return errors;
@@ -117,6 +117,7 @@ public class Item {
         itemRawMaterial.setCost(cost);
         this.itemRawMaterials.add(itemRawMaterial);
     }
+
     public void calculateTotalCost() {
         List<ItemRawMaterial> itemRawMaterials = this.getItemRawMaterials();
         Double total = this.getCookingCost();

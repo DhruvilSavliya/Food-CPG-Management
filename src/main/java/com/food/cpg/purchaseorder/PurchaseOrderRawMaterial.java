@@ -5,9 +5,9 @@ import com.food.cpg.rawmaterial.RawMaterial;
 
 public class PurchaseOrderRawMaterial {
     private String purchaseOrderNumber;
-    private Integer rawMaterialId;
-    private Double rawMaterialCost;
-    private Double rawMaterialQuantity;
+    private int rawMaterialId;
+    private double rawMaterialCost;
+    private double rawMaterialQuantity;
     private String rawMaterialQuantityUOM;
 
     public String getPurchaseOrderNumber() {
@@ -18,27 +18,27 @@ public class PurchaseOrderRawMaterial {
         this.purchaseOrderNumber = purchaseOrderNumber;
     }
 
-    public Integer getRawMaterialId() {
+    public int getRawMaterialId() {
         return rawMaterialId;
     }
 
-    public void setRawMaterialId(Integer rawMaterialId) {
+    public void setRawMaterialId(int rawMaterialId) {
         this.rawMaterialId = rawMaterialId;
     }
 
-    public Double getRawMaterialCost() {
+    public double getRawMaterialCost() {
         return rawMaterialCost;
     }
 
-    public void setRawMaterialCost(Double rawMaterialCost) {
+    public void setRawMaterialCost(double rawMaterialCost) {
         this.rawMaterialCost = rawMaterialCost;
     }
 
-    public Double getRawMaterialQuantity() {
+    public double getRawMaterialQuantity() {
         return rawMaterialQuantity;
     }
 
-    public void setRawMaterialQuantity(Double rawMaterialQuantity) {
+    public void setRawMaterialQuantity(double rawMaterialQuantity) {
         this.rawMaterialQuantity = rawMaterialQuantity;
     }
 

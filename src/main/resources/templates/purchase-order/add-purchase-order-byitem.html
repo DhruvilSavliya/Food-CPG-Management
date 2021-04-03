@@ -12,11 +12,6 @@
         <div class="pl-3">
             <form th:action="@{/save-purchase-order-byitem}" th:object="${purchaseOrderByItem}" method="post" class="row">
                 <div class="col-6">
-                    <div class="row">
-                        <label class="col-form-label col-3">Order Number: <sup class="text-danger">*</sup></label>
-                        <input class="form-control col-4" type="hidden" th:field="*{orderNumber}"/>
-                        <label class="col-form-label col-4 pl-0" th:text="*{orderNumber}"></label>
-                    </div>
                     <div class="row mr-2">
                         <label class="col-form-label col-3">Item:</label>
                         <select class="form-control col-4" th:field="*{itemId}">
@@ -25,11 +20,11 @@
                     </div>
                     <div class="row mt-2">
                         <label class="col-form-label col-3">Quantity<sup class="text-danger">*</sup></label>
-                        <input class="form-control col-2 mr-2" type="number" step="1" th:field="*{itemQuantity}"/>
+                        <input class="form-control col-2" type="number" step="1" th:field="*{itemQuantity}"/>
                     </div>
-                    <div class="col-6">
-                        <a class="col-1 float-right mr-1" href="/purchase-orders"><button class="btn btn-primary" type="button">Cancel</button></a>
+                    <div class="row mt-2">
                         <button class="btn btn-primary float-right mr-1" name="action" value="submit" type="submit">Create Order</button>
+                        <a class="float-right mr-2" href="/purchase-orders"><button class="btn btn-primary" type="button">Cancel</button></a>
                     </div>
                 </div>
             </form>

@@ -24,5 +24,4 @@ public class PurchaseOrderStatusFactory {
     public PurchaseOrderStatus makeOrderStatus(String orderStatus) {
         return purchaseOrderStatuses.get(orderStatus);
     }
-
 }

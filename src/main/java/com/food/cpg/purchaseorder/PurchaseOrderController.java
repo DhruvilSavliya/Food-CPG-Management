@@ -1,16 +1,15 @@
 package com.food.cpg.purchaseorder;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.food.cpg.item.Item;
 import com.food.cpg.models.Unit;
 import com.food.cpg.rawmaterial.RawMaterial;
 import com.food.cpg.vendor.Vendor;
-import com.food.cpg.item.Item;
 
 @Controller
 public class PurchaseOrderController {
@@ -26,7 +25,7 @@ public class PurchaseOrderController {
     private static final String VIEW_UNITS_KEY = "units";
     private static final String VIEW_VENDORS_KEY = "vendors";
     private static final String VIEW_ITEMS_KEY = "items";
-    private static final String SHOW_ADD_PURCHASE_ORDER_BYITEM_FORM_ROUTE = "purchase-order/add-purchase-order-byitem";
+    private static final String SHOW_ADD_PURCHASE_ORDER_BY_ITEM_FORM_ROUTE = "purchase-order/add-purchase-order-byitem";
 
     @GetMapping("/purchase-orders")
     public String showPurchaseOrders(PurchaseOrder purchaseOrder, Model model) {
@@ -47,7 +46,7 @@ public class PurchaseOrderController {
     @GetMapping("/add-purchase-order-byitem")
     public String showAddPurchaseOrderByItemForm(PurchaseOrderByItem purchaseOrderByItem, PurchaseOrderRawMaterial purchaseOrderRawMaterial, Item item, Model model) {
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
-        return SHOW_ADD_PURCHASE_ORDER_BYITEM_FORM_ROUTE;
+        return SHOW_ADD_PURCHASE_ORDER_BY_ITEM_FORM_ROUTE;
     }
 
     @PostMapping("/add-po-raw-material")
@@ -62,9 +61,8 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/save-purchase-order-byitem")
-    public String savePurchaseOrderByitem(PurchaseOrderByItem purchaseOrderByItem) {
-        purchaseOrderByItem.addPurchaseOrderByItemRawMaterials();
-        purchaseOrderByItem.createPurchaseOrderByItem();
+    public String savePurchaseOrderByitem(PurchaseOrderByItem purchaseOrderByItem, RawMaterial rawMaterial) {
+        purchaseOrderByItem.createPurchaseOrderByItem(rawMaterial);
         return redirectToPurchaseOrders();
     }
 
@@ -94,6 +92,4 @@ public class PurchaseOrderController {
         purchaseOrder.moveOrderToNextStage();
         return redirectToPurchaseOrders();
     }
-
-
 }

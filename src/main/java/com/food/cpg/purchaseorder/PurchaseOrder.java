@@ -67,7 +67,6 @@ public class PurchaseOrder {
         this.statusChangeDate = statusChangeDate;
     }
 
-
     public List<PurchaseOrderRawMaterial> getPurchaseOrderRawMaterials() {
         return purchaseOrderRawMaterials;
     }
@@ -159,6 +158,4 @@ public class PurchaseOrder {
     public void moveOrderToNextStage() {
         this.getPurchaseOrderStatus().moveOrder(this.getOrderNumber());
     }
-
-
 }
