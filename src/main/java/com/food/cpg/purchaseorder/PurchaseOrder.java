@@ -16,12 +16,10 @@ public class PurchaseOrder {
     private String orderNumber;
     private Integer manufacturerId;
     private Integer vendorId;
-    private String orderStatus;
-    private Timestamp orderCreationDate;
-    private Timestamp orderPlacedDate;
-    private Timestamp orderReceivedDate;
+    private Timestamp statusChangeDate;
     private Double totalCost;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
+    private PurchaseOrderStatus purchaseOrderStatus;
 
     public PurchaseOrder() {
         String generatedOrderNumber = generateOrderNumber();
@@ -53,38 +51,6 @@ public class PurchaseOrder {
         this.vendorId = vendorId;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public Timestamp getOrderCreationDate() {
-        return orderCreationDate;
-    }
-
-    public void setOrderCreationDate(Timestamp orderCreationDate) {
-        this.orderCreationDate = orderCreationDate;
-    }
-
-    public Timestamp getOrderPlacedDate() {
-        return orderPlacedDate;
-    }
-
-    public void setOrderPlacedDate(Timestamp orderPlacedDate) {
-        this.orderPlacedDate = orderPlacedDate;
-    }
-
-    public Timestamp getOrderReceivedDate() {
-        return orderReceivedDate;
-    }
-
-    public void setOrderReceivedDate(Timestamp orderReceivedDate) {
-        this.orderReceivedDate = orderReceivedDate;
-    }
-
     public Double getTotalCost() {
         return totalCost;
     }
@@ -93,12 +59,28 @@ public class PurchaseOrder {
         this.totalCost = totalCost;
     }
 
+    public Timestamp getStatusChangeDate() {
+        return statusChangeDate;
+    }
+
+    public void setStatusChangeDate(Timestamp statusChangeDate) {
+        this.statusChangeDate = statusChangeDate;
+    }
+
     public List<PurchaseOrderRawMaterial> getPurchaseOrderRawMaterials() {
         return purchaseOrderRawMaterials;
     }
 
     public void setPurchaseOrderRawMaterials(List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials) {
         this.purchaseOrderRawMaterials = purchaseOrderRawMaterials;
+    }
+
+    public PurchaseOrderStatus getPurchaseOrderStatus() {
+        return purchaseOrderStatus;
+    }
+
+    public void setPurchaseOrderStatus(PurchaseOrderStatus purchaseOrderStatus) {
+        this.purchaseOrderStatus = purchaseOrderStatus;
     }
 
     public void addPurchaseOrderRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
@@ -146,5 +128,34 @@ public class PurchaseOrder {
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
+    }
+
+    public List<PurchaseOrder> getAllOpenOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getOpenPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getAllPlacedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getPlacedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getAllReceivedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public void delete() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+        getPersistence().delete(this);
+    }
+
+    public void load() {
+        getPersistence().load(this);
+    }
+
+    public void moveOrderToNextStage() {
+        this.getPurchaseOrderStatus().moveOrder(this.getOrderNumber());
     }
 }
