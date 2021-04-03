@@ -18,6 +18,7 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 public class ManufacturePackagedOrderStatusTest{
 
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
+    private static final String TEST_ORDER_NO = "Test order no";
 
     @Mock
     IManufactureOrderPersistence manufactureOrderPersistence;
@@ -33,9 +34,7 @@ public class ManufacturePackagedOrderStatusTest{
     public void moveOrderTest() throws Exception {
         ManufacturePackagedOrderStatus manufacturePackagedOrderStatus = spy(new ManufacturePackagedOrderStatus());
         ManufactureOrder manufactureOrder = new ManufactureOrder();
-        manufactureOrder.setItemId(1);
-        manufactureOrder.setItemQuantity(2.00);
-
+        manufactureOrder.setOrderNumber(TEST_ORDER_NO);
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufacturePackagedOrderStatus, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(manufactureOrderPersistence).changeStatus(anyString(), anyString());
 
