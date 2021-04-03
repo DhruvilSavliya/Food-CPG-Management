@@ -1,10 +1,15 @@
 package com.food.cpg.inventory;
 
+import java.util.List;
+
+import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class ItemInventory {
     private Integer itemId;
-    private Integer itemQuantity;
+    private String itemName;
+    private Double itemQuantity;
+    private Integer manufacturerId;
 
     public Integer getItemId() {
         return itemId;
@@ -14,12 +19,37 @@ public class ItemInventory {
         this.itemId = itemId;
     }
 
-    public Integer getItemQuantity() {
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public Double getItemQuantity() {
         return itemQuantity;
     }
 
-    public void setItemQuantity(Integer itemQuantity) {
+    public void setItemQuantity(Double itemQuantity) {
         this.itemQuantity = itemQuantity;
+    }
+
+    public Integer getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(Integer manufacturerId) {
+        this.manufacturerId = manufacturerId;
+    }
+
+    public List<ItemInventory> getAll() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAll(loggedInManufacturerId);
+    }
+
+    public void save() {
+        getPersistence().save(this);
     }
 
     private IItemInventoryPersistence getPersistence() {
@@ -27,6 +57,10 @@ public class ItemInventory {
         return persistenceFactory.getItemInventoryPersistence();
     }
 
+    private int getLoggedInManufacturerId() {
+        AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
+        return authenticationSessionDetails.getAuthenticatedUserId();
+    }
 
     public void increaseQuantity() {
         getPersistence().increaseQuantity(this);
@@ -35,6 +69,4 @@ public class ItemInventory {
     public void decreaseQuantity() {
         getPersistence().decreaseQuantity(this);
     }
-
-
 }
