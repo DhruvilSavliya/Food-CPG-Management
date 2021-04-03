@@ -23,6 +23,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(RawMaterial.class)
 public class RawMaterialTest {
 
+    private static final double DELTA = 1e-15;
     private static final String EMPTY_STRING = "";
     private static final String NAME_ATTRIBUTE = "name";
     private static final String VENDOR_ATTRIBUTE = "vendor";
@@ -215,5 +216,21 @@ public class RawMaterialTest {
         rawMaterial.delete();
         verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);
         verify(rawMaterialPersistence, times(1)).delete(rawMaterial.getId());
+    }
+
+    @Test
+    public void getCostTest() {
+        RawMaterial rawMaterial = spy(new RawMaterial());
+        rawMaterial.setId(TEST_RAW_MATERIAL_ID);
+        rawMaterial.setUnitCost(20.0);
+
+        List<RawMaterial> rawMaterials = new ArrayList<>();
+        rawMaterials.add(rawMaterial);
+
+        PowerMockito.doReturn(rawMaterials).when(rawMaterial).getAll();
+
+        double cost = rawMaterial.getCost(TEST_RAW_MATERIAL_ID);
+
+        Assert.assertEquals(20.0, cost, DELTA);
     }
 }
