@@ -6,6 +6,8 @@ public interface IItemInventoryPersistence {
 
     List<ItemInventory> getAll(int manufacturerId);
 
+    void save(ItemInventory itemInventory);
+
     void increaseQuantity(ItemInventory itemInventory);
 
     void decreaseQuantity(ItemInventory itemInventory);

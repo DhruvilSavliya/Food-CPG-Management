@@ -1,6 +1,7 @@
 package com.food.cpg.inventory;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.packaging.PackagesDatabasePersistence;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,7 @@ public class ItemInventoryDatabasePersistenceTest extends TestCase {
 
     private static final Integer TEST_ITEM_ID = 10;
     private static final Double TEST_ITEM_QUANTITY = 2.0;
+    private static final Double TEST_QUANTITY = 0.0;
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -98,6 +100,21 @@ public class ItemInventoryDatabasePersistenceTest extends TestCase {
         ItemInventoryDatabasePersistence itemInventoryDatabasePersistence = new ItemInventoryDatabasePersistence(commonDatabaseOperation);
 
         itemInventoryDatabasePersistence.decreaseQuantity(itemInventory);
+
+        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
+        verify(itemInventory, times(1)).getItemId();
+        verify(itemInventory, times(1)).getItemQuantity();
+    }
+
+    @Test
+    public void saveTest() throws SQLException {
+        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+        when(itemInventory.getItemId()).thenReturn(TEST_ITEM_ID);
+        when(itemInventory.getItemQuantity()).thenReturn(TEST_QUANTITY);
+
+        ItemInventoryDatabasePersistence itemInventoryDatabasePersistence = new ItemInventoryDatabasePersistence(commonDatabaseOperation);
+
+        itemInventoryDatabasePersistence.save(itemInventory);
 
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
         verify(itemInventory, times(1)).getItemId();

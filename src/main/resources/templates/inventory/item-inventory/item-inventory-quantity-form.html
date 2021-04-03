@@ -9,14 +9,14 @@
     <div>
         <span class="module-heading pl-3">Item Inventory Management</span>
         <div class="pl-3">
-            <form class="row" th:action="@{/save-item-inventory-quantity}" th:object="${itemInventory}" method="post">
+            <form class="row" th:action="@{/save-items-inventory-quantity}" th:object="${itemInventory}" method="post">
                 <div class="col-4">
                     <div class="row">
                         <div class="col-5 row form-group">
                             <label class="col-form-label col-6">Item: <sup class="text-danger">*</sup></label>
                         </div>
                         <select class="form-control col-5" th:field="*{itemId}">
-                            <option th:each="i : ${itemInventoryList}" th:value="${i.itemId}" th:text="${i.itemName}"></option>
+                            <option th:each="i : ${item}" th:value="${i.Id}" th:text="${i.Name}"></option>
                         </select>
                     </div>
                     <div class="row mt-2">

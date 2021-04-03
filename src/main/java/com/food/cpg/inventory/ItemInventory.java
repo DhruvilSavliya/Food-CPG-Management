@@ -48,6 +48,8 @@ public class ItemInventory {
         return getPersistence().getAll(loggedInManufacturerId);
     }
 
+    public void save() { getPersistence().save(this); }
+
     private IItemInventoryPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getItemInventoryPersistence();

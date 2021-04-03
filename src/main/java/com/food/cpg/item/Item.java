@@ -2,6 +2,7 @@ package com.food.cpg.item;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.inventory.ItemInventory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class Item {
     private String name;
     private Double cookingCost;
     private Double totalCost;
+    private Double initialQuantity = 0.0;
     private List<ItemRawMaterial> itemRawMaterials;
 
     private Map<String, String> errors = new HashMap<>();
@@ -88,6 +90,11 @@ public class Item {
             itemRawMaterial.setItemId(itemId);
             itemRawMaterial.save();
         }
+        ItemInventory itemInventory = new ItemInventory();
+        itemInventory.setItemId(id);
+        itemInventory.setItemQuantity(initialQuantity);
+        itemInventory.save();
+
     }
 
     public void load() {

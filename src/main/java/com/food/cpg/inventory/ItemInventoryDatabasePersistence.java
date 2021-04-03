@@ -44,6 +44,20 @@ public class ItemInventoryDatabasePersistence implements IItemInventoryPersisten
         return itemInventoryList;
     }
 
+    @Override
+    public void save(ItemInventory itemInventory) {
+        String sql = "insert into item_inventory (item_id, quantity) " + "values (?, ?)";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(itemInventory.getItemId());
+        placeholderValues.add(itemInventory.getItemQuantity());
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     private void loadItemInventoryDetailsFromResultSet(ResultSet resultSet, ItemInventory itemInventory) throws SQLException {
         itemInventory.setItemId(resultSet.getInt("item_id"));
         itemInventory.setItemQuantity(resultSet.getDouble("quantity"));

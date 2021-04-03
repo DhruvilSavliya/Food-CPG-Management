@@ -1,5 +1,7 @@
 package com.food.cpg.item;
 
+import com.food.cpg.inventory.IItemInventoryPersistence;
+import com.food.cpg.inventory.ItemInventory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +31,13 @@ public class ItemTest {
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
     private static final String GET_MANUFACTURER_ID_METHOD_NAME = "getLoggedInManufacturerId";
     private static final double DELTA = 1e-15;
+    private static final Double TEST_ITEM_QUANTITY = 0.0;
 
     @Mock
     IItemPersistence itemPersistence;
+
+    @Mock
+    IItemInventoryPersistence itemInventoryPersistence;
 
     @Mock
     IItemRawMaterialPersistence itemRawMaterialPersistence;
@@ -88,6 +94,9 @@ public class ItemTest {
     public void saveTest() throws Exception {
         Item item = spy(new Item());
         ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
+        ItemInventory itemInventory = spy(new ItemInventory());
+        itemInventory.setItemId(TEST_ITEM_ID);
+        itemInventory.setItemQuantity(TEST_ITEM_QUANTITY);
         item.setId(TEST_ITEM_ID);
         item.setTotalCost(TEST_TOTAL_COST);
         itemRawMaterial.setItemId(TEST_ITEM_ID);
@@ -98,6 +107,7 @@ public class ItemTest {
 
         PowerMockito.doNothing().when(item).addItemRawMaterial(itemRawMaterial);
         PowerMockito.doNothing().when(itemRawMaterial).save();
+        PowerMockito.doNothing().when(itemInventory).save();
         PowerMockito.doReturn(itemPersistence).when(item, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doReturn(1).when(itemPersistence).save(item);
         PowerMockito.doReturn(1).when(item, GET_MANUFACTURER_ID_METHOD_NAME);
@@ -105,6 +115,10 @@ public class ItemTest {
         item.save();
         verifyPrivate(item).invoke(GET_PERSISTENCE_METHOD_NAME);
         verify(itemPersistence, times(1)).save(item);
+
+
+
+
     }
 
     @Test

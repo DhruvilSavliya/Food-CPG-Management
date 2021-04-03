@@ -1,5 +1,6 @@
 package com.food.cpg.inventory;
 
+import com.food.cpg.packaging.Packages;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -70,6 +71,18 @@ public class ItemInventoryTest extends TestCase {
         itemInventory.decreaseQuantity();
         verifyPrivate(itemInventory).invoke(GET_PERSISTENCE_METHOD);
         verify(itemInventoryPersistence, times(1)).decreaseQuantity(itemInventory);
+    }
+
+    @Test
+    public void saveTest() throws Exception {
+        ItemInventory itemInventory = spy(new ItemInventory());
+
+        PowerMockito.doReturn(itemInventoryPersistence).when(itemInventory, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(itemInventoryPersistence).save(itemInventory);
+
+        itemInventory.save();
+        verifyPrivate(itemInventory).invoke(GET_PERSISTENCE_METHOD);
+        verify(itemInventoryPersistence, times(1)).save(itemInventory);
     }
 
 }
