@@ -71,8 +71,23 @@ public class RawMaterialInventoryDatabasePersistence  implements IRawMaterialInv
     }
 
     @Override
-    public void save(RawMaterialInventory rawMaterialInventory) {
+    public void increaseQuantity(RawMaterialInventory rawMaterialInventory) {
         String sql = "update raw_material_inventory set quantity = quantity + ?, quantity_uom = ? where raw_material_id = ?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(rawMaterialInventory.getRawMaterialQuantity());
+        placeholderValues.add(rawMaterialInventory.getRawMaterialQuantityUOM());
+        placeholderValues.add(rawMaterialInventory.getRawMaterialId());
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void decreaseQuantity(RawMaterialInventory rawMaterialInventory) {
+        String sql = "update raw_material_inventory set quantity = quantity - ?, quantity_uom = ? where raw_material_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialInventory.getRawMaterialQuantity());
         placeholderValues.add(rawMaterialInventory.getRawMaterialQuantityUOM());

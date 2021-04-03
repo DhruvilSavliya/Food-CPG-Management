@@ -52,18 +52,32 @@ public class RawMaterialInventoryTest extends TestCase {
     }
 
     @Test
-    public void saveTest() throws Exception {
+    public void increaseQuantityTest() throws Exception {
         RawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
         rawMaterialInventory.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterialInventory.setRawMaterialName(RAW_MATERIAL_NAME);
 
         PowerMockito.doReturn(rawMaterialInventoryPersistence).when(rawMaterialInventory, GET_PERSISTENCE_METHOD);
-        PowerMockito.doNothing().when(rawMaterialInventoryPersistence).save(rawMaterialInventory);
-        PowerMockito.doReturn(1).when(rawMaterialInventory, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
+        PowerMockito.doNothing().when(rawMaterialInventoryPersistence).increaseQuantity(rawMaterialInventory);
+//        PowerMockito.doReturn(1).when(rawMaterialInventory, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
 
-        rawMaterialInventory.save();
+        rawMaterialInventory.increaseQuantity();
         verifyPrivate(rawMaterialInventory).invoke(GET_PERSISTENCE_METHOD);
-        verify(rawMaterialInventoryPersistence, times(1)).save(rawMaterialInventory);
+        verify(rawMaterialInventoryPersistence, times(1)).increaseQuantity(rawMaterialInventory);
+    }
+
+    @Test
+    public void decreaseQuantityTest() throws Exception {
+        RawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
+        rawMaterialInventory.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterialInventory.setRawMaterialName(RAW_MATERIAL_NAME);
+
+        PowerMockito.doReturn(rawMaterialInventoryPersistence).when(rawMaterialInventory, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialInventoryPersistence).decreaseQuantity(rawMaterialInventory);
+
+        rawMaterialInventory.decreaseQuantity();
+        verifyPrivate(rawMaterialInventory).invoke(GET_PERSISTENCE_METHOD);
+        verify(rawMaterialInventoryPersistence, times(1)).decreaseQuantity(rawMaterialInventory);
     }
 
 }

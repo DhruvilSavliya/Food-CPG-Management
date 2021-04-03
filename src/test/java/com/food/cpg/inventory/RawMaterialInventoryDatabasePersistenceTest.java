@@ -72,7 +72,7 @@ public class RawMaterialInventoryDatabasePersistenceTest {
     }
 
     @Test
-    public void saveTest() throws SQLException {
+    public void increaseQuantityTest() throws SQLException {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
         when(rawMaterialInventory.getRawMaterialId()).thenReturn(TEST_RAW_MATERIAL_ID);
         when(rawMaterialInventory.getRawMaterialQuantity()).thenReturn(TEST_RAW_MATERIAL_QUANTITY);
@@ -80,12 +80,30 @@ public class RawMaterialInventoryDatabasePersistenceTest {
 
         RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
 
-        rawMaterialInventoryDatabasePersistence.save(rawMaterialInventory);
+        rawMaterialInventoryDatabasePersistence.increaseQuantity(rawMaterialInventory);
 
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
         verify(rawMaterialInventory, times(1)).getRawMaterialId();
         verify(rawMaterialInventory, times(1)).getRawMaterialQuantity();
         verify(rawMaterialInventory, times(1)).getRawMaterialQuantityUOM();
     }
+
+    @Test
+    public void decreaseQuantityTest() throws SQLException {
+        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+        when(rawMaterialInventory.getRawMaterialId()).thenReturn(TEST_RAW_MATERIAL_ID);
+        when(rawMaterialInventory.getRawMaterialQuantity()).thenReturn(TEST_RAW_MATERIAL_QUANTITY);
+        when(rawMaterialInventory.getRawMaterialQuantityUOM()).thenReturn(TEST_RAW_MATERIAL_QUANTITY_UOM);
+
+        RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
+
+        rawMaterialInventoryDatabasePersistence.decreaseQuantity(rawMaterialInventory);
+
+        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
+        verify(rawMaterialInventory, times(1)).getRawMaterialId();
+        verify(rawMaterialInventory, times(1)).getRawMaterialQuantity();
+        verify(rawMaterialInventory, times(1)).getRawMaterialQuantityUOM();
+    }
+
 
 }

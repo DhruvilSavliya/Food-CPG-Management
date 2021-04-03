@@ -79,11 +79,15 @@ public class RawMaterialInventory {
     return getPersistence().getAll(loggedInManufacturerId);
      }
 
-    public void save() {
-        int loggedInManufacturerId = getLoggedInManufacturerId();
-        this.setManufacturerId(loggedInManufacturerId);
+    public void increaseQuantity() {
+//        int loggedInManufacturerId = getLoggedInManufacturerId();
+//        this.setManufacturerId(loggedInManufacturerId);
 
-        getPersistence().save(this);
+        getPersistence().increaseQuantity(this);
+    }
+
+    public void decreaseQuantity(){
+        getPersistence().decreaseQuantity(this);
     }
 
     private IRawMaterialInventoryPersistence getPersistence() {
