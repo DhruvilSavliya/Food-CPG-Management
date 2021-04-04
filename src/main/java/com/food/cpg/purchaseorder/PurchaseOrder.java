@@ -156,6 +156,6 @@ public class PurchaseOrder {
     }
 
     public void moveOrderToNextStage() {
-        this.getPurchaseOrderStatus().moveOrder(this.getOrderNumber());
+        this.getPurchaseOrderStatus().moveOrder(this);
     }
 }

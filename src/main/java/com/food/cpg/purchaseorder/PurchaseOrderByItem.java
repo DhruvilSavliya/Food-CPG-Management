@@ -48,7 +48,7 @@ public class PurchaseOrderByItem {
         for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials) {
             double requiredQuantityPerItem = purchaseOrderRawMaterial.getRawMaterialQuantity();
             purchaseOrderRawMaterial.setRawMaterialQuantity(getItemQuantity() * requiredQuantityPerItem);
-            purchaseOrderRawMaterial.loadCost(rawMaterial);
+            purchaseOrderRawMaterial.loadDetails(rawMaterial);
             purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
         }
 

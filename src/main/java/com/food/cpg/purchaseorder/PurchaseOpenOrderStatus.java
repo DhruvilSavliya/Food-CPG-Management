@@ -7,7 +7,7 @@ public class PurchaseOpenOrderStatus extends PurchaseOrderStatus {
     }
 
     @Override
-    public void moveOrder(String orderNumber) {
-        getPersistence().changeStatus(orderNumber, Status.PLACED.name());
+    public void moveOrder(PurchaseOrder purchaseOrder) {
+        getPersistence().changeStatus(purchaseOrder.getOrderNumber(), Status.PLACED.name());
     }
 }

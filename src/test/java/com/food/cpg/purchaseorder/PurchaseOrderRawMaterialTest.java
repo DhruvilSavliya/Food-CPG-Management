@@ -10,7 +10,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.food.cpg.rawmaterial.RawMaterial;
 
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,6 +21,10 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 public class PurchaseOrderRawMaterialTest {
 
     private static final double DELTA = 1e-15;
+    private static final int TEST_RAW_MATERIAL_ID = 1;
+    private static final String TEST_RAW_MATERIAL_NAME = "Test Raw Material 1";
+    private static final double TEST_RAW_MATERIAL_COST = 20.0;
+    private static final double TEST_RAW_MATERIAL_QUANTITY = 10.0;
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
 
     @Mock
@@ -43,14 +46,15 @@ public class PurchaseOrderRawMaterialTest {
     }
 
     @Test
-    public void loadCostTest() {
+    public void loadDetailsTest() {
         PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
-        purchaseOrderRawMaterial.setRawMaterialId(1);
-        purchaseOrderRawMaterial.setRawMaterialQuantity(10.0);
+        purchaseOrderRawMaterial.setRawMaterialId(TEST_RAW_MATERIAL_ID);
+        purchaseOrderRawMaterial.setRawMaterialQuantity(TEST_RAW_MATERIAL_QUANTITY);
 
-        when(rawMaterial.getCost(anyInt())).thenReturn(20.0);
+        when(rawMaterial.getUnitCost()).thenReturn(TEST_RAW_MATERIAL_COST);
+        when(rawMaterial.getName()).thenReturn(TEST_RAW_MATERIAL_NAME);
 
-        purchaseOrderRawMaterial.loadCost(rawMaterial);
+        purchaseOrderRawMaterial.loadDetails(rawMaterial);
 
         Assert.assertEquals(200.0, purchaseOrderRawMaterial.getRawMaterialCost(), DELTA);
     }

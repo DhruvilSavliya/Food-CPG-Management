@@ -11,8 +11,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.food.cpg.models.Unit;
-
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +21,8 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(RawMaterial.class)
 public class RawMaterialTest {
 
+    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final double DELTA = 1e-15;
     private static final String EMPTY_STRING = "";
     private static final String NAME_ATTRIBUTE = "name";
@@ -32,10 +32,8 @@ public class RawMaterialTest {
     private static final String REORDER_QUANTITY_ATTRIBUTE = "reorderPointQuantity";
     private static final Integer TEST_MANUFACTURER_ID = 1;
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
+    private static final String TEST_RAW_MATERIAL_UNIT = "g";
     private static final String TEST_RAW_MATERIAL_NAME = "Test raw material 1";
-    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
-    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
-
     @Mock
     IRawMaterialPersistence rawMaterialPersistence;
 
@@ -79,7 +77,7 @@ public class RawMaterialTest {
     public void isValidRawMaterialUnitMeasurementTest() {
         RawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setUnitMeasurement(null);
-        rawMaterial.setUnitMeasurementUOM(Unit.GRAM.getAlias());
+        rawMaterial.setUnitMeasurementUOM(TEST_RAW_MATERIAL_UNIT);
 
         boolean isValidUnitMeasurement = rawMaterial.isValidRawMaterial();
 
@@ -105,7 +103,7 @@ public class RawMaterialTest {
     public void isValidRawMaterialReorderPointTest() {
         RawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setReorderPointQuantity(null);
-        rawMaterial.setReorderPointQuantityUOM(Unit.FL_OZ.getAlias());
+        rawMaterial.setReorderPointQuantityUOM(TEST_RAW_MATERIAL_UNIT);
 
         boolean isValidReorderPoint = rawMaterial.isValidRawMaterial();
 

@@ -15,6 +15,8 @@ import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
 import com.food.cpg.manufacturer.registration.RegistrationDatabasePersistence;
 import com.food.cpg.manufacturingorder.IManufactureOrderPersistence;
 import com.food.cpg.manufacturingorder.ManufactureOrderDatabasePersistence;
+import com.food.cpg.notification.INotificationPersistence;
+import com.food.cpg.notification.NotificationDatabasePersistence;
 import com.food.cpg.packaging.IPackagesPersistence;
 import com.food.cpg.packaging.PackagesDatabasePersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
@@ -97,4 +99,8 @@ public class DatabasePersistenceFactory extends PersistenceFactory {
         return new SalesOrderDatabasePersistence(commonDatabaseOperation);
     }
 
+    @Override
+    public INotificationPersistence getNotificationPersistence() {
+        return new NotificationDatabasePersistence(commonDatabaseOperation);
+    }
 }

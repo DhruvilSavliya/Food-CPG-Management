@@ -13,7 +13,7 @@ public abstract class PurchaseOrderStatus {
         return this.orderStatus;
     }
 
-    public abstract void moveOrder(String orderNumber);
+    public abstract void moveOrder(PurchaseOrder purchaseOrder);
 
     protected IPurchaseOrderPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();

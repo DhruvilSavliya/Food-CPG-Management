@@ -1,19 +1,13 @@
 package com.food.cpg.manufacturingorder;
 
-import com.food.cpg.item.Item;
-import com.food.cpg.item.ItemRawMaterial;
-import com.food.cpg.models.Unit;
-import com.food.cpg.purchaseorder.PurchaseOrder;
-import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
-import com.food.cpg.rawmaterial.RawMaterial;
-import com.food.cpg.vendor.Vendor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
+import com.food.cpg.inventory.Unit;
+import com.food.cpg.item.Item;
 
 @Controller
 public class ManufactureOrderController {
@@ -30,7 +24,7 @@ public class ManufactureOrderController {
     private static final String VIEW_UNITS_KEY = "units";
 
     @GetMapping("/manufacture-orders")
-    public String showManufactureOrders(ManufactureOrder manufactureOrder, Model model){
+    public String showManufactureOrders(ManufactureOrder manufactureOrder, Model model) {
         model.addAttribute(VIEW_OPEN_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllOpenOrders());
         model.addAttribute(VIEW_MANUFACTURED_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllManufacturedOrders());
         model.addAttribute(VIEW_PACKAGED_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllPackagedOrders());
@@ -71,7 +65,7 @@ public class ManufactureOrderController {
     }
 
     @PostMapping("/save-manufacture-order")
-    public String saveManufactureOrder(ManufactureOrder manufactureOrder){
+    public String saveManufactureOrder(ManufactureOrder manufactureOrder) {
         manufactureOrder.save();
         return redirectToManufactureOrders();
     }

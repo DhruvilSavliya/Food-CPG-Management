@@ -4,8 +4,10 @@ import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.rawmaterial.RawMaterial;
 
 public class PurchaseOrderRawMaterial {
+
     private String purchaseOrderNumber;
     private int rawMaterialId;
+    private String rawMaterialName;
     private double rawMaterialCost;
     private double rawMaterialQuantity;
     private String rawMaterialQuantityUOM;
@@ -24,6 +26,14 @@ public class PurchaseOrderRawMaterial {
 
     public void setRawMaterialId(int rawMaterialId) {
         this.rawMaterialId = rawMaterialId;
+    }
+
+    public String getRawMaterialName() {
+        return rawMaterialName;
+    }
+
+    public void setRawMaterialName(String rawMaterialName) {
+        this.rawMaterialName = rawMaterialName;
     }
 
     public double getRawMaterialCost() {
@@ -54,9 +64,10 @@ public class PurchaseOrderRawMaterial {
         getPersistence().save(this);
     }
 
-    public void loadCost(RawMaterial rawMaterial) {
-        double cost = rawMaterial.getCost(this.getRawMaterialId());
-        this.setRawMaterialCost(cost * getRawMaterialQuantity());
+    public void loadDetails(RawMaterial rawMaterial) {
+        double totalCost = rawMaterial.getUnitCost() * getRawMaterialQuantity();
+        this.setRawMaterialCost(totalCost);
+        this.setRawMaterialName(rawMaterial.getName());
     }
 
     public void delete() {

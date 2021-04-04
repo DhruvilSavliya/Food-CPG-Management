@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.food.cpg.inventory.Unit;
 import com.food.cpg.item.Item;
-import com.food.cpg.models.Unit;
 import com.food.cpg.rawmaterial.RawMaterial;
 import com.food.cpg.vendor.Vendor;
 
@@ -51,7 +51,9 @@ public class PurchaseOrderController {
 
     @PostMapping("/add-po-raw-material")
     public String addPurchaseOrderRawMaterial(PurchaseOrder purchaseOrder, PurchaseOrderRawMaterial purchaseOrderRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
-        purchaseOrderRawMaterial.loadCost(rawMaterial);
+        rawMaterial.setId(purchaseOrderRawMaterial.getRawMaterialId());
+        rawMaterial.load();
+        purchaseOrderRawMaterial.loadDetails(rawMaterial);
         purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
 
         model.addAttribute(VIEW_UNITS_KEY, Unit.values());
