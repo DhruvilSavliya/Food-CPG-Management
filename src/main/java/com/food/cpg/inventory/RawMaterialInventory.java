@@ -1,5 +1,13 @@
 package com.food.cpg.inventory;
 
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.item.IItemPersistence;
+import com.food.cpg.item.Item;
+import com.food.cpg.item.ItemRawMaterial;
+
+import java.util.List;
+
 public class RawMaterialInventory {
 
     private Integer rawMaterialId;
@@ -64,5 +72,27 @@ public class RawMaterialInventory {
 
     public void setManufacturerEmail(String manufacturerEmail) {
         this.manufacturerEmail = manufacturerEmail;
+    }
+
+    public List<RawMaterialInventory> getAll() {
+    int loggedInManufacturerId = getLoggedInManufacturerId();
+    return getPersistence().getAll(loggedInManufacturerId);
+     }
+
+    public void save() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+
+        getPersistence().save(this);
+    }
+
+    private IRawMaterialInventoryPersistence getPersistence() {
+        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
+        return persistenceFactory.getRawMaterialInventoryPersistence();
+    }
+
+    private int getLoggedInManufacturerId() {
+        AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
+        return authenticationSessionDetails.getAuthenticatedUserId();
     }
 }

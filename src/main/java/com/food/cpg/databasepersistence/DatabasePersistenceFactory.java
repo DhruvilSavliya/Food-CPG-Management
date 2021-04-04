@@ -3,6 +3,10 @@ package com.food.cpg.databasepersistence;
 import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
 import com.food.cpg.inventory.IRawMaterialInventoryPersistence;
 import com.food.cpg.inventory.RawMaterialInventoryDatabasePersistence;
+import com.food.cpg.inventory.IRawMaterialInventoryPersistence;
+import com.food.cpg.inventory.RawMaterialInventoryDatabasePersistence;
+import com.food.cpg.inventory.IItemInventoryPersistence;
+import com.food.cpg.inventory.ItemInventoryDatabasePersistence;
 import com.food.cpg.item.IItemPersistence;
 import com.food.cpg.item.IItemRawMaterialPersistence;
 import com.food.cpg.item.ItemDatabasePersistence;
@@ -11,12 +15,18 @@ import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.ManufacturerDatabasePersistence;
 import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
 import com.food.cpg.manufacturer.registration.RegistrationDatabasePersistence;
+import com.food.cpg.manufacturingorder.IManufactureOrderPersistence;
+import com.food.cpg.manufacturingorder.ManufactureOrderDatabasePersistence;
+import com.food.cpg.packaging.IPackagesPersistence;
+import com.food.cpg.packaging.PackagesDatabasePersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
 import com.food.cpg.purchaseorder.PurchaseOrderDatabasePersistence;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterialDatabasePersistence;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
 import com.food.cpg.rawmaterial.RawMaterialDatabasePersistence;
+import com.food.cpg.salesorder.ISalesOrderPersistence;
+import com.food.cpg.salesorder.SalesOrderDatabasePersistence;
 import com.food.cpg.vendor.IVendorPersistence;
 import com.food.cpg.vendor.VendorDatabasePersistence;
 
@@ -65,8 +75,29 @@ public class DatabasePersistenceFactory extends PersistenceFactory {
     }
 
     @Override
-    public IRawMaterialInventoryPersistence getRawMaterialInventoryPersistence() {
-        return new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation) {
-        };
+    public IPackagesPersistence getPackagesPersistence() {
+        return new PackagesDatabasePersistence(commonDatabaseOperation);
     }
+
+    @Override
+    public IRawMaterialInventoryPersistence getRawMaterialInventoryPersistence() {
+        return new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
+    }
+
+    @Override
+    public IManufactureOrderPersistence getManufactureOrderPersistence() {
+        return new ManufactureOrderDatabasePersistence(commonDatabaseOperation);
+    }
+
+    @Override
+    public ISalesOrderPersistence getSalesOrderPersistence() {
+        return new SalesOrderDatabasePersistence(commonDatabaseOperation);
+    }
+
+    @Override
+    public IItemInventoryPersistence getItemInventoryPersistence() {
+        return new ItemInventoryDatabasePersistence(commonDatabaseOperation);
+    }
+
+
 }
