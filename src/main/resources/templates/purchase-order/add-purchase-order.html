@@ -60,7 +60,8 @@
                         <tbody>
                         <tr th:each="rawMaterial, itemStat : *{purchaseOrderRawMaterials}">
                             <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].purchaseOrderNumber}"/>
-                            <td th:text="${rawMaterial.rawMaterialId}"></td>
+                            <td th:text="${rawMaterial.rawMaterialName}"></td>
+                            <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].rawMaterialName}"/>
                             <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].rawMaterialId}"/>
                             <td th:text="${rawMaterial.rawMaterialQuantity}"></td>
                             <input class="form-control col-4" type="hidden" th:field="*{purchaseOrderRawMaterials[__${itemStat.index}__].rawMaterialQuantity}"/>

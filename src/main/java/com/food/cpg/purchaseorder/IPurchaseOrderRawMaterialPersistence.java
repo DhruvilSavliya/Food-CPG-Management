@@ -8,5 +8,7 @@ public interface IPurchaseOrderRawMaterialPersistence {
 
     List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId);
 
+    List<PurchaseOrderRawMaterial> getPurchaseOrderRawMaterials(String orderNumber);
+
     void delete(String purchaseOrderNumber);
 }

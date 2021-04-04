@@ -69,7 +69,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
         Integer rawMaterialId = null;
         String sql = "insert into raw_materials (raw_material_name, vendor_id, unit_cost, unit_measurement, unit_measurement_uom, reorder_point_quantity, reorder_point_quantity_uom, manufacturer_id) " +
                 "values (?, ?, ?, ?, ?, ?, ?, ?)";
-        String inventorySql= "insert into raw_material_inventory (raw_material_id) values(?)";
+        String inventorySql = "insert into raw_material_inventory (raw_material_id) values(?)";
         List<Object> placeholderValues = new ArrayList<>();
         List<Object> placeholderValuesInventory = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
@@ -89,12 +89,10 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
 
         placeholderValuesInventory.add(rawMaterialId);
         try {
-           commonDatabaseOperation.executeUpdate(inventorySql, placeholderValuesInventory);
+            commonDatabaseOperation.executeUpdate(inventorySql, placeholderValuesInventory);
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
-
-
     }
 
     @Override

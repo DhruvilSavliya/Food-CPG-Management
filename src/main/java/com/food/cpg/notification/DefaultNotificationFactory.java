@@ -2,17 +2,14 @@ package com.food.cpg.notification;
 
 import java.sql.Timestamp;
 
-import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class DefaultNotificationFactory extends NotificationFactory {
 
-    ICommonDatabaseOperation commonDatabaseOperation = ApplicationBeanHandler.getBean(ICommonDatabaseOperation.class);
-
     private final INotificationPersistence notificationPersistence;
 
-    public DefaultNotificationFactory() {
-        notificationPersistence = new NotificationDatabasePersistence(commonDatabaseOperation);
+    public DefaultNotificationFactory(PersistenceFactory persistenceFactory) {
+        notificationPersistence = persistenceFactory.getNotificationPersistence();
     }
 
     @Override
