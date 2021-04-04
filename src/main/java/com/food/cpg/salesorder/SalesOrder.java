@@ -1,12 +1,17 @@
 package com.food.cpg.salesorder;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class SalesOrder {
+
+    private static final String SO_TIME_FORMAT = "ddMMHHmm";
+    private static final String SO_PREFIX = "SO-";
     private String orderNumber;
     private SalesOrderStatus salesOrderStatus;
     private int manufacturerId;
@@ -19,6 +24,12 @@ public class SalesOrder {
     private boolean isForCharity = false;
     private String buyerDetails;
     private Timestamp statusChangeDate;
+
+
+    public SalesOrder() {
+        String generatedOrderNumber = generateOrderNumber();
+        setOrderNumber(generatedOrderNumber);
+    }
 
     public String getOrderNumber() {
         return orderNumber;
@@ -84,12 +95,12 @@ public class SalesOrder {
         this.totalCost = totalCost;
     }
 
-    public boolean isForCharity() {
+    public boolean getIsForCharity() {
         return isForCharity;
     }
 
-    public void setForCharity(boolean forCharity) {
-        isForCharity = forCharity;
+    public void setIsForCharity(boolean isForCharity) {
+        this.isForCharity = isForCharity;
     }
 
     public String getBuyerDetails() {
@@ -131,6 +142,14 @@ public class SalesOrder {
         return getPersistence().getAllShippedOrders(loggedInManufacturerId);
     }
 
+    private String generateOrderNumber() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(SO_TIME_FORMAT);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String formattedCurrentDateTime = dateTimeFormatter.format(currentDateTime);
+
+        return SO_PREFIX + formattedCurrentDateTime;
+    }
+
     public List<SalesOrder> getAllPaidOrders() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAllPaidOrders(loggedInManufacturerId);
@@ -142,6 +161,21 @@ public class SalesOrder {
 
     public void delete() {
         getPersistence().delete(this.getOrderNumber());
+    }
+
+    public void save() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+        getPersistence().save(this);
+    }
+
+    public void calculateTotalCost() {
+        Double cost = 0.0;
+        cost = this.getPackageCost();
+        cost += this.getShippingCost();
+        Double tax = this.getTax();
+        cost += (cost * tax / 100);
+        this.setTotalCost(cost);
     }
 
     public void moveOrderToNextStage() {

@@ -161,6 +161,16 @@ public class RawMaterial {
         getPersistence().delete(this.getId());
     }
 
+    public double getCost(int rawMaterialId) {
+        List<RawMaterial> rawMaterials = getAll();
+        for (RawMaterial rawMaterial : rawMaterials) {
+            if (rawMaterial.getId() == rawMaterialId) {
+                return rawMaterial.getUnitCost();
+            }
+        }
+        return 0.0;
+    }
+
     private IRawMaterialPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getRawMaterialPersistence();

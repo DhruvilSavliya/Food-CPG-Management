@@ -1,6 +1,10 @@
 package com.food.cpg.manufacturer;
 
+import java.util.List;
+
 public interface IManufacturerPersistence {
+
+    List<Manufacturer> getAll();
 
     Manufacturer get(String manufacturerEmail);
 
