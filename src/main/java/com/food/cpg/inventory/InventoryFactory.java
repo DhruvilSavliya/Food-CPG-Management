@@ -14,4 +14,8 @@ public abstract class InventoryFactory {
     public abstract IRawMaterialInventory makeRawMaterialInventory();
 
     public abstract IRawMaterialInventoryPersistence makeRawMaterialInventoryPersistence();
+
+    public abstract IItemInventory makeItemInventory();
+
+    public abstract IItemInventoryPersistence makeItemInventoryPersistence();
 }
