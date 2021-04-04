@@ -1,5 +1,8 @@
 package com.food.cpg.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,9 +10,6 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -29,12 +29,10 @@ public class ItemTest {
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
     private static final String GET_MANUFACTURER_ID_METHOD_NAME = "getLoggedInManufacturerId";
     private static final double DELTA = 1e-15;
+    private static final Double TEST_ITEM_QUANTITY = 0.0;
 
     @Mock
     IItemPersistence itemPersistence;
-
-    @Mock
-    IItemRawMaterialPersistence itemRawMaterialPersistence;
 
     @Test
     public void getAllTest() throws Exception {
@@ -87,20 +85,25 @@ public class ItemTest {
     @Test
     public void saveTest() throws Exception {
         Item item = spy(new Item());
-        ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
         item.setId(TEST_ITEM_ID);
         item.setTotalCost(TEST_TOTAL_COST);
+
+        ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
         itemRawMaterial.setItemId(TEST_ITEM_ID);
+
         List<ItemRawMaterial> itemRawMaterialList = new ArrayList<>();
         itemRawMaterialList.add(itemRawMaterial);
 
         item.setItemRawMaterials(itemRawMaterialList);
 
-        PowerMockito.doNothing().when(item).addItemRawMaterial(itemRawMaterial);
-        PowerMockito.doNothing().when(itemRawMaterial).save();
         PowerMockito.doReturn(itemPersistence).when(item, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doReturn(1).when(itemPersistence).save(item);
         PowerMockito.doReturn(1).when(item, GET_MANUFACTURER_ID_METHOD_NAME);
+        PowerMockito.doReturn(itemRawMaterialList).when(item).getItemRawMaterials();
+        PowerMockito.doNothing().when(item).addItemRawMaterial(itemRawMaterial);
+        PowerMockito.doNothing().when(item).saveItemInventory(anyInt());
+        PowerMockito.doNothing().when(itemRawMaterial).save();
+        PowerMockito.doNothing().when(itemRawMaterial).setItemId(anyInt());
 
         item.save();
         verifyPrivate(item).invoke(GET_PERSISTENCE_METHOD_NAME);
