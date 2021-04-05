@@ -10,16 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackagesDatabasePersistence implements IPackagesPersistence {
+public class PackageDatabasePersistence implements IPackagePersistence {
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
-    public PackagesDatabasePersistence(ICommonDatabaseOperation commonDatabaseOperation) {
+    public PackageDatabasePersistence(ICommonDatabaseOperation commonDatabaseOperation) {
         this.commonDatabaseOperation = commonDatabaseOperation;
     }
 
     @Override
-    public List<Packages> getAll(int manufacturerId) {
-        List<Packages> packagesList = new ArrayList<>();
+    public List<Package> getAll(int manufacturerId) {
+        List<Package> packagesList = new ArrayList<>();
 
         String sql = "select * from packages where manufacturer_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
@@ -30,7 +30,7 @@ public class PackagesDatabasePersistence implements IPackagesPersistence {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        Packages packages = new Packages();
+                        Package packages = new Package();
                         loadPackagesDetailsFromResultSet(rs, packages);
 
                         packagesList.add(packages);
@@ -44,7 +44,7 @@ public class PackagesDatabasePersistence implements IPackagesPersistence {
     }
 
     @Override
-    public void load(Packages packages) {
+    public void load(Package packages) {
         String sql = "select * from packages where package_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packages.getPackageId());
@@ -64,7 +64,7 @@ public class PackagesDatabasePersistence implements IPackagesPersistence {
     }
 
     @Override
-    public void save(Packages packages) {
+    public void save(Package packages) {
         String sql = "insert into packages (item_id, package_name, quantity, manufacturing_cost, wholesale_cost, retail_cost, manufacturer_id) " +
                 "values (?, ?, ?, ?, ?, ?, ?)";
         List<Object> placeholderValues = new ArrayList<>();
@@ -84,7 +84,7 @@ public class PackagesDatabasePersistence implements IPackagesPersistence {
     }
 
     @Override
-    public void update(Packages packages) {
+    public void update(Package packages) {
         String sql = "update packages set item_id = ?, package_name = ?, quantity = ?, manufacturing_cost = ?, wholesale_cost = ?, retail_cost = ? where package_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packages.getItemId());
@@ -115,7 +115,7 @@ public class PackagesDatabasePersistence implements IPackagesPersistence {
         }
     }
 
-    private void loadPackagesDetailsFromResultSet(ResultSet resultSet, Packages packages) throws SQLException {
+    private void loadPackagesDetailsFromResultSet(ResultSet resultSet, Package packages) throws SQLException {
         packages.setPackageId(resultSet.getInt("package_id"));
         packages.setItemId(resultSet.getInt("item_id"));
         packages.setPackageName(resultSet.getString("package_name"));

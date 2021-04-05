@@ -1,5 +1,7 @@
 package com.food.cpg;
 
+import com.food.cpg.packaging.DefaultPackageFactory;
+import com.food.cpg.packaging.PackageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -29,5 +31,6 @@ public class FoodCPGApplication {
 
         InventoryFactory.setInventoryFactory(new DefaultInventoryFactory(persistenceFactory));
         NotificationFactory.setNotificationFactory(new DefaultNotificationFactory(persistenceFactory));
+        PackageFactory.setPackageFactory(new DefaultPackageFactory(persistenceFactory));
     }
 }

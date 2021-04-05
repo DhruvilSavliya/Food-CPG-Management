@@ -79,5 +79,6 @@ public class ManufactureManufacturedOrderStatusTest  {
         manufactureManufacturedOrderStatus.increaseItemQuantity(manufactureOrder);
 
         verify(itemInventory, times(1)).increaseQuantity();
+        verify(manufactureManufacturedOrderStatus, times(1)).increaseItemQuantity(manufactureOrder);
     }
 }

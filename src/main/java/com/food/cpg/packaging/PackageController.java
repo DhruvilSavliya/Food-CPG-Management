@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
-public class PackagesController {
+public class PackageController {
     private static final String REDIRECT_NOTATION = "redirect:";
     private static final String PACKAGES_END_POINT = "/packages";
     private static final String SHOW_PACKAGES_ROUTE = "packages/packages";
@@ -22,20 +22,20 @@ public class PackagesController {
     private static final String VIEW_ITEM_KEY = "item";
 
     @GetMapping("/packages")
-    public String showPackages(Packages packages, Model model) {
-        List<Packages> packagesList = packages.getAll();
+    public String showPackages(Package packages, Model model) {
+        List<Package> packagesList = packages.getAll();
         model.addAttribute(VIEW_PACKAGES_KEY, packagesList);
         return SHOW_PACKAGES_ROUTE;
     }
 
     @GetMapping("/add-packages")
-    public String showAddPackages(Packages packages, Item item, Model model) {
+    public String showAddPackages(Package packages, Item item, Model model) {
         model.addAttribute(VIEW_ITEM_KEY, item.getAll());
         return SHOW_ADD_PACKAGES_FORM_ROUTE;
     }
 
     @PostMapping("/save-packages")
-    public String savePackages(Packages packages, Item item, BindingResult result, Model model) {
+    public String savePackages(Package packages, Item item, BindingResult result, Model model) {
         if (result.hasErrors() || !packages.isValidPackage()) {
             model.addAttribute(VIEW_ITEM_KEY, item.getAll());
             return SHOW_ADD_PACKAGES_FORM_ROUTE;
@@ -46,7 +46,7 @@ public class PackagesController {
     }
 
     @PostMapping("/save-packages/{packageId}")
-    public String editPackages(Packages packages, BindingResult result) {
+    public String editPackages(Package packages, BindingResult result) {
         if (result.hasErrors() || !packages.isValidPackage()) {
             return SHOW_EDIT_PACKAGES_FORM_ROUTE;
         }
@@ -56,7 +56,7 @@ public class PackagesController {
     }
 
     @GetMapping("/packages/edit/{packageId}")
-    public String showEditPackagesForm(@PathVariable("packageId") int packageId, Packages packages, Item item, Model model) {
+    public String showEditPackagesForm(@PathVariable("packageId") int packageId, Package packages, Item item, Model model) {
         packages.setPackageId(packageId);
         packages.load();
         model.addAttribute(VIEW_PACKAGE_KEY, packages);
@@ -65,7 +65,7 @@ public class PackagesController {
     }
 
     @GetMapping("/packages/delete/{packageId}")
-    public String deletePackags(@PathVariable("packageId") int packageId, Packages packages) {
+    public String deletePackags(@PathVariable("packageId") int packageId, Package packages) {
         packages.setPackageId(packageId);
         packages.delete();
 
