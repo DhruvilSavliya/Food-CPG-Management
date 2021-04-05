@@ -9,6 +9,7 @@ public class AnalyticsController {
 
     private static final String ANALYTICS_ROUTE = "analytics/analytics";
     private static final String LOAD_BALANCE_SHEET_ROUTE = "analytics/balance-sheet";
+    private static final String LOAD_INVENTORY_USAGE_ROUTE = "analytics/inventory-usage";
 
     @GetMapping("/analytics")
     public String showAnalytics() {
@@ -20,5 +21,13 @@ public class AnalyticsController {
         balanceSheet.generateBalanceSheet();
 
         return LOAD_BALANCE_SHEET_ROUTE;
+    }
+
+    @RequestMapping("/load-inventory-usage")
+    public String loadInventoryUsage(InventoryUsage inventoryUsage){
+        inventoryUsage.generateInventoryUsage();
+
+        return LOAD_INVENTORY_USAGE_ROUTE;
+
     }
 }

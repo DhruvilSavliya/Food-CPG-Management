@@ -16,6 +16,7 @@ public class AuthenticationController {
     private static final String REDIRECT_NOTATION = "redirect:";
     private static final String LOGIN_END_POINT = "/login";
     private static final String LOGIN_PAGE_ROUTE = "login";
+    private static final String FORGOT_PASSWORD_PAGE_ROUTE = "forgot-password";
     private static final String UNAUTHORIZED_ERROR_PAGE_ROUTE = "/403-error";
     private static final String VIEW_PROJECT_NAME_KEY = "projectName";
 
