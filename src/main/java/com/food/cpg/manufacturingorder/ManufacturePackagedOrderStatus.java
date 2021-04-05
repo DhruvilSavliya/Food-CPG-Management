@@ -1,5 +1,7 @@
 package com.food.cpg.manufacturingorder;
 
+import com.food.cpg.inventory.ItemInventory;
+
 public class ManufacturePackagedOrderStatus extends ManufactureOrderStatus{
 
     public ManufacturePackagedOrderStatus(){
@@ -7,7 +9,10 @@ public class ManufacturePackagedOrderStatus extends ManufactureOrderStatus{
     }
 
     @Override
-    public void moveOrder(String orderNumber) {
+    public void moveOrder(ManufactureOrder manufactureOrder) {
+        String orderNumber = manufactureOrder.getOrderNumber();
+
         getPersistence().changeStatus(orderNumber, Status.STORED.name());
     }
+
 }

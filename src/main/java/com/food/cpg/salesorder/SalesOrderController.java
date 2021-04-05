@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.food.cpg.item.Item;
-import com.food.cpg.packaging.Packages;
+import com.food.cpg.packaging.Package;
 
 @Controller
 public class SalesOrderController {
@@ -42,7 +42,7 @@ public class SalesOrderController {
     }
 
     @GetMapping("/add-sales-order")
-    public String addSalesOrderForm(SalesOrder salesOrder, Item item, Packages packages, Model model) {
+    public String addSalesOrderForm(SalesOrder salesOrder, Item item, Package packages, Model model) {
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
         model.addAttribute(VIEW_PACKAGES_KEY, packages.getAll());
         return SHOW_ADD_SALES_ORDER_FORM_ROUTE;
@@ -58,7 +58,7 @@ public class SalesOrderController {
     }
 
     @PostMapping("/calculate-sales-total")
-    public String calculateTotalCost(SalesOrder salesOrder, Item item, Packages packages, Model model) {
+    public String calculateTotalCost(SalesOrder salesOrder, Item item, Package packages, Model model) {
         salesOrder.calculateTotalCost();
         model.addAttribute(VIEW_ITEMS_KEY, item.getAll());
         model.addAttribute(VIEW_PACKAGES_KEY, packages.getAll());
