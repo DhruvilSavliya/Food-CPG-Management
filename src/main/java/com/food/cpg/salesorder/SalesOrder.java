@@ -179,7 +179,7 @@ public class SalesOrder {
     }
 
     public void moveOrderToNextStage() {
-        this.getSalesOrderStatus().moveOrder(this.getOrderNumber());
+        this.getSalesOrderStatus().moveOrder(this);
     }
 
     private ISalesOrderPersistence getPersistence() {

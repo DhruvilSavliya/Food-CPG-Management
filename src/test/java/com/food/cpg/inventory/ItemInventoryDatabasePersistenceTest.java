@@ -1,8 +1,6 @@
 package com.food.cpg.inventory;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.packaging.PackagesDatabasePersistence;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

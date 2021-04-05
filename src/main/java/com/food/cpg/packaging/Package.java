@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Packages {
+public class Package implements IPackage{
     private Integer packageId;
     private Integer itemId;
     private Integer manufacturerId;
@@ -21,66 +21,82 @@ public class Packages {
 
     private Map<String, String> errors = new HashMap<>();
 
+    @Override
     public Integer getPackageId() {
         return packageId;
     }
 
+    @Override
     public void setPackageId(Integer packageId) {
         this.packageId = packageId;
     }
 
+    @Override
     public Integer getItemId() {
         return itemId;
     }
 
+    @Override
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 
+    @Override
     public String getPackageName() {
         return packageName;
     }
 
+    @Override
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
+    @Override
     public Double getQuantity() {
         return quantity;
     }
 
+    @Override
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
+    @Override
     public Double getManufacturingCost() {
         return manufacturingCost;
     }
 
+    @Override
     public void setManufacturingCost(Double manufacturingCost) {
         this.manufacturingCost = manufacturingCost;
     }
 
+    @Override
     public Double getWholesaleCost() {
         return wholesaleCost;
     }
 
+    @Override
     public void setWholesaleCost(Double wholesaleCost) {
         this.wholesaleCost = wholesaleCost;
     }
 
+    @Override
     public Double getRetailCost() {
         return retailCost;
     }
 
+    @Override
     public void setRetailCost(Double retailCost) {
         this.retailCost = retailCost;
     }
 
+    @Override
     public Integer getManufacturerId() {
         return manufacturerId;
     }
 
+    @Override
     public void setManufacturerId(Integer manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
@@ -131,7 +147,7 @@ public class Packages {
         return isValid;
     }
 
-    public List<Packages> getAll() {
+    public List<Package> getAll() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAll(loggedInManufacturerId);
     }
@@ -143,6 +159,7 @@ public class Packages {
         getPersistence().save(this);
     }
 
+    @Override
     public void load() {
         if (this.getPackageId() > 0) {
             getPersistence().load(this);
@@ -157,7 +174,7 @@ public class Packages {
         getPersistence().delete(this.getPackageId());
     }
 
-    private IPackagesPersistence getPersistence() {
+    private IPackagePersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPackagesPersistence();
     }

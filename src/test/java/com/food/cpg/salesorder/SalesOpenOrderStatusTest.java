@@ -22,6 +22,9 @@ public class SalesOpenOrderStatusTest {
     @Mock
     ISalesOrderPersistence salesOrderPersistence;
 
+    @Mock
+    SalesOrder salesOrder;
+
     @Test
     public void getOrderStatusTest() {
         SalesOpenOrderStatus salesOpenOrderStatus = new SalesOpenOrderStatus();
@@ -36,7 +39,7 @@ public class SalesOpenOrderStatusTest {
         PowerMockito.doReturn(salesOrderPersistence).when(salesOpenOrderStatus, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(salesOrderPersistence).changeStatus(anyString(), anyString());
 
-        salesOpenOrderStatus.moveOrder(anyString());
+        salesOpenOrderStatus.moveOrder(salesOrder);
         verify(salesOrderPersistence, times(1)).changeStatus(anyString(), anyString());
     }
 }
