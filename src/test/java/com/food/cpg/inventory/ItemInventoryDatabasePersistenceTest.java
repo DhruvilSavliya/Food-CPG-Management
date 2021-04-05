@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItemInventoryDatabasePersistenceTest extends TestCase {
+public class ItemInventoryDatabasePersistenceTest {
 
     private static final Integer TEST_ITEM_ID = 10;
     private static final Double TEST_ITEM_QUANTITY = 2.0;
