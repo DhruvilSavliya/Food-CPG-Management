@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.exceptions.ServiceException;
 
 public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInventoryPersistence {
 
@@ -92,6 +93,19 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void save(int rawMaterialId) {
+        String sql = "insert into raw_material_inventory (item_id) values (?)";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(rawMaterialId);
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
         }
     }
 

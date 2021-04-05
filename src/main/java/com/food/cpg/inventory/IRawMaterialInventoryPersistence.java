@@ -11,4 +11,6 @@ public interface IRawMaterialInventoryPersistence {
     void increaseQuantity(IRawMaterialInventory rawMaterialInventory);
 
     void decreaseQuantity(IRawMaterialInventory rawMaterialInventory);
+
+    void save(int rawMaterialId);
 }
