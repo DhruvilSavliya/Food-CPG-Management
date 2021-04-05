@@ -3,6 +3,9 @@ package com.food.cpg.rawmaterial;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.food.cpg.inventory.IItemInventory;
+import com.food.cpg.inventory.IRawMaterialInventory;
+import com.food.cpg.inventory.InventoryFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,16 +15,16 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(RawMaterial.class)
+@PrepareForTest({RawMaterial.class, InventoryFactory.class})
 public class RawMaterialTest {
 
     public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    public static final String GET_INSTANCE_METHOD = "instance";
     public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final double DELTA = 1e-15;
     private static final String EMPTY_STRING = "";
@@ -36,7 +39,17 @@ public class RawMaterialTest {
     private static final String TEST_RAW_MATERIAL_NAME = "Test raw material 1";
 
     @Mock
+    RawMaterial rawMaterial;
+
+    @Mock
     IRawMaterialPersistence rawMaterialPersistence;
+
+    @Mock
+    InventoryFactory inventoryFactory;
+
+    @Mock
+    IRawMaterialInventory rawMaterialInventory;
+
 
     @Test
     public void isValidRawMaterialNameTest() {
@@ -158,6 +171,19 @@ public class RawMaterialTest {
         rawMaterial.save();
         verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);
         verify(rawMaterialPersistence, times(1)).save(rawMaterial);
+    }
+
+    @Test
+    public void saveRawMaterialInventory() throws Exception{
+        PowerMockito.mockStatic(InventoryFactory.class);
+        PowerMockito.doReturn(inventoryFactory).when(InventoryFactory.class, GET_INSTANCE_METHOD);
+        when(inventoryFactory.makeRawMaterialInventory()).thenReturn(rawMaterialInventory);
+
+        PowerMockito.doNothing().when(rawMaterialInventory).save(TEST_RAW_MATERIAL_ID);
+
+        rawMaterial.saveRawMaterialInventory(TEST_RAW_MATERIAL_ID);
+
+        verify(rawMaterial, times(1)).saveRawMaterialInventory(TEST_RAW_MATERIAL_ID);
     }
 
     @Test

@@ -19,30 +19,6 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
     }
 
     @Override
-    public List<IRawMaterialInventory> getDefaulter() {
-        List<IRawMaterialInventory> rawMaterialDefaulterList = new ArrayList<>();
-
-        String sql = "select rmi.raw_material_id, rmi.quantity, rmi.quantity_uom, rm.manufacturer_id, rm.raw_material_name, v.vendor_name, m.manufacturer_email  from raw_material_inventory rmi join raw_materials rm on rmi.raw_material_id = rm.raw_material_id join vendors v on rm.vendor_id = v.vendor_id join manufacturer m on rm.manufacturer_id= m.manufacturer_id\n" +
-                "where rmi.quantity < rm.reorder_point_quantity";
-
-        try (Connection connection = commonDatabaseOperation.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                try (ResultSet rs = preparedStatement.executeQuery()) {
-                    while (rs.next()) {
-                        IRawMaterialInventory rawMaterialInventory = InventoryFactory.instance().makeRawMaterialInventory();
-                        loadRawMaterialInventoryDefaulterDetailsFromResultSet(rs, rawMaterialInventory);
-
-                        rawMaterialDefaulterList.add(rawMaterialInventory);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return rawMaterialDefaulterList;
-    }
-
-    @Override
     public List<IRawMaterialInventory> getAll(int manufacturerId) {
 
         List<IRawMaterialInventory> rawMaterialInventories = new ArrayList<>();
@@ -66,6 +42,19 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
             throw new RuntimeException(e);
         }
         return rawMaterialInventories;
+    }
+
+    @Override
+    public void save(int rawMaterialId) {
+        String sql = "insert into raw_material_inventory (raw_material_id) values (?)";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(rawMaterialId);
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override
@@ -94,30 +83,6 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void save(int rawMaterialId) {
-        String sql = "insert into raw_material_inventory (raw_material_id) values (?)";
-        List<Object> placeholderValues = new ArrayList<>();
-        placeholderValues.add(rawMaterialId);
-
-        try {
-            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
-        } catch (SQLException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    private void loadRawMaterialInventoryDefaulterDetailsFromResultSet(ResultSet resultSet, IRawMaterialInventory rawMaterialInventory) throws SQLException {
-        rawMaterialInventory.setRawMaterialId(resultSet.getInt("raw_material_id"));
-        rawMaterialInventory.setRawMaterialQuantity(resultSet.getDouble("quantity"));
-        rawMaterialInventory.setRawMaterialQuantityUOM(resultSet.getString("quantity_uom"));
-        rawMaterialInventory.setManufacturerId(resultSet.getInt("manufacturer_id"));
-        rawMaterialInventory.setRawMaterialName(resultSet.getString("raw_material_name"));
-        rawMaterialInventory.setVendorName(resultSet.getString("vendor_name"));
-        rawMaterialInventory.setManufacturerEmail(resultSet.getString("manufacturer_email"));
-
     }
 
     private void loadRawMaterialInventoryDetailsFromResultSet(ResultSet resultSet, IRawMaterialInventory rawMaterialInventory) throws SQLException {
