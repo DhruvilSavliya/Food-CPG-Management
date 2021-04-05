@@ -18,10 +18,7 @@ import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RawMaterialDatabasePersistenceTest {
@@ -105,7 +102,7 @@ public class RawMaterialDatabasePersistenceTest {
 
     @Test
     public void saveTest() throws SQLException {
-        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+        doReturn(TEST_RAW_MATERIAL_ID).when(commonDatabaseOperation).executeUpdateGetId(anyString(), anyList());
         when(rawMaterial.getName()).thenReturn(TEST_RAW_MATERIAL_NAME);
         when(rawMaterial.getVendorId()).thenReturn(TEST_VENDOR_ID);
         when(rawMaterial.getUnitCost()).thenReturn(TEST_RAW_MATERIAL_UNIT_COST);
@@ -119,7 +116,7 @@ public class RawMaterialDatabasePersistenceTest {
 
         rawMaterialDatabasePersistence.save(rawMaterial);
 
-        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
+        verify(commonDatabaseOperation, times(1)).executeUpdateGetId(anyString(), anyList());
         verify(rawMaterial, times(1)).getName();
         verify(rawMaterial, times(1)).getVendorId();
         verify(rawMaterial, times(1)).getUnitCost();

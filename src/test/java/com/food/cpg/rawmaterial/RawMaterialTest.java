@@ -34,6 +34,7 @@ public class RawMaterialTest {
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
     private static final String TEST_RAW_MATERIAL_UNIT = "g";
     private static final String TEST_RAW_MATERIAL_NAME = "Test raw material 1";
+
     @Mock
     IRawMaterialPersistence rawMaterialPersistence;
 
@@ -150,8 +151,9 @@ public class RawMaterialTest {
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
 
         PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
-        PowerMockito.doNothing().when(rawMaterialPersistence).save(rawMaterial);
+        PowerMockito.doReturn(TEST_RAW_MATERIAL_ID).when(rawMaterialPersistence).save(rawMaterial);
         PowerMockito.doReturn(1).when(rawMaterial, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
+        PowerMockito.doNothing().when(rawMaterial).saveRawMaterialInventory(TEST_RAW_MATERIAL_ID);
 
         rawMaterial.save();
         verifyPrivate(rawMaterial).invoke(GET_PERSISTENCE_METHOD);

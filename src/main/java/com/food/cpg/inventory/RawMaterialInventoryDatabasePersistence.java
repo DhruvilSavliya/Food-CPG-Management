@@ -98,7 +98,7 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
 
     @Override
     public void save(int rawMaterialId) {
-        String sql = "insert into raw_material_inventory (item_id) values (?)";
+        String sql = "insert into raw_material_inventory (raw_material_id) values (?)";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialId);
 

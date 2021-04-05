@@ -147,9 +147,9 @@ public class RawMaterial {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
 
-        getPersistence().save(this);
+        Integer rawMaterialId = getPersistence().save(this);
 
-        saveRawMaterialInventory(this.getId());
+        saveRawMaterialInventory(rawMaterialId);
     }
 
     public void saveRawMaterialInventory(Integer rawMaterialID){
