@@ -25,13 +25,14 @@ public class SalesPackagedOrderStatus extends SalesOrderStatus {
         Integer itemID = salesOrder.getItemId();
         Integer packageId = salesOrder.getPackageId();
 
-        IPackage packages = PackageFactory.instance().makePackage();
-        packages.setPackageId(packageId);
+        IPackage iPackage = PackageFactory.instance().makePackage();
+        iPackage.setPackageId(packageId);
 
-        packages.load();
+        iPackage.load();
+        Double quantity = iPackage.getQuantity();
 
         itemInventory.setItemId(itemID);
-        itemInventory.setItemQuantity(packages.getQuantity());
+        itemInventory.setItemQuantity(quantity);
         itemInventory.decreaseQuantity();
     }
 
