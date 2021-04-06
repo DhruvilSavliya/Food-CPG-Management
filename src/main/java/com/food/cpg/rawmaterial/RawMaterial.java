@@ -153,7 +153,7 @@ public class RawMaterial {
     }
 
     public void saveRawMaterialInventory(Integer rawMaterialID){
-        IRawMaterialInventory rawMaterialInventory = DefaultInventoryFactory.instance().makeRawMaterialInventory();
+        IRawMaterialInventory rawMaterialInventory = InventoryFactory.instance().makeRawMaterialInventory();
         rawMaterialInventory.save(rawMaterialID);
     }
 
