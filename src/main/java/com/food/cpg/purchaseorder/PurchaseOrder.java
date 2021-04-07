@@ -14,10 +14,10 @@ public class PurchaseOrder {
     private static final String PO_PREFIX = "PO-";
 
     private String orderNumber;
-    private Integer manufacturerId;
-    private Integer vendorId;
+    private int manufacturerId;
+    private int vendorId;
     private Timestamp statusChangeDate;
-    private Double totalCost;
+    private double totalCost;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
     private PurchaseOrderStatus purchaseOrderStatus;
 
@@ -35,27 +35,27 @@ public class PurchaseOrder {
         this.orderNumber = orderNumber;
     }
 
-    public Integer getManufacturerId() {
+    public int getManufacturerId() {
         return manufacturerId;
     }
 
-    public void setManufacturerId(Integer manufacturerId) {
+    public void setManufacturerId(int manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 
-    public Integer getVendorId() {
+    public int getVendorId() {
         return vendorId;
     }
 
-    public void setVendorId(Integer vendorId) {
+    public void setVendorId(int vendorId) {
         this.vendorId = vendorId;
     }
 
-    public Double getTotalCost() {
+    public double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Double totalCost) {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 

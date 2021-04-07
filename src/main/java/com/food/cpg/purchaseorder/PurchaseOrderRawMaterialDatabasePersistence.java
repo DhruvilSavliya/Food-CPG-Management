@@ -45,12 +45,12 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
         try (Connection connection = commonDatabaseOperation.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
-                try (ResultSet rs = preparedStatement.executeQuery()) {
-                    while (rs.next()) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
                         PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
-
-                        loadPurchaseOrderRawMaterialDetailsFromResultSet(rs, purchaseOrderRawMaterial);
-
+                        purchaseOrderRawMaterial.setRawMaterialId(resultSet.getInt("raw_material_id"));
+                        purchaseOrderRawMaterial.setRawMaterialQuantity(resultSet.getDouble("raw_material_quantity"));
+                        purchaseOrderRawMaterial.setRawMaterialQuantityUOM(resultSet.getString("raw_material_quantity_uom"));
                         purchaseOrderItemRawMaterials.add(purchaseOrderRawMaterial);
                     }
                 }

@@ -2,7 +2,9 @@ package com.food.cpg.analytics;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.purchaseorder.PurchaseOrder;
+import com.food.cpg.item.Item;
+import com.food.cpg.item.ItemRawMaterial;
+import com.food.cpg.packaging.Packages;
 import com.food.cpg.purchaseorder.PurchaseOrderByItem;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
 import com.food.cpg.rawmaterial.RawMaterial;
@@ -22,28 +24,19 @@ public class InventoryUsage {
     private static final int DAYS_BETWEEN_START_DATE_AND_TODAY = 7;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private int rawMaterialId;
     private String rawMaterialName;
     private double quantityForSales;
     private double quantityForCharity;
     private double totalQuantity;
 
     @DateTimeFormat(pattern = DATE_FORMAT)
-    private Date StartDate;
+    private Date startDate;
 
     @DateTimeFormat(pattern = DATE_FORMAT)
-    private Date EndDate;
+    private Date endDate;
 
     public InventoryUsage() {
         initializeInventory();
-    }
-
-    public int getRawMaterialId() {
-        return rawMaterialId;
-    }
-
-    public void setRawMaterialId(int rawMaterialId) {
-        this.rawMaterialId = rawMaterialId;
     }
 
     public String getRawMaterialName() {
@@ -79,22 +72,23 @@ public class InventoryUsage {
     }
 
     public Date getStartDate() {
-        return StartDate;
+        return startDate;
     }
 
     public void setStartDate(Date startDate) {
-        StartDate = startDate;
+        this.startDate = startDate;
     }
 
     public Date getEndDate() {
-        return EndDate;
+        return endDate;
     }
 
     public void setEndDate(Date endDate) {
-        EndDate = endDate;
+        this.endDate = endDate;
     }
 
-    private void initializeInventory() {
+
+    public void initializeInventory() {
         Date endDateValue = new Date();
 
         Calendar startDateValue = Calendar.getInstance();
@@ -107,46 +101,58 @@ public class InventoryUsage {
 
     public void generateInventoryUsage() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
+        Packages packages = new Packages();
+        Item item = new Item();
+        RawMaterial rawMaterial = new RawMaterial();
         PurchaseOrderByItem purchaseOrderByItem = new PurchaseOrderByItem();
-
-        List<InventoryUsage> inventoryUsages = new ArrayList<>();
-        List<PurchaseOrderRawMaterial> rawMaterialList;
         List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
+        List<InventoryUsage> inventoryUsages = new ArrayList<>();
+        int size = salesOrders.size();
+
 
         for (SalesOrder salesOrder : salesOrders) {
-            int itemId = salesOrder.getItemId();
-            rawMaterialList = purchaseOrderByItem.getPurchaseOrderItemRawMaterial(itemId);
-            for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : rawMaterialList) {
-                for (InventoryUsage inventoryUsage : inventoryUsages){
-                    if (purchaseOrderRawMaterial.getRawMaterialId() == inventoryUsage.getRawMaterialId() ){
-                        if (salesOrder.getIsForCharity()) {
-                            double updatedForCharityQuantity = inventoryUsage.getQuantityForCharity() + purchaseOrderRawMaterial.getRawMaterialQuantity();
-                            inventoryUsage.setQuantityForCharity(updatedForCharityQuantity);
+            if (isDateInRange(salesOrder.getStatusChangeDate())) {
+                int packageid = salesOrder.getPackageId();
+                packages.setPackageId(packageid);
+                packages.load();
+                int itemid = packages.getItemId();
+                double itemquantity = packages.getQuantity();
+                item.setId(itemid);
+                item.load();
+                List<PurchaseOrderRawMaterial> itemRawMaterials = purchaseOrderByItem.getPurchaseOrderItemRawMaterial(itemid);
+                for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : itemRawMaterials) {
+                    int rawmaterialid = purchaseOrderRawMaterial.getRawMaterialId();
+                    double rawmaterialquantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
+                    double totalrawmaterialquantity = rawmaterialquantity * itemquantity;
+                    rawMaterial.setId(rawmaterialid);
+                    rawMaterial.load();
+                    String rawmaterialname = rawMaterial.getName();
+
+                    for (InventoryUsage inventoryusage : inventoryUsages) {
+                        if (rawmaterialname.equals(inventoryusage.getRawMaterialName())) {
+                            if (salesOrder.getIsForCharity()) {
+                                double updatedForCharityQuantity = inventoryusage.getQuantityForCharity() + totalrawmaterialquantity;
+                                inventoryusage.setQuantityForCharity(updatedForCharityQuantity);
+                            } else {
+                                double updatedForSalesQuantity = inventoryusage.getQuantityForSales() + totalrawmaterialquantity;
+                                inventoryusage.setQuantityForSales(updatedForSalesQuantity);
+                            }
                         }
-                        else{
-                            double updatedForSalesQuantity = inventoryUsage.getQuantityForSales() + purchaseOrderRawMaterial.getRawMaterialQuantity();
-                            inventoryUsage.setQuantityForSales(updatedForSalesQuantity);
-                        }
-                    }
-                    else{
-                        inventoryUsage = new InventoryUsage();
-                        inventoryUsage.setRawMaterialId(purchaseOrderRawMaterial.getRawMaterialId());
-                        inventoryUsage.setRawMaterialName(purchaseOrderRawMaterial.getRawMaterialName());
-                        if (salesOrder.getIsForCharity()) {
-                            double updatedForCharityQuantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
-                            inventoryUsage.setQuantityForCharity(updatedForCharityQuantity);
-                        }
-                        else{
-                            double updatedForSalesQuantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
-                            inventoryUsage.setQuantityForSales(updatedForSalesQuantity);
+                        else {
+                            InventoryUsage inventoryUsage = new InventoryUsage();
+                            inventoryUsage.setRawMaterialName(purchaseOrderRawMaterial.getRawMaterialName());
+                            if (salesOrder.getIsForCharity()) {
+                                inventoryUsage.setQuantityForCharity(totalrawmaterialquantity);
+                            } else {
+                                inventoryUsage.setQuantityForSales(totalrawmaterialquantity);
+                            }
+                            inventoryUsages.add(inventoryUsage);
                         }
 
-                        inventoryUsages.add(inventoryUsage);
                     }
-
                 }
-        }
-        }
+            }
+        }System.out.println(inventoryUsages.size()+"size");
     }
 
     public boolean isDateInRange(Date date) {
