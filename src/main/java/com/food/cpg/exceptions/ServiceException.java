@@ -1,10 +1,5 @@
 package com.food.cpg.exceptions;
 
-/**
- * Service layer exception
- *
- * @author Kartik Gevariya
- */
 public class ServiceException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
