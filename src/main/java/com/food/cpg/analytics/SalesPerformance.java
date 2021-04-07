@@ -5,6 +5,8 @@ import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrder;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SalesPerformance {
@@ -40,13 +42,16 @@ public class SalesPerformance {
     public void generateSalesPerformance() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
 
-        List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
+        List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
+        List<SalesPerformance> salesPerformances = new ArrayList<>();
 
-        int salesordernumber =0;
+        int salesordernumber = 0;
         double costofsalesorder = 0;
-        for (SalesOrder salesOrder : salesOrders){
+        for (SalesOrder salesOrder : salesOrders) {
+            String monthname = getMonthFromDate(salesOrder.getStatusChangeDate());
+
             salesordernumber++;
-            costofsalesorder= costofsalesorder+salesOrder.getTotalCost();
+            costofsalesorder = costofsalesorder + salesOrder.getTotalCost();
         }
         this.setTotalOrders(salesordernumber);
         this.setTotalSales(costofsalesorder);
@@ -63,5 +68,10 @@ public class SalesPerformance {
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
 
+    public String getMonthFromDate(Date date) {
+        int monthNumber= date.getMonth();
+        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        return monthNames[monthNumber];
+    }
 }
 

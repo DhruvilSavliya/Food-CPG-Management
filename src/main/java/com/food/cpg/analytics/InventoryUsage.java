@@ -10,6 +10,7 @@ import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
 import com.food.cpg.rawmaterial.RawMaterial;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrder;
+import com.sun.scenario.effect.InvertMask;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
@@ -119,6 +120,7 @@ public class InventoryUsage {
                 double itemquantity = packages.getQuantity();
                 item.setId(itemid);
                 item.load();
+
                 List<PurchaseOrderRawMaterial> itemRawMaterials = purchaseOrderByItem.getPurchaseOrderItemRawMaterial(itemid);
                 for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : itemRawMaterials) {
                     int rawmaterialid = purchaseOrderRawMaterial.getRawMaterialId();
@@ -129,6 +131,7 @@ public class InventoryUsage {
                     String rawmaterialname = rawMaterial.getName();
 
                     for (InventoryUsage inventoryusage : inventoryUsages) {
+                        System.out.println(inventoryusage.getRawMaterialName());
                         if (rawmaterialname.equals(inventoryusage.getRawMaterialName())) {
                             if (salesOrder.getIsForCharity()) {
                                 double updatedForCharityQuantity = inventoryusage.getQuantityForCharity() + totalrawmaterialquantity;
@@ -137,15 +140,18 @@ public class InventoryUsage {
                                 double updatedForSalesQuantity = inventoryusage.getQuantityForSales() + totalrawmaterialquantity;
                                 inventoryusage.setQuantityForSales(updatedForSalesQuantity);
                             }
+                            inventoryusage.setTotalQuantity(inventoryusage.getQuantityForCharity() + inventoryusage.getQuantityForSales());
                         }
                         else {
                             InventoryUsage inventoryUsage = new InventoryUsage();
                             inventoryUsage.setRawMaterialName(purchaseOrderRawMaterial.getRawMaterialName());
                             if (salesOrder.getIsForCharity()) {
                                 inventoryUsage.setQuantityForCharity(totalrawmaterialquantity);
+                                System.out.println(inventoryusage.getRawMaterialName()+"new");
                             } else {
                                 inventoryUsage.setQuantityForSales(totalrawmaterialquantity);
                             }
+                            inventoryusage.setTotalQuantity(inventoryusage.getQuantityForCharity() + inventoryusage.getQuantityForSales());
                             inventoryUsages.add(inventoryUsage);
                         }
 
