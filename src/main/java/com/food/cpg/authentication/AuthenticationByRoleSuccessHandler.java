@@ -14,7 +14,7 @@ public class AuthenticationByRoleSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        AuthNavigator authNavigator = new AuthNavigator();
+        IAuthNavigator authNavigator = AuthenticationFactory.instance().makeAuthNavigator();
         authNavigator.navigateToLandingPage(request, response);
     }
 }

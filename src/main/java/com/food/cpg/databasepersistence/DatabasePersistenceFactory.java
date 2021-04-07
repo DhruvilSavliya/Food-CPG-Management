@@ -11,20 +11,20 @@ import com.food.cpg.item.ItemDatabasePersistence;
 import com.food.cpg.item.ItemRawMaterialDatabasePersistence;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.ManufacturerDatabasePersistence;
-import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
-import com.food.cpg.manufacturer.registration.RegistrationDatabasePersistence;
 import com.food.cpg.manufacturingorder.IManufactureOrderPersistence;
 import com.food.cpg.manufacturingorder.ManufactureOrderDatabasePersistence;
 import com.food.cpg.notification.INotificationPersistence;
 import com.food.cpg.notification.NotificationDatabasePersistence;
-import com.food.cpg.packaging.IPackagesPersistence;
-import com.food.cpg.packaging.PackagesDatabasePersistence;
+import com.food.cpg.packaging.IPackagePersistence;
+import com.food.cpg.packaging.PackageDatabasePersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
 import com.food.cpg.purchaseorder.PurchaseOrderDatabasePersistence;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterialDatabasePersistence;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
 import com.food.cpg.rawmaterial.RawMaterialDatabasePersistence;
+import com.food.cpg.registration.IRegistrationPersistence;
+import com.food.cpg.registration.RegistrationDatabasePersistence;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrderDatabasePersistence;
 import com.food.cpg.vendor.IVendorPersistence;
@@ -75,8 +75,8 @@ public class DatabasePersistenceFactory extends PersistenceFactory {
     }
 
     @Override
-    public IPackagesPersistence getPackagesPersistence() {
-        return new PackagesDatabasePersistence(commonDatabaseOperation);
+    public IPackagePersistence getPackagesPersistence() {
+        return new PackageDatabasePersistence(commonDatabaseOperation);
     }
 
     @Override

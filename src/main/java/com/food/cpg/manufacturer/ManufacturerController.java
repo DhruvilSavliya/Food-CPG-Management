@@ -14,13 +14,14 @@ public class ManufacturerController {
     private static final String REGISTER_MANUFACTURER_ROUTE = "manufacturer/manufacturer-registration-request";
     private static final String MANUFACTURER_DETAIL_ROUTE = "manufacturer/manufacturer-details";
     private static final String VIEW_MANUFACTURER_KEY = "manufacturer";
+    private static final String EMAIL_PATH_VARIABLE_NAME = "email";
 
-    @GetMapping("/register-manufacturer")
+    @GetMapping(ManufacturerEndpoint.MANUFACTURER_REGISTER_FORM_END_POINT)
     public String registrationForm(Manufacturer manufacturer) {
         return MANUFACTURER_REGISTER_FORM_ROUTE;
     }
 
-    @PostMapping("/save-manufacturer")
+    @PostMapping(ManufacturerEndpoint.SAVE_MANUFACTURER_END_POINT)
     public String saveManufacturer(Manufacturer manufacturer, BindingResult result) {
         if (result.hasErrors() || !manufacturer.isValidManufacturer()) {
             return MANUFACTURER_REGISTER_FORM_ROUTE;
@@ -30,8 +31,8 @@ public class ManufacturerController {
         return REGISTER_MANUFACTURER_ROUTE;
     }
 
-    @GetMapping("/manufacturer-details/{email}")
-    public String details(@PathVariable("email") String email, Manufacturer manufacturer, Model model) {
+    @GetMapping(ManufacturerEndpoint.MANUFACTURER_DETAIL_END_POINT)
+    public String details(@PathVariable(EMAIL_PATH_VARIABLE_NAME) String email, Manufacturer manufacturer, Model model) {
         manufacturer.setEmail(email);
         manufacturer.load();
         model.addAttribute(VIEW_MANUFACTURER_KEY, manufacturer);

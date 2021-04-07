@@ -33,6 +33,8 @@ public interface IRawMaterialInventory {
 
     List<IRawMaterialInventory> getAll();
 
+    void save(Integer rawMaterialId);
+
     void increaseQuantity();
 
     void decreaseQuantity();

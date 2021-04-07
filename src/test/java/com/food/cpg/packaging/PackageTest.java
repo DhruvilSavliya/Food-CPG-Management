@@ -18,9 +18,9 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Packages.class)
+@PrepareForTest(Package.class)
 
-public class PackagesTest {
+public class PackageTest {
     public static final String GET_PERSISTENCE_METHOD = "getPersistence";
     public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final String EMPTY_STRING = "";
@@ -34,11 +34,11 @@ public class PackagesTest {
     private static final Integer TEST_PACKAGE_ID = 1;
     private static final String TEST_PACKAGE_NAME = "Test package 1";
     @Mock
-    IPackagesPersistence packagesPersistence;
+    IPackagePersistence packagesPersistence;
 
     @Test
     public void isValidPackageNameTest() {
-        Packages packages = new Packages();
+        Package packages = new Package();
         packages.setPackageName(EMPTY_STRING);
 
         boolean isValidName = packages.isValidPackage();
@@ -50,7 +50,7 @@ public class PackagesTest {
 
     @Test
     public void isValidPackageItemTest() {
-        Packages packages = new Packages();
+        Package packages = new Package();
 
         boolean isValidItem = packages.isValidPackage();
 
@@ -61,7 +61,7 @@ public class PackagesTest {
 
     @Test
     public void isValidQuantityTest() {
-        Packages packages = new Packages();
+        Package packages = new Package();
 
         boolean isValidQuantity = packages.isValidPackage();
 
@@ -72,7 +72,7 @@ public class PackagesTest {
 
     @Test
     public void isValidManufacturingCostTest() {
-        Packages packages = new Packages();
+        Package packages = new Package();
 
         boolean isValidManufacturingCost = packages.isValidPackage();
 
@@ -83,7 +83,7 @@ public class PackagesTest {
 
     @Test
     public void isValidWholeSaleTest() {
-        Packages packages = new Packages();
+        Package packages = new Package();
 
         boolean isValidWholesaleCost = packages.isValidPackage();
 
@@ -94,7 +94,7 @@ public class PackagesTest {
 
     @Test
     public void isValidRetailCostTest() {
-        Packages packages = new Packages();
+        Package packages = new Package();
 
         boolean isValidRetailCost = packages.isValidPackage();
 
@@ -105,17 +105,17 @@ public class PackagesTest {
 
     @Test
     public void getAllTest() throws Exception {
-        Packages packages = spy(new Packages());
+        Package packages = spy(new Package());
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
 
-        List<Packages> packagesList = new ArrayList<>();
+        List<Package> packagesList = new ArrayList<>();
         packagesList.add(packages);
 
         PowerMockito.doReturn(packagesPersistence).when(packages, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(packagesList).when(packagesPersistence).getAll(anyInt());
 
-        List<Packages> packagesResult = packages.getAll();
+        List<Package> packagesResult = packages.getAll();
         Assert.assertNotNull(packagesResult);
         Assert.assertEquals(1, packagesResult.size());
         Assert.assertEquals(TEST_PACKAGE_NAME, packagesResult.get(0).getPackageName());
@@ -123,7 +123,7 @@ public class PackagesTest {
 
     @Test
     public void saveTest() throws Exception {
-        Packages packages = spy(new Packages());
+        Package packages = spy(new Package());
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
 
@@ -138,7 +138,7 @@ public class PackagesTest {
 
     @Test
     public void loadSuccessTest() throws Exception {
-        Packages packages = spy(new Packages());
+        Package packages = spy(new Package());
         packages.setPackageId(TEST_PACKAGE_ID);
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
@@ -153,7 +153,7 @@ public class PackagesTest {
 
     @Test
     public void loadFailTest() throws Exception {
-        Packages packages = spy(new Packages());
+        Package packages = spy(new Package());
         packages.setPackageId(0);
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
@@ -167,7 +167,7 @@ public class PackagesTest {
 
     @Test
     public void updateTest() throws Exception {
-        Packages packages = spy(new Packages());
+        Package packages = spy(new Package());
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
 
@@ -181,7 +181,7 @@ public class PackagesTest {
 
     @Test
     public void deleteTest() throws Exception {
-        Packages packages = spy(new Packages());
+        Package packages = spy(new Package());
         packages.setPackageId(TEST_PACKAGE_ID);
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);

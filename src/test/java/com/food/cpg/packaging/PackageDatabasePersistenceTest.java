@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PackagesDatabasePersistenceTest extends TestCase {
+public class PackageDatabasePersistenceTest extends TestCase {
     private static final Integer TEST_MANUFACTURER_ID = 1;
     private static final Integer TEST_ITEM_ID = 1;
     private static final Integer TEST_PACKAGE_ID = 1;
@@ -47,7 +47,7 @@ public class PackagesDatabasePersistenceTest extends TestCase {
     ResultSet resultSet;
 
     @Mock
-    Packages packages;
+    Package packages;
 
     @Before
     public void setUp() throws SQLException {
@@ -64,7 +64,7 @@ public class PackagesDatabasePersistenceTest extends TestCase {
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(TEST_MANUFACTURER_ID);
 
-        PackagesDatabasePersistence packagesDatabasePersistence = new PackagesDatabasePersistence(commonDatabaseOperation);
+        PackageDatabasePersistence packagesDatabasePersistence = new PackageDatabasePersistence(commonDatabaseOperation);
 
         packagesDatabasePersistence.getAll(TEST_MANUFACTURER_ID);
 
@@ -87,7 +87,7 @@ public class PackagesDatabasePersistenceTest extends TestCase {
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packages.getPackageId());
 
-        PackagesDatabasePersistence packagesDatabasePersistence = new PackagesDatabasePersistence(commonDatabaseOperation);
+        PackageDatabasePersistence packagesDatabasePersistence = new PackageDatabasePersistence(commonDatabaseOperation);
 
         packagesDatabasePersistence.load(packages);
 
@@ -112,7 +112,7 @@ public class PackagesDatabasePersistenceTest extends TestCase {
         when(packages.getRetailCost()).thenReturn(TEST_RETAIL_COST);
         when(packages.getManufacturerId()).thenReturn(TEST_MANUFACTURER_ID);
 
-        PackagesDatabasePersistence packagesDatabasePersistence = new PackagesDatabasePersistence(commonDatabaseOperation);
+        PackageDatabasePersistence packagesDatabasePersistence = new PackageDatabasePersistence(commonDatabaseOperation);
 
         packagesDatabasePersistence.save(packages);
 
@@ -137,7 +137,7 @@ public class PackagesDatabasePersistenceTest extends TestCase {
         when(packages.getRetailCost()).thenReturn(TEST_RETAIL_COST);
         when(packages.getPackageId()).thenReturn(TEST_PACKAGE_ID);
 
-        PackagesDatabasePersistence packagesDatabasePersistence = new PackagesDatabasePersistence(commonDatabaseOperation);
+        PackageDatabasePersistence packagesDatabasePersistence = new PackageDatabasePersistence(commonDatabaseOperation);
 
         packagesDatabasePersistence.update(packages);
 
@@ -155,7 +155,7 @@ public class PackagesDatabasePersistenceTest extends TestCase {
     public void deleteTest() throws SQLException {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
 
-        PackagesDatabasePersistence packagesDatabasePersistence = new PackagesDatabasePersistence(commonDatabaseOperation);
+        PackageDatabasePersistence packagesDatabasePersistence = new PackageDatabasePersistence(commonDatabaseOperation);
 
         packagesDatabasePersistence.delete(TEST_PACKAGE_ID);
 

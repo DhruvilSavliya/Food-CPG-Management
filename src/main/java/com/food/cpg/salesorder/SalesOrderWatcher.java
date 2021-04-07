@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
-import com.food.cpg.manufacturer.Manufacturer;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 
@@ -23,9 +23,9 @@ public class SalesOrderWatcher {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void checkSalesOrdersForDueDate() {
-        List<Manufacturer> manufacturers = getManufacturerPersistence().getAll();
+        List<IManufacturer> manufacturers = getManufacturerPersistence().getAll();
 
-        for (Manufacturer manufacturer : manufacturers) {
+        for (IManufacturer manufacturer : manufacturers) {
             checkSalesOrdersForDueDateByManufacturer(manufacturer.getId());
         }
     }

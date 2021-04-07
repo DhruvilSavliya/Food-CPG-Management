@@ -7,7 +7,8 @@ public class ManufactureOpenOrderStatus extends ManufactureOrderStatus {
     }
 
     @Override
-    public void moveOrder(String orderNumber) {
+    public void moveOrder(ManufactureOrder manufactureOrder) {
+        String orderNumber = manufactureOrder.getOrderNumber();
         getPersistence().changeStatus(orderNumber, Status.MANUFACTURED.name());
     }
 }

@@ -1,8 +1,8 @@
 package com.food.cpg.inventory;
 
 import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
-import com.food.cpg.manufacturer.Manufacturer;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
@@ -33,9 +33,9 @@ public class RawMaterialInventoryWatcher {
 
     @Scheduled(initialDelay = 30000, fixedDelay = 3000000)
     public void inventoryCheck() {
-        List<Manufacturer> manufacturers = getManufacturerPersistence().getAll();
+        List<IManufacturer> manufacturers = getManufacturerPersistence().getAll();
 
-        for (Manufacturer manufacturer : manufacturers) {
+        for (IManufacturer manufacturer : manufacturers) {
             inventoryCheckForEachManufacturer(manufacturer.getId());
         }
     }

@@ -173,11 +173,11 @@ public class SalesOrderTest {
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setSalesOrderStatus(salesOrderStatus);
 
-        PowerMockito.doNothing().when(salesOrderStatus).moveOrder(anyString());
+        PowerMockito.doNothing().when(salesOrderStatus).moveOrder(salesOrder);
 
         salesOrder.moveOrderToNextStage();
 
-        verify(salesOrderStatus, times(1)).moveOrder(salesOrder.getOrderNumber());
+        verify(salesOrderStatus, times(1)).moveOrder(salesOrder);
     }
 
     @Test

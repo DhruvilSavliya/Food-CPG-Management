@@ -84,6 +84,17 @@ public class RawMaterialInventoryDatabasePersistenceTest {
     }
 
     @Test
+    public void saveTest() throws SQLException {
+        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+
+        RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
+
+        rawMaterialInventoryDatabasePersistence.save(TEST_RAW_MATERIAL_ID);
+
+        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
+    }
+
+    @Test
     public void increaseQuantityTest() throws SQLException {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
         when(rawMaterialInventory.getRawMaterialId()).thenReturn(TEST_RAW_MATERIAL_ID);

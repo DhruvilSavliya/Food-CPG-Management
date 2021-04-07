@@ -18,9 +18,12 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 public class SalesShippedOrderStatusTest {
 
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
+    private static final String TEST_SALES_ORDER_NUMBER = "SO-123";
 
     @Mock
     ISalesOrderPersistence salesOrderPersistence;
+    @Mock
+    SalesOrder salesOrder;
 
     @Test
     public void getOrderStatusTest() {
@@ -35,8 +38,9 @@ public class SalesShippedOrderStatusTest {
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesShippedOrderStatus, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(salesOrderPersistence).changeStatus(anyString(), anyString());
+        PowerMockito.doReturn(TEST_SALES_ORDER_NUMBER).when(salesOrder).getOrderNumber();
 
-        salesShippedOrderStatus.moveOrder(anyString());
+        salesShippedOrderStatus.moveOrder(salesOrder);
         verify(salesOrderPersistence, times(1)).changeStatus(anyString(), anyString());
     }
 }

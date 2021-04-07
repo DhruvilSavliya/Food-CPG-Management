@@ -1,6 +1,5 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.packaging.Packages;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;

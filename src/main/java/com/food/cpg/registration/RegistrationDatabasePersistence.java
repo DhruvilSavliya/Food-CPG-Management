@@ -1,4 +1,4 @@
-package com.food.cpg.manufacturer.registration;
+package com.food.cpg.registration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-import com.food.cpg.manufacturer.Manufacturer;
-import com.food.cpg.manufacturer.registration.IRegistrationPersistence;
-import com.food.cpg.manufacturer.registration.Registration;
+import com.food.cpg.manufacturer.IManufacturer;
+import com.food.cpg.manufacturer.ManufacturerFactory;
 
 public class RegistrationDatabasePersistence implements IRegistrationPersistence {
 
@@ -21,61 +19,60 @@ public class RegistrationDatabasePersistence implements IRegistrationPersistence
         this.commonDatabaseOperation = commonDatabaseOperation;
     }
 
-
     @Override
-    public List<Registration> getAll() {
-        List<Registration> registrations = new ArrayList<>();
+    public List<IRegistration> getAll() {
+        List<IRegistration> registrations = new ArrayList<>();
 
-        String sql = "select * from manufacturer m left join users u on m.manufacturer_email = u.email";
+        String sql = RegistrationDatabaseQuery.SELECT_ALL_REGISTRATIONS;
 
         try (Connection connection = commonDatabaseOperation.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 try (ResultSet rs = statement.executeQuery()) {
                     while (rs.next()) {
-                        Manufacturer manufacturer = new Manufacturer();
-                        manufacturer.setId(rs.getInt("manufacturer_id"));
-                        manufacturer.setCompanyName(rs.getString("manufacturer_company_name"));
-                        manufacturer.setEmail(rs.getString("manufacturer_email"));
-                        manufacturer.setContact(rs.getLong("manufacturer_contact"));
-                        manufacturer.setAddress(rs.getString("manufacturer_address"));
+                        IManufacturer manufacturer = ManufacturerFactory.instance().makeManufacturer();
+                        manufacturer.setId(rs.getInt(RegistrationDatabaseColumn.REGISTRATION_MANUFACTURER_ID));
+                        manufacturer.setCompanyName(rs.getString(RegistrationDatabaseColumn.REGISTRATION_MANUFACTURER_COMPANY_NAME));
+                        manufacturer.setEmail(rs.getString(RegistrationDatabaseColumn.REGISTRATION_MANUFACTURER_EMAIL));
+                        manufacturer.setContact(rs.getLong(RegistrationDatabaseColumn.REGISTRATION_MANUFACTURER_CONTACT));
+                        manufacturer.setAddress(rs.getString(RegistrationDatabaseColumn.REGISTRATION_MANUFACTURER_ADDRESS));
 
-                        Registration registration = new Registration();
+                        IRegistration registration = RegistrationFactory.instance().makeRegistration();
                         registration.setManufacturer(manufacturer);
-                        registration.setStatus(rs.getString("status"));
+                        registration.setStatus(rs.getString(RegistrationDatabaseColumn.REGISTRATION_STATUS));
 
                         registrations.add(registration);
                     }
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return registrations;
     }
 
     @Override
     public void approve(String email) {
-        String sql = "update users set status = 'Approved' where email = ?";
+        String sql = RegistrationDatabaseQuery.APPROVE_REGISTRATION;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(email);
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void block(String email) {
-        String sql = "update users set status = 'Blocked' where email = ?";
+        String sql = RegistrationDatabaseQuery.BLOCK_REGISTRATION;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(email);
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 }

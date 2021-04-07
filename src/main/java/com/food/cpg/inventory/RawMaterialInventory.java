@@ -91,6 +91,12 @@ public class RawMaterialInventory implements IRawMaterialInventory {
     }
 
     @Override
+    public void save(Integer rawMaterialId) {
+        getPersistence().save(rawMaterialId);
+    }
+
+
+    @Override
     public void increaseQuantity() {
         Unit inventoryUnit = Unit.from(this.getRawMaterialQuantityUOM());
         double quantityInGram = inventoryUnit.getGramValue() * this.getRawMaterialQuantity();

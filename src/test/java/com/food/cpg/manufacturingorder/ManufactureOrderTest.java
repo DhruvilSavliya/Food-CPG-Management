@@ -151,11 +151,11 @@ public class ManufactureOrderTest {
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setManufactureOrderStatus(manufactureOrderStatus);
 
-        PowerMockito.doNothing().when(manufactureOrderStatus).moveOrder(anyString());
+        PowerMockito.doNothing().when(manufactureOrderStatus).moveOrder(manufactureOrder);
 
         manufactureOrder.moveOrderToNextStage();
 
-        verify(manufactureOrderStatus, times(1)).moveOrder(manufactureOrder.getOrderNumber());
+        verify(manufactureOrderStatus, times(1)).moveOrder(manufactureOrder);
     }
 
 

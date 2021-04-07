@@ -8,7 +8,7 @@ public interface IRawMaterialPersistence {
 
     void load(RawMaterial rawMaterial);
 
-    void save(RawMaterial rawMaterial);
+    Integer save(RawMaterial rawMaterial);
 
     void update(RawMaterial rawMaterial);
 

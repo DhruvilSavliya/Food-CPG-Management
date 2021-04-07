@@ -14,8 +14,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
-import com.food.cpg.manufacturer.Manufacturer;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 
@@ -37,9 +37,9 @@ public class SalesOrderWatcherTest {
 
     private static final int DUE_DAY_FOR_PAYMENT = 7;
     private static final int TEST_MANUFACTURER_ID = 1;
-    public static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
-    public static final String GET_SALES_ORDER_PERSISTENCE_METHOD = "getSalesOrderPersistence";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
+    private static final String GET_SALES_ORDER_PERSISTENCE_METHOD = "getSalesOrderPersistence";
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     INotification notification;
@@ -54,7 +54,7 @@ public class SalesOrderWatcherTest {
     ISalesOrderPersistence salesOrderPersistence;
 
     @Mock
-    Manufacturer manufacturer;
+    IManufacturer manufacturer;
 
     @Mock
     SalesOrder salesOrder;
@@ -63,7 +63,7 @@ public class SalesOrderWatcherTest {
     public void checkSalesOrdersForDueDateTest() throws Exception {
         SalesOrderWatcher salesOrderWatcher = spy(new SalesOrderWatcher());
 
-        List<Manufacturer> manufacturers = new ArrayList<>();
+        List<IManufacturer> manufacturers = new ArrayList<>();
         manufacturers.add(manufacturer);
 
         doNothing().when(salesOrderWatcher).checkSalesOrdersForDueDateByManufacturer(anyInt());
