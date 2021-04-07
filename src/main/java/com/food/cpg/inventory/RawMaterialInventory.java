@@ -1,14 +1,10 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.item.IItemPersistence;
-import com.food.cpg.item.Item;
-import com.food.cpg.item.ItemRawMaterial;
-
 import java.util.List;
 
-public class RawMaterialInventory {
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+
+public class RawMaterialInventory implements IRawMaterialInventory {
 
     private Integer rawMaterialId;
     private String rawMaterialName;
@@ -18,77 +14,102 @@ public class RawMaterialInventory {
     private Integer manufacturerId;
     private String manufacturerEmail;
 
+    @Override
     public Integer getRawMaterialId() {
         return rawMaterialId;
     }
 
+    @Override
     public void setRawMaterialId(Integer rawMaterialId) {
         this.rawMaterialId = rawMaterialId;
     }
 
+    @Override
     public String getRawMaterialName() {
         return rawMaterialName;
     }
 
+    @Override
     public void setRawMaterialName(String rawMaterialName) {
         this.rawMaterialName = rawMaterialName;
     }
 
+    @Override
     public String getVendorName() {
         return vendorName;
     }
 
+    @Override
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
     }
 
+    @Override
     public Double getRawMaterialQuantity() {
         return rawMaterialQuantity;
     }
 
+    @Override
     public void setRawMaterialQuantity(Double rawMaterialQuantity) {
         this.rawMaterialQuantity = rawMaterialQuantity;
     }
 
+    @Override
     public String getRawMaterialQuantityUOM() {
         return rawMaterialQuantityUOM;
     }
 
+    @Override
     public void setRawMaterialQuantityUOM(String rawMaterialQuantityUOM) {
         this.rawMaterialQuantityUOM = rawMaterialQuantityUOM;
     }
 
+    @Override
     public Integer getManufacturerId() {
         return manufacturerId;
     }
 
+    @Override
     public void setManufacturerId(Integer manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 
+    @Override
     public String getManufacturerEmail() {
         return manufacturerEmail;
     }
 
+    @Override
     public void setManufacturerEmail(String manufacturerEmail) {
         this.manufacturerEmail = manufacturerEmail;
     }
 
-    public List<RawMaterialInventory> getAll() {
-    int loggedInManufacturerId = getLoggedInManufacturerId();
-    return getPersistence().getAll(loggedInManufacturerId);
-     }
-
-    public void save() {
+    @Override
+    public List<IRawMaterialInventory> getAll() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
-        this.setManufacturerId(loggedInManufacturerId);
+        return getPersistence().getAll(loggedInManufacturerId);
+    }
 
-        getPersistence().save(this);
+    @Override
+    public void increaseQuantity() {
+        Unit inventoryUnit = Unit.from(this.getRawMaterialQuantityUOM());
+        double quantityInGram = inventoryUnit.getGramValue() * this.getRawMaterialQuantity();
+        this.setRawMaterialQuantity(quantityInGram);
+
+        getPersistence().increaseQuantity(this);
+    }
+
+    @Override
+    public void decreaseQuantity() {
+        Unit inventoryUnit = Unit.from(this.getRawMaterialQuantityUOM());
+        double quantityInGram = inventoryUnit.getGramValue() * this.getRawMaterialQuantity();
+        this.setRawMaterialQuantity(quantityInGram);
+
+        getPersistence().decreaseQuantity(this);
     }
 
     private IRawMaterialInventoryPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getRawMaterialInventoryPersistence();
+        return InventoryFactory.instance().makeRawMaterialInventoryPersistence();
     }
 
     private int getLoggedInManufacturerId() {

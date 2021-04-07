@@ -5,8 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Controller
 public class RawMaterialInventoryController {
 
@@ -18,22 +16,20 @@ public class RawMaterialInventoryController {
     private static final String VIEW_RAW_MATERIAL_INVENTORY_LIST_KEY = "rawMaterialInventoryList";
 
     @GetMapping("/raw-materials-inventory")
-    public String showRawMaterialsInventory(RawMaterialInventory rawMaterialInventory, Model model){
-        List<RawMaterialInventory> rawMaterialInventoryList = rawMaterialInventory.getAll();
-        model.addAttribute(VIEW_RAW_MATERIAL_INVENTORY_KEY, rawMaterialInventoryList);
+    public String showRawMaterialsInventory(RawMaterialInventory rawMaterialInventory, Model model) {
+        model.addAttribute(VIEW_RAW_MATERIAL_INVENTORY_KEY, rawMaterialInventory.getAll());
         return SHOW_RAW_MATERIAL_INVENTORY_ROUTE;
     }
 
     @GetMapping("/raw-materials-inventory-quantity-form")
-    public String showRawMaterialInventoryQuantityForm(RawMaterialInventory rawMaterialInventory, Model model){
-        List<RawMaterialInventory> rawMaterialInventoryList = rawMaterialInventory.getAll();
-        model.addAttribute(VIEW_RAW_MATERIAL_INVENTORY_LIST_KEY, rawMaterialInventoryList);
+    public String showRawMaterialInventoryQuantityForm(RawMaterialInventory rawMaterialInventory, Model model) {
+        model.addAttribute(VIEW_RAW_MATERIAL_INVENTORY_LIST_KEY, rawMaterialInventory.getAll());
         return SHOW_RAW_MATERIAL_INVENTORY_QUANTITY_FORM_ROUTE;
     }
 
     @PostMapping("/save-raw-materials-inventory-quantity")
-    public String saveRawMaterialInventoryQuantity(RawMaterialInventory rawMaterialInventory, Model model){
-        rawMaterialInventory.save();
+    public String saveRawMaterialInventoryQuantity(RawMaterialInventory rawMaterialInventory, Model model) {
+        rawMaterialInventory.increaseQuantity();
         return redirectToRawMaterialInventory();
     }
 

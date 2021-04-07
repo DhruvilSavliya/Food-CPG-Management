@@ -1,7 +1,8 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.vendor.Vendor;
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +10,6 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -21,49 +19,64 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RawMaterialInventory.class)
-public class RawMaterialInventoryTest extends TestCase {
+public class RawMaterialInventoryTest {
 
     public static final String GET_PERSISTENCE_METHOD = "getPersistence";
-    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final Integer TEST_MANUFACTURER_ID = 1;
-    private static final Integer RAW_MATERIAL_ID = 1;
-    private static final String RAW_MATERIAL_NAME = "Test raw material";
+    private static final Integer TEST_RAW_MATERIAL_ID = 1;
+    private static final String TEST_RAW_MATERIAL_NAME = "Test raw material";
+    private static final Double TEST_RAW_MATERIAL_QUANTITY = 10.0;
 
     @Mock
     IRawMaterialInventoryPersistence rawMaterialInventoryPersistence;
 
     @Test
     public void getAllTest() throws Exception {
-        RawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
+        IRawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
         rawMaterialInventory.setManufacturerId(TEST_MANUFACTURER_ID);
-        rawMaterialInventory.setRawMaterialId(RAW_MATERIAL_ID);
-        rawMaterialInventory.setRawMaterialName(RAW_MATERIAL_NAME);
+        rawMaterialInventory.setRawMaterialId(TEST_RAW_MATERIAL_ID);
+        rawMaterialInventory.setRawMaterialName(TEST_RAW_MATERIAL_NAME);
 
-        List<RawMaterialInventory> rawMaterialInventoryList = new ArrayList<>();
-        rawMaterialInventoryList.add(rawMaterialInventory);
+        List<IRawMaterialInventory> rawMaterialInventories = new ArrayList<>();
+        rawMaterialInventories.add(rawMaterialInventory);
 
         PowerMockito.doReturn(rawMaterialInventoryPersistence).when(rawMaterialInventory, GET_PERSISTENCE_METHOD);
-        PowerMockito.doReturn(rawMaterialInventoryList).when(rawMaterialInventoryPersistence).getAll(anyInt());
+        PowerMockito.doReturn(rawMaterialInventories).when(rawMaterialInventoryPersistence).getAll(anyInt());
 
-        List<RawMaterialInventory> rawMaterialInventoriesResult = rawMaterialInventory.getAll();
+        List<IRawMaterialInventory> rawMaterialInventoriesResult = rawMaterialInventory.getAll();
         Assert.assertNotNull(rawMaterialInventoriesResult);
         Assert.assertEquals(1, rawMaterialInventoriesResult.size());
-        Assert.assertEquals(RAW_MATERIAL_NAME, rawMaterialInventoriesResult.get(0).getRawMaterialName());
+        Assert.assertEquals(TEST_RAW_MATERIAL_NAME, rawMaterialInventoriesResult.get(0).getRawMaterialName());
     }
 
     @Test
-    public void saveTest() throws Exception {
-        RawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
+    public void increaseQuantityTest() throws Exception {
+        IRawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
         rawMaterialInventory.setManufacturerId(TEST_MANUFACTURER_ID);
-        rawMaterialInventory.setRawMaterialName(RAW_MATERIAL_NAME);
+        rawMaterialInventory.setRawMaterialName(TEST_RAW_MATERIAL_NAME);
+        rawMaterialInventory.setRawMaterialQuantity(TEST_RAW_MATERIAL_QUANTITY);
 
         PowerMockito.doReturn(rawMaterialInventoryPersistence).when(rawMaterialInventory, GET_PERSISTENCE_METHOD);
-        PowerMockito.doNothing().when(rawMaterialInventoryPersistence).save(rawMaterialInventory);
-        PowerMockito.doReturn(1).when(rawMaterialInventory, GET_LOGGED_IN_MANUFACTURER_ID_METHOD);
+        PowerMockito.doNothing().when(rawMaterialInventoryPersistence).increaseQuantity(rawMaterialInventory);
 
-        rawMaterialInventory.save();
+        rawMaterialInventory.increaseQuantity();
         verifyPrivate(rawMaterialInventory).invoke(GET_PERSISTENCE_METHOD);
-        verify(rawMaterialInventoryPersistence, times(1)).save(rawMaterialInventory);
+        verify(rawMaterialInventoryPersistence, times(1)).increaseQuantity(rawMaterialInventory);
+    }
+
+    @Test
+    public void decreaseQuantityTest() throws Exception {
+        IRawMaterialInventory rawMaterialInventory = spy(new RawMaterialInventory());
+        rawMaterialInventory.setManufacturerId(TEST_MANUFACTURER_ID);
+        rawMaterialInventory.setRawMaterialName(TEST_RAW_MATERIAL_NAME);
+        rawMaterialInventory.setRawMaterialQuantity(TEST_RAW_MATERIAL_QUANTITY);
+
+        PowerMockito.doReturn(rawMaterialInventoryPersistence).when(rawMaterialInventory, GET_PERSISTENCE_METHOD);
+        PowerMockito.doNothing().when(rawMaterialInventoryPersistence).decreaseQuantity(rawMaterialInventory);
+
+        rawMaterialInventory.decreaseQuantity();
+        verifyPrivate(rawMaterialInventory).invoke(GET_PERSISTENCE_METHOD);
+        verify(rawMaterialInventoryPersistence, times(1)).decreaseQuantity(rawMaterialInventory);
     }
 
 }
