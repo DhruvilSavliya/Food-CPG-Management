@@ -17,9 +17,11 @@ import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.Manufacturer;
 
-public class AuthNavigator {
+public class AuthNavigator implements IAuthNavigator {
+
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    @Override
     public void navigateToLandingPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated()) {

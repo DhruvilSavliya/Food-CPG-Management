@@ -1,5 +1,7 @@
 package com.food.cpg;
 
+import com.food.cpg.authentication.AuthenticationFactory;
+import com.food.cpg.authentication.DefaultAuthenticationFactory;
 import com.food.cpg.packaging.DefaultPackageFactory;
 import com.food.cpg.packaging.PackageFactory;
 import org.slf4j.Logger;
@@ -29,6 +31,7 @@ public class FoodCPGApplication {
     private static void configureFactories() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
 
+        AuthenticationFactory.setAuthenticationFactory(new DefaultAuthenticationFactory());
         InventoryFactory.setInventoryFactory(new DefaultInventoryFactory(persistenceFactory));
         NotificationFactory.setNotificationFactory(new DefaultNotificationFactory(persistenceFactory));
         PackageFactory.setPackageFactory(new DefaultPackageFactory(persistenceFactory));
