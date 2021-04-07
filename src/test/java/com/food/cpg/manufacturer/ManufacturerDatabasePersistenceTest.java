@@ -1,12 +1,5 @@
 package com.food.cpg.manufacturer;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ManufacturerDatabasePersistenceTest {
@@ -39,7 +45,7 @@ public class ManufacturerDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    Manufacturer manufacturer;
+    IManufacturer manufacturer;
 
     @Before
     public void setUp() throws SQLException {
@@ -127,7 +133,5 @@ public class ManufacturerDatabasePersistenceTest {
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
         verify(manufacturer, times(1)).getEmail();
         verify(manufacturer, times(1)).getPassword();
-
-
     }
 }

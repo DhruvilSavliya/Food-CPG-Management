@@ -13,9 +13,9 @@ import org.springframework.security.web.RedirectStrategy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
-import com.food.cpg.manufacturer.Manufacturer;
+import com.food.cpg.manufacturer.ManufacturerFactory;
 
 public class AuthNavigator implements IAuthNavigator {
 
@@ -49,9 +49,8 @@ public class AuthNavigator implements IAuthNavigator {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String loggedInUserEmail = userDetails.getUsername();
 
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        IManufacturerPersistence manufacturerPersistence = persistenceFactory.getManufacturerPersistence();
-        Manufacturer manufacturer = manufacturerPersistence.get(loggedInUserEmail);
+        IManufacturerPersistence manufacturerPersistence = ManufacturerFactory.instance().makeManufacturerPersistence();
+        IManufacturer manufacturer = manufacturerPersistence.get(loggedInUserEmail);
 
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         authenticationSessionDetails.setAuthenticatedUserId(manufacturer.getId());

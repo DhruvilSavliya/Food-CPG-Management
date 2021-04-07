@@ -1,6 +1,8 @@
-package com.food.cpg.manufacturer.registration;
+package com.food.cpg.registration;
 
-import com.food.cpg.manufacturer.Manufacturer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +11,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.food.cpg.manufacturer.IManufacturer;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -23,30 +24,30 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(Registration.class)
 public class RegistrationTest {
 
+    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
     private static final String TEST_CONTACT_EMAIL = "rotesh@testregistration.com";
     private static final String TEST_MANUFACTURER_COMPANY_NAME = "Test manufacturer";
-    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
 
     @Mock
     IRegistrationPersistence registrationPersistence;
 
     @Mock
-    Manufacturer manufacturer;
+    IManufacturer manufacturer;
 
     @Test
     public void getAllTest() throws Exception {
-        Registration registration = spy(new Registration());
+        IRegistration registration = spy(new Registration());
         manufacturer.setCompanyName(TEST_MANUFACTURER_COMPANY_NAME);
         manufacturer.setEmail(TEST_CONTACT_EMAIL);
         registration.setManufacturer(manufacturer);
 
-        List<Registration> registrations = new ArrayList<>();
+        List<IRegistration> registrations = new ArrayList<>();
         registrations.add(registration);
 
         PowerMockito.doReturn(registrationPersistence).when(registration, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(registrations).when(registrationPersistence).getAll();
 
-        List<Registration> registrationResult = registration.getAll();
+        List<IRegistration> registrationResult = registration.getAll();
         Assert.assertNotNull(registrationResult);
         Assert.assertEquals(1, registrationResult.size());
         Assert.assertEquals(manufacturer, registrationResult.get(0).getManufacturer());
@@ -55,7 +56,7 @@ public class RegistrationTest {
     @Test
     public void approveTest() throws Exception {
 
-        Registration registration = spy(new Registration());
+        IRegistration registration = spy(new Registration());
 
         PowerMockito.doReturn(registrationPersistence).when(registration, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(registrationPersistence).approve(anyString());
@@ -67,7 +68,7 @@ public class RegistrationTest {
 
     @Test
     public void blockTest() throws Exception {
-        Registration registration = spy(new Registration());
+        IRegistration registration = spy(new Registration());
 
         PowerMockito.doReturn(registrationPersistence).when(registration, GET_PERSISTENCE_METHOD);
         PowerMockito.doNothing().when(registrationPersistence).block(anyString());

@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface IManufacturerPersistence {
 
-    List<Manufacturer> getAll();
+    List<IManufacturer> getAll();
 
-    Manufacturer get(String manufacturerEmail);
+    IManufacturer get(String manufacturerEmail);
 
-    void load(Manufacturer manufacturer);
+    void load(IManufacturer manufacturer);
 
-    void register(Manufacturer manufacturer);
+    void register(IManufacturer manufacturer);
 
-    void createLoginAccount(Manufacturer manufacturer);
+    void createLoginAccount(IManufacturer manufacturer);
 }

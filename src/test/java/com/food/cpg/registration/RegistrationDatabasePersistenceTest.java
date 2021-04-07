@@ -1,11 +1,4 @@
-package com.food.cpg.manufacturer.registration;
-
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+package com.food.cpg.registration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,13 +7,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.manufacturer.IManufacturer;
+import com.food.cpg.manufacturer.ManufacturerFactory;
+
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ManufacturerFactory.class, RegistrationFactory.class})
 public class RegistrationDatabasePersistenceTest {
 
     private static final String TEST_CONTACT_EMAIL = "rotesh@testregistration.com";
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -35,7 +46,16 @@ public class RegistrationDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    Registration registration;
+    ManufacturerFactory manufacturerFactory;
+
+    @Mock
+    IManufacturer manufacturer;
+
+    @Mock
+    RegistrationFactory registrationFactory;
+
+    @Mock
+    IRegistration registration;
 
     @Before
     public void setUp() throws SQLException {
@@ -45,7 +65,15 @@ public class RegistrationDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void getAllTest() throws Exception {
+        PowerMockito.mockStatic(ManufacturerFactory.class);
+        PowerMockito.doReturn(manufacturerFactory).when(ManufacturerFactory.class, GET_INSTANCE_METHOD);
+        when(manufacturerFactory.makeManufacturer()).thenReturn(manufacturer);
+
+        PowerMockito.mockStatic(RegistrationFactory.class);
+        PowerMockito.doReturn(registrationFactory).when(RegistrationFactory.class, GET_INSTANCE_METHOD);
+        when(registrationFactory.makeRegistration()).thenReturn(registration);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
 
         List<Object> placeholderValues = new ArrayList<>();
@@ -73,7 +101,6 @@ public class RegistrationDatabasePersistenceTest {
         registrationDatabasePersistence.approve(TEST_CONTACT_EMAIL);
 
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
-//        verify(registration, times(1)).getStatus();
     }
 
     @Test
@@ -85,7 +112,5 @@ public class RegistrationDatabasePersistenceTest {
         registrationDatabasePersistence.approve(TEST_CONTACT_EMAIL);
 
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
-//        verify(registration, times(1)).getStatus();
     }
-
 }
