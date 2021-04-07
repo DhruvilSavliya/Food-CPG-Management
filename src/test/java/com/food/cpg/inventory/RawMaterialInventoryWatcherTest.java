@@ -1,5 +1,6 @@
 package com.food.cpg.inventory;
 
+import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.Manufacturer;
 import com.food.cpg.notification.INotification;
@@ -84,7 +85,7 @@ public class RawMaterialInventoryWatcherTest {
     public void inventoryCheckTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<Manufacturer> manufacturers = new ArrayList<>();
+        List<IManufacturer> manufacturers = new ArrayList<>();
         manufacturers.add(manufacturer);
 
         doNothing().when(rawMaterialInventoryWatcher).inventoryCheckForEachManufacturer(anyInt());

@@ -3,6 +3,7 @@ package com.food.cpg.inventory;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
+import com.food.cpg.manufacturer.Manufacturer;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
@@ -50,18 +51,20 @@ public class RawMaterialInventoryWatcher {
         }
 
         Map<Integer, List<RawMaterial>> rawMaterialMap = new HashMap<>();
+        if (rawMaterialInventoryList.size() > 0) {
+            for (RawMaterial rawMaterial : rawMaterials) {
+                IRawMaterialInventory rawMaterialInventory = rawMaterialInventoryMap.get(rawMaterial.getId());
 
-        for (RawMaterial rawMaterial : rawMaterials) {
-            IRawMaterialInventory rawMaterialInventory = rawMaterialInventoryMap.get(rawMaterial.getId());
-            if (rawMaterialInventory.getRawMaterialQuantity() < rawMaterial.getReorderPointQuantity()) {
-                if (rawMaterialMap.containsKey(rawMaterial.getVendorId())) {
-                    List<RawMaterial> rawMaterialList = rawMaterialMap.get(rawMaterial.getVendorId());
-                    rawMaterialList.add(rawMaterial);
-                    rawMaterialMap.put(rawMaterial.getVendorId(), rawMaterialList);
-                } else {
-                    List<RawMaterial> rawMaterialList = new ArrayList<>();
-                    rawMaterialList.add(rawMaterial);
-                    rawMaterialMap.put(rawMaterial.getVendorId(), rawMaterialList);
+                if (rawMaterialInventory.getRawMaterialQuantity() < rawMaterial.getReorderPointQuantity()) {
+                    if (rawMaterialMap.containsKey(rawMaterial.getVendorId())) {
+                        List<RawMaterial> rawMaterialList = rawMaterialMap.get(rawMaterial.getVendorId());
+                        rawMaterialList.add(rawMaterial);
+                        rawMaterialMap.put(rawMaterial.getVendorId(), rawMaterialList);
+                    } else {
+                        List<RawMaterial> rawMaterialList = new ArrayList<>();
+                        rawMaterialList.add(rawMaterial);
+                        rawMaterialMap.put(rawMaterial.getVendorId(), rawMaterialList);
+                    }
                 }
             }
         }
