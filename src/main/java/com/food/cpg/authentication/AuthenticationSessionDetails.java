@@ -5,11 +5,6 @@ public class AuthenticationSessionDetails {
     private int authenticatedUserId;
 
     private AuthenticationSessionDetails() {
-
-    }
-
-    private static final class LazyClassHolder {
-        private static final AuthenticationSessionDetails AUTHENTICATION_SESSION_DETAILS = new AuthenticationSessionDetails();
     }
 
     public static AuthenticationSessionDetails getInstance() {
@@ -22,5 +17,9 @@ public class AuthenticationSessionDetails {
 
     public void setAuthenticatedUserId(int authenticatedUserId) {
         this.authenticatedUserId = authenticatedUserId;
+    }
+
+    private static final class LazyClassHolder {
+        private static final AuthenticationSessionDetails AUTHENTICATION_SESSION_DETAILS = new AuthenticationSessionDetails();
     }
 }
