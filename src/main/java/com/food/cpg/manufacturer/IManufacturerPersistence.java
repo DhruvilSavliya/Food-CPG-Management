@@ -13,4 +13,6 @@ public interface IManufacturerPersistence {
     void register(Manufacturer manufacturer);
 
     void createLoginAccount(Manufacturer manufacturer);
+
+    void resetPassword(String email,String password);
 }

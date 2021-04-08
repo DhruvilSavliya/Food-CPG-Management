@@ -38,6 +38,11 @@ public class AuthenticationController {
         return LOGIN_PAGE_ROUTE;
     }
 
+    @GetMapping("/forgot-password")
+    public String getForgotPasswordPageRoute() {
+        return FORGOT_PASSWORD_PAGE_ROUTE;
+    }
+
     @GetMapping("/403-error")
     public String unauthorisedError(Model model) {
         return UNAUTHORIZED_ERROR_PAGE_ROUTE;

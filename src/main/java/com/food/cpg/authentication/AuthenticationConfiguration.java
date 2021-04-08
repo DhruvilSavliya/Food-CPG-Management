@@ -35,7 +35,7 @@ public class AuthenticationConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/css/**", "/image/**", "/js/**", "/webjars/**", "/favicon.ico", "/*-error", "/register-manufacturer", "/save-manufacturer", "manufacturer/manufacturer-registration-request")
+                .antMatchers("/", "/css/**", "/image/**", "/js/**", "/webjars/**", "/favicon.ico", "/*-error", "/register-manufacturer", "/save-manufacturer", "manufacturer/manufacturer-registration-request","/forgot-password")
                 .permitAll()
                 .antMatchers("/show-registrations*", "/approve-registration/*", "/block-registration/*", "/manufacturer-details/*")
                 .hasAnyAuthority(Role.ADMIN.name())

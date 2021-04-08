@@ -99,6 +99,20 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
         }
     }
 
+    @Override
+    public void resetPassword(String email,String password) {
+        String sql = "update users set password =? where email =?";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(password);
+        placeholderValues.add(email);
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     public void loadManufacturerDetailsFromResultSet(ResultSet resultSet, Manufacturer manufacturer) throws SQLException {
         manufacturer.setId(resultSet.getInt("manufacturer_id"));
         manufacturer.setCompanyName(resultSet.getString("manufacturer_company_name"));

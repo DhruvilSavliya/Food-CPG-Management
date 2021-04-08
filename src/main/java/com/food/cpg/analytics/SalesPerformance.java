@@ -5,9 +5,10 @@ import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrder;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SalesPerformance {
 
@@ -39,24 +40,32 @@ public class SalesPerformance {
         this.totalSales = totalSales;
     }
 
-    public void generateSalesPerformance() {
+
+    public Map<String, SalesPerformance> generateSalesPerformance() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
+        Map<String, SalesPerformance> salesPerformances = new HashMap<>();
 
         List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
-        List<SalesPerformance> salesPerformances = new ArrayList<>();
 
-        int salesordernumber = 0;
-        double costofsalesorder = 0;
         for (SalesOrder salesOrder : salesOrders) {
             String monthname = getMonthFromDate(salesOrder.getStatusChangeDate());
+            if (salesPerformances.containsKey(monthname)) {
+                SalesPerformance salesPerformance = salesPerformances.get(monthname);
+                salesPerformance.setTotalOrders(salesPerformance.getTotalOrders() + 1);
+                salesPerformance.setTotalSales(salesPerformance.getTotalSales() + salesOrder.getTotalCost());
+                salesPerformances.replace(monthname, salesPerformance);
+            } else {
+                SalesPerformance salesPerformance = new SalesPerformance();
+                salesPerformance.setMonth(monthname);
+                salesPerformance.setTotalOrders(1);
+                salesPerformance.setTotalSales(salesOrder.getTotalCost());
+                salesPerformances.put(monthname, salesPerformance);
+            }
 
-            salesordernumber++;
-            costofsalesorder = costofsalesorder + salesOrder.getTotalCost();
         }
-        this.setTotalOrders(salesordernumber);
-        this.setTotalSales(costofsalesorder);
-
+        return salesPerformances;
     }
+
 
     private ISalesOrderPersistence getSalesOrderPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
@@ -69,7 +78,7 @@ public class SalesPerformance {
     }
 
     public String getMonthFromDate(Date date) {
-        int monthNumber= date.getMonth();
+        int monthNumber = date.getMonth();
         String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         return monthNames[monthNumber];
     }

@@ -121,6 +121,15 @@ public class Manufacturer {
         getPersistence().createLoginAccount(this);
     }
 
+    public void resetPassword(String email,String password){
+        getPersistence().resetPassword(email,password);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(this.getPassword());
+        this.setPassword(encodedPassword);
+    }
+
+
     public void load() {
         getPersistence().load(this);
     }

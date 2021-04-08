@@ -26,11 +26,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="order : ${inventoryUsageList}">
-                        <td th:text="*{order.rawMaterialName}"></td>
-                        <td th:text="*{order.quantityForSales}"></td>
-                        <td th:text="*{order.quantityForCharity}"></td>
-                        <td th:text="*{order.totalQuantity}"></td>
+                    <tr th:each="entry : ${inventoryUsages}" th:with="inventoryusage=${entry.value}">
+                        <td th:text="${inventoryusage.rawMaterialName}"></td>
+                        <td th:text="${inventoryusage.quantityForSales}"></td>
+                        <td th:text="${inventoryusage.quantityForCharity}"></td>
+                        <td th:text="${inventoryusage.totalQuantity}"></td>
                     </tr>
                     </tbody>
                 </table>
