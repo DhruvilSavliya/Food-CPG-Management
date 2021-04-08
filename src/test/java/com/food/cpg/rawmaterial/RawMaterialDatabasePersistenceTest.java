@@ -37,7 +37,7 @@ public class RawMaterialDatabasePersistenceTest {
     private static final String TEST_RAW_MATERIAL_UNIT_MEASUREMENT_UOM = "g";
     private static final Double TEST_RAW_MATERIAL_REORDER_QUANTITY = 15.0;
     private static final String TEST_RAW_MATERIAL_REORDER_QUANTITY_UOM = "g";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;

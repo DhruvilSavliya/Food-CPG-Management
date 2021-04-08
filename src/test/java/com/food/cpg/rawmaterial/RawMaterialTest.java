@@ -23,7 +23,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 public class RawMaterialTest {
 
     public static final String GET_PERSISTENCE_METHOD = "getPersistence";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final double DELTA = 1e-15;
     private static final String EMPTY_STRING = "";

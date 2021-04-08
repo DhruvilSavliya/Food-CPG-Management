@@ -11,7 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
@@ -23,7 +25,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SalesOrderFactory.class)
 public class SalesOrderDatabasePersistenceTest {
 
     private static final String TEST_ORDER_NUMBER = "SO-123456";
@@ -36,6 +39,7 @@ public class SalesOrderDatabasePersistenceTest {
     private static final Double TEST_TAX = 10.0;
     private static final Double TEST_TOTAL_COST = 385.0;
     private static final boolean TEST_IS_FOR_CHARITY = true;
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -50,7 +54,10 @@ public class SalesOrderDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    SalesOrder salesOrder;
+    ISalesOrder salesOrder;
+
+    @Mock
+    SalesOrderFactory salesOrderFactory;
 
     @Before
     public void setUp() throws SQLException {
@@ -60,7 +67,11 @@ public class SalesOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllOpenOrdersTest() throws SQLException {
+    public void getAllOpenOrdersTest() throws Exception {
+        PowerMockito.mockStatic(SalesOrderFactory.class);
+        PowerMockito.doReturn(salesOrderFactory).when(SalesOrderFactory.class, GET_INSTANCE_METHOD);
+        when(salesOrderFactory.makeSalesOrder()).thenReturn(salesOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 

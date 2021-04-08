@@ -19,28 +19,28 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
     }
 
     @Override
-    public List<SalesOrder> getAllOpenOrders(int manufacturerId) {
+    public List<ISalesOrder> getAllOpenOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, SalesOrderStatus.Status.OPEN.name());
     }
 
     @Override
-    public List<SalesOrder> getAllPackagedOrders(int manufacturerId) {
+    public List<ISalesOrder> getAllPackagedOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, SalesOrderStatus.Status.PACKAGED.name());
     }
 
     @Override
-    public List<SalesOrder> getAllShippedOrders(int manufacturerId) {
+    public List<ISalesOrder> getAllShippedOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, SalesOrderStatus.Status.SHIPPED.name());
     }
 
     @Override
-    public List<SalesOrder> getAllPaidOrders(int manufacturerId) {
+    public List<ISalesOrder> getAllPaidOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, SalesOrderStatus.Status.PAID.name());
     }
 
     @Override
-    public void load(SalesOrder salesOrder) {
-        String sql = "select * from sales_orders where order_number = ?";
+    public void load(ISalesOrder salesOrder) {
+        String sql = SalesOrderDatabaseQuery.LOAD_SALES_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(salesOrder.getOrderNumber());
 
@@ -59,9 +59,9 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
     }
 
     @Override
-    public void save(SalesOrder salesOrder) {
+    public void save(ISalesOrder salesOrder) {
 
-        String sql = "insert into sales_orders (order_number, item_id, package_id, package_cost, shipping_cost, tax, total_cost, is_for_charity, buyer_details, manufacturer_id) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = SalesOrderDatabaseQuery.INSERT_SALES_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(salesOrder.getOrderNumber());
         placeholderValues.add(salesOrder.getItemId());
@@ -83,7 +83,7 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
 
     @Override
     public void delete(String orderNumber) {
-        String sql = "delete from sales_orders where order_number = ?";
+        String sql = SalesOrderDatabaseQuery.DELETE_SALES_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderNumber);
 
@@ -96,7 +96,7 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
 
     @Override
     public void changeStatus(String orderNumber, String orderStatus) {
-        String sql = "update sales_orders set order_status = ? where order_number = ?";
+        String sql = SalesOrderDatabaseQuery.CHANGE_SALES_ORDER_STATUS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderStatus);
         placeholderValues.add(orderNumber);
@@ -108,10 +108,10 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
         }
     }
 
-    private List<SalesOrder> getAllOrders(int manufacturerId, String orderStatus) {
-        List<SalesOrder> salesOrders = new ArrayList<>();
+    private List<ISalesOrder> getAllOrders(int manufacturerId, String orderStatus) {
+        List<ISalesOrder> salesOrders = new ArrayList<>();
 
-        String sql = "select * from sales_orders where manufacturer_id = ? and order_status = ?";
+        String sql = SalesOrderDatabaseQuery.SELECT_ALL_SALES_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
         placeholderValues.add(orderStatus);
@@ -121,7 +121,7 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        SalesOrder salesOrder = new SalesOrder();
+                        ISalesOrder salesOrder = SalesOrderFactory.instance().makeSalesOrder();
                         loadSalesOrderDetailsFromResultSet(rs, salesOrder);
 
                         salesOrders.add(salesOrder);
@@ -135,17 +135,17 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
         return salesOrders;
     }
 
-    private void loadSalesOrderDetailsFromResultSet(ResultSet resultSet, SalesOrder salesOrder) throws SQLException {
-        salesOrder.setOrderNumber(resultSet.getString("order_number"));
-        salesOrder.setItemId(resultSet.getInt("item_id"));
-        salesOrder.setPackageId(resultSet.getInt("package_id"));
-        salesOrder.setTotalCost(resultSet.getDouble("total_cost"));
-        salesOrder.setIsForCharity(resultSet.getBoolean("is_for_charity"));
+    private void loadSalesOrderDetailsFromResultSet(ResultSet resultSet, ISalesOrder salesOrder) throws SQLException {
+        salesOrder.setOrderNumber(resultSet.getString(SalesOrderDatabaseColumn.ORDER_NUMBER));
+        salesOrder.setItemId(resultSet.getInt(SalesOrderDatabaseColumn.ITEM_ID));
+        salesOrder.setPackageId(resultSet.getInt(SalesOrderDatabaseColumn.PACKAGE_ID));
+        salesOrder.setTotalCost(resultSet.getDouble(SalesOrderDatabaseColumn.TOTAL_COST));
+        salesOrder.setIsForCharity(resultSet.getBoolean(SalesOrderDatabaseColumn.IS_FOR_CHARITY));
 
-        String orderStatus = resultSet.getString("order_status");
-        SalesOrderStatus salesOrderStatus = SalesOrderStatusFactory.getInstance().makeOrderStatus(orderStatus);
+        String orderStatus = resultSet.getString(SalesOrderDatabaseColumn.ORDER_STATUS);
+        SalesOrderStatus salesOrderStatus = SalesOrderFactory.instance().makeOrderStatus(orderStatus);
         salesOrder.setSalesOrderStatus(salesOrderStatus);
 
-        salesOrder.setStatusChangeDate(resultSet.getTimestamp("status_change_date"));
+        salesOrder.setStatusChangeDate(resultSet.getTimestamp(SalesOrderDatabaseColumn.STATUS_CHANGE_DATE));
     }
 }

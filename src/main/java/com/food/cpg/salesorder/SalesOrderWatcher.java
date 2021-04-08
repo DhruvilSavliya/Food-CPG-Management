@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
+import com.food.cpg.manufacturer.ManufacturerFactory;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 
@@ -20,8 +20,9 @@ public class SalesOrderWatcher {
 
     private static final int DUE_DAY_FOR_PAYMENT = 7;
     private static final String SALES_ORDER_PAYMENT_OVERDUE_MESSAGE = "Sales order %s payment due date was %s.";
+    private static final String SALES_ORDER_SCHEDULING_CRON = "0 0 0 * * *";
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = SALES_ORDER_SCHEDULING_CRON)
     public void checkSalesOrdersForDueDate() {
         List<IManufacturer> manufacturers = getManufacturerPersistence().getAll();
 
@@ -31,9 +32,9 @@ public class SalesOrderWatcher {
     }
 
     public void checkSalesOrdersForDueDateByManufacturer(int manufacturerId) {
-        List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllShippedOrders(manufacturerId);
+        List<ISalesOrder> salesOrders = getSalesOrderPersistence().getAllShippedOrders(manufacturerId);
 
-        for (SalesOrder salesOrder : salesOrders) {
+        for (ISalesOrder salesOrder : salesOrders) {
             if (isSalesOrderPaymentOverdue(salesOrder)) {
                 Date salesOrderDueDate = calculateSalesOrderDueDate(salesOrder);
                 String notificationContent = String.format(SALES_ORDER_PAYMENT_OVERDUE_MESSAGE, salesOrder.getOrderNumber(), salesOrderDueDate);
@@ -44,7 +45,7 @@ public class SalesOrderWatcher {
         }
     }
 
-    public boolean isSalesOrderPaymentOverdue(SalesOrder salesOrder) {
+    public boolean isSalesOrderPaymentOverdue(ISalesOrder salesOrder) {
         Date salesOrderDueDate = calculateSalesOrderDueDate(salesOrder);
         Date currentDate = new Date();
 
@@ -54,7 +55,7 @@ public class SalesOrderWatcher {
         return false;
     }
 
-    public Date calculateSalesOrderDueDate(SalesOrder salesOrder) {
+    public Date calculateSalesOrderDueDate(ISalesOrder salesOrder) {
         Timestamp salesOrderShippedTimestamp = salesOrder.getStatusChangeDate();
 
         Calendar salesOrderDueDate = Calendar.getInstance();
@@ -65,12 +66,10 @@ public class SalesOrderWatcher {
     }
 
     private ISalesOrderPersistence getSalesOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getSalesOrderPersistence();
+        return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }
 
     private IManufacturerPersistence getManufacturerPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getManufacturerPersistence();
+        return ManufacturerFactory.instance().makeManufacturerPersistence();
     }
 }
