@@ -3,8 +3,7 @@ package com.food.cpg.purchaseorder;
 import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 public class PurchaseOrderByItem {
 
@@ -27,9 +26,23 @@ public class PurchaseOrderByItem {
         this.itemQuantity = itemQuantity;
     }
 
+    public void createPurchaseOrderByItem(IRawMaterial rawMaterial) {
+        IPurchaseOrder purchaseOrder = PurchaseOrderFactory.instance().makePurchaseOrder();
+
+        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials) {
+            double requiredQuantityPerItem = purchaseOrderRawMaterial.getRawMaterialQuantity();
+            purchaseOrderRawMaterial.setRawMaterialQuantity(getItemQuantity() * requiredQuantityPerItem);
+            purchaseOrderRawMaterial.loadDetails(rawMaterial);
+            purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
+        }
+
+        purchaseOrder.setManufacturerId(this.getLoggedInManufacturerId());
+        purchaseOrder.save();
+    }
+
     private IPurchaseOrderRawMaterialPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPurchaseOrderRawMaterialPersistence();
+        return PurchaseOrderFactory.instance().makePurchaseOrderRawMaterialPersistence();
     }
 
     public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
@@ -39,20 +52,5 @@ public class PurchaseOrderByItem {
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
-    }
-
-    public void createPurchaseOrderByItem(RawMaterial rawMaterial) {
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
-
-        List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());
-        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials) {
-            double requiredQuantityPerItem = purchaseOrderRawMaterial.getRawMaterialQuantity();
-            purchaseOrderRawMaterial.setRawMaterialQuantity(getItemQuantity() * requiredQuantityPerItem);
-            purchaseOrderRawMaterial.loadCost(rawMaterial);
-            purchaseOrder.addPurchaseOrderRawMaterials(purchaseOrderRawMaterial);
-        }
-
-        purchaseOrder.setManufacturerId(this.getLoggedInManufacturerId());
-        purchaseOrder.save();
     }
 }

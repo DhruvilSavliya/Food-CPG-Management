@@ -1,8 +1,5 @@
 package com.food.cpg.item;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDatabasePersistence implements IItemPersistence{
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+
+public class ItemDatabasePersistence implements IItemPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
@@ -19,11 +18,11 @@ public class ItemDatabasePersistence implements IItemPersistence{
     }
 
     @Override
-    public List<Item> getAll(int manufacturerId) {
+    public List<IItem> getAll(int manufacturerId) {
 
-        List<Item> itemList = new ArrayList<>();
+        List<IItem> itemList = new ArrayList<>();
 
-        String sql = "select * from items where manufacturer_id = ?";
+        String sql = ItemDatabaseQuery.SELECT_ALL_ITEM;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -32,22 +31,22 @@ public class ItemDatabasePersistence implements IItemPersistence{
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        Item item = new Item();
+                        IItem item = ItemFactory.instance().makeItem();
                         loadItemDetailsFromResultSet(rs, item);
                         itemList.add(item);
                     }
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return itemList;
     }
 
     @Override
-    public void load(Item item) {
+    public void load(IItem item) {
 
-        String sql = "select * from items where item_id = ?";
+        String sql = ItemDatabaseQuery.LOAD_ITEM;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(item.getId());
 
@@ -61,47 +60,48 @@ public class ItemDatabasePersistence implements IItemPersistence{
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Integer save(Item item) {
+    public Integer save(IItem item) {
         Integer itemId = null;
-        String sql = "insert into items (item_name, item_cooking_cost, item_total_cost, manufacturer_id) values (?, ?, ?, ?)";
+        String sql = ItemDatabaseQuery.SAVE_ITEM;
         List<Object> placeholderValues = new ArrayList<>();
+        List<Object> placeholderValuesInventory = new ArrayList<>();
         placeholderValues.add(item.getName());
         placeholderValues.add(item.getCookingCost());
         placeholderValues.add(item.getTotalCost());
         placeholderValues.add(item.getManufacturerId());
 
         try {
-           itemId = commonDatabaseOperation.executeUpdateGetId(sql, placeholderValues);
+            itemId = commonDatabaseOperation.executeUpdateGetId(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
+
         return itemId;
     }
 
     @Override
     public void delete(int itemId) {
 
-        String sql = "delete from items where item_id = ?";
+        String sql = ItemDatabaseQuery.DELETE_ITEM;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(itemId);
-
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
 
     }
 
-    private void loadItemDetailsFromResultSet(ResultSet resultSet, Item item) throws SQLException {
-        item.setId(resultSet.getInt("item_id"));
-        item.setName(resultSet.getString("item_name"));
-        item.setCookingCost(resultSet.getDouble("item_cooking_cost"));
-        item.setTotalCost(resultSet.getDouble("item_total_cost"));
+    private void loadItemDetailsFromResultSet(ResultSet resultSet, IItem item) throws SQLException {
+        item.setId(resultSet.getInt(ItemDatabaseColumn.ITEM_ID));
+        item.setName(resultSet.getString(ItemDatabaseColumn.ITEM_NAME));
+        item.setCookingCost(resultSet.getDouble(ItemDatabaseColumn.ITEM_COOKING_COST));
+        item.setTotalCost(resultSet.getDouble(ItemDatabaseColumn.ITEM_TOTAL_COST));
     }
 }

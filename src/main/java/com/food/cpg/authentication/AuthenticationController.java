@@ -13,23 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class AuthenticationController {
 
+    private static final String APPLICATION_NAME_PROPERTY = "${application.name}";
     private static final String REDIRECT_NOTATION = "redirect:";
-    private static final String LOGIN_END_POINT = "/login";
     private static final String LOGIN_PAGE_ROUTE = "login";
-    private static final String UNAUTHORIZED_ERROR_PAGE_ROUTE = "/403-error";
     private static final String VIEW_PROJECT_NAME_KEY = "projectName";
+    private static final String UNAUTHORIZED_ERROR_PAGE_ROUTE = "403-error";
 
-    @Value("${application.name}")
+    @Value(APPLICATION_NAME_PROPERTY)
     private String projectName;
 
-    @GetMapping("/")
+    @GetMapping(AuthenticationEndpoint.ROOT_END_POINT)
     public String landingPage(Model model) {
         model.addAttribute(VIEW_PROJECT_NAME_KEY, projectName);
 
-        return REDIRECT_NOTATION + LOGIN_END_POINT;
+        return REDIRECT_NOTATION + AuthenticationEndpoint.LOGIN_END_POINT;
     }
 
-    @GetMapping("/login")
+    @GetMapping(AuthenticationEndpoint.LOGIN_END_POINT)
     public String login(AuthNavigator authNavigator, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         authNavigator.navigateToLandingPage(request, response);
         model.addAttribute(VIEW_PROJECT_NAME_KEY, projectName);
@@ -37,8 +37,8 @@ public class AuthenticationController {
         return LOGIN_PAGE_ROUTE;
     }
 
-    @GetMapping("/403-error")
-    public String unauthorisedError(Model model) {
+    @GetMapping(AuthenticationEndpoint.UNAUTHORIZED_ERROR_PAGE_END_POINT)
+    public String unauthorisedError() {
         return UNAUTHORIZED_ERROR_PAGE_ROUTE;
     }
 }

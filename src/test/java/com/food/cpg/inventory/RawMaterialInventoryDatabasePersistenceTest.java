@@ -1,13 +1,5 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.vendor.VendorDatabasePersistence;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,17 +7,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(InventoryFactory.class)
 public class RawMaterialInventoryDatabasePersistenceTest {
 
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
-    private static final String TEST_RAW_MATERIAL_NAME = "Test raw material";
     private static final Double TEST_RAW_MATERIAL_QUANTITY = 10.0;
-    private static final String TEST_RAW_MATERIAL_QUANTITY_UOM = "g";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -40,7 +46,10 @@ public class RawMaterialInventoryDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    RawMaterialInventory rawMaterialInventory;
+    IRawMaterialInventory rawMaterialInventory;
+
+    @Mock
+    InventoryFactory inventoryFactory;
 
     @Before
     public void setUp() throws SQLException {
@@ -50,9 +59,12 @@ public class RawMaterialInventoryDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void getAllTest() throws Exception {
+        PowerMockito.mockStatic(InventoryFactory.class);
+        PowerMockito.doReturn(inventoryFactory).when(InventoryFactory.class, GET_INSTANCE_METHOD);
+        when(inventoryFactory.makeRawMaterialInventory()).thenReturn(rawMaterialInventory);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
-        doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
+        doNothing().when(commonDatabaseOperation).loadPlaceholderValues(any(), anyList());
 
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(1);
@@ -72,11 +84,21 @@ public class RawMaterialInventoryDatabasePersistenceTest {
     }
 
     @Test
+    public void saveTest() throws SQLException {
+        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+
+        RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
+
+        rawMaterialInventoryDatabasePersistence.save(TEST_RAW_MATERIAL_ID);
+
+        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
+    }
+
+    @Test
     public void increaseQuantityTest() throws SQLException {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
         when(rawMaterialInventory.getRawMaterialId()).thenReturn(TEST_RAW_MATERIAL_ID);
         when(rawMaterialInventory.getRawMaterialQuantity()).thenReturn(TEST_RAW_MATERIAL_QUANTITY);
-        when(rawMaterialInventory.getRawMaterialQuantityUOM()).thenReturn(TEST_RAW_MATERIAL_QUANTITY_UOM);
 
         RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
 
@@ -85,7 +107,6 @@ public class RawMaterialInventoryDatabasePersistenceTest {
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
         verify(rawMaterialInventory, times(1)).getRawMaterialId();
         verify(rawMaterialInventory, times(1)).getRawMaterialQuantity();
-        verify(rawMaterialInventory, times(1)).getRawMaterialQuantityUOM();
     }
 
     @Test
@@ -93,7 +114,6 @@ public class RawMaterialInventoryDatabasePersistenceTest {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
         when(rawMaterialInventory.getRawMaterialId()).thenReturn(TEST_RAW_MATERIAL_ID);
         when(rawMaterialInventory.getRawMaterialQuantity()).thenReturn(TEST_RAW_MATERIAL_QUANTITY);
-        when(rawMaterialInventory.getRawMaterialQuantityUOM()).thenReturn(TEST_RAW_MATERIAL_QUANTITY_UOM);
 
         RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
 
@@ -102,8 +122,5 @@ public class RawMaterialInventoryDatabasePersistenceTest {
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
         verify(rawMaterialInventory, times(1)).getRawMaterialId();
         verify(rawMaterialInventory, times(1)).getRawMaterialQuantity();
-        verify(rawMaterialInventory, times(1)).getRawMaterialQuantityUOM();
     }
-
-
 }

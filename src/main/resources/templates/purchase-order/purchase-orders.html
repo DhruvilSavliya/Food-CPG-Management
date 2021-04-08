@@ -19,6 +19,7 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Cost</th>
+                        <th scope="col">Created On</th>
                         <th scope="col">Delete</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -26,7 +27,8 @@
                     <tbody>
                     <tr th:each="order : ${openPurchaseOrders}">
                         <td th:text="${order.orderNumber}"></td>
-                        <td th:text="${order.totalCost}"></td>
+                        <td th:text="'$' + ${order.totalCost}"></td>
+                        <td th:text="${order.statusChangeDate}"></td>
                         <td><a th:href="@{/purchase-orders/delete/{id}(id=${order.orderNumber})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
                         <td><a th:href="@{/purchase-orders/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Place Order</button></a></td>
                     </tr>
@@ -45,7 +47,7 @@
                     <tbody>
                     <tr th:each="order : ${placedPurchaseOrders}">
                         <td th:text="${order.orderNumber}"></td>
-                        <td th:text="${order.totalCost}"></td>
+                        <td th:text="'$' + ${order.totalCost}"></td>
                         <td th:text="${order.statusChangeDate}"></td>
                         <td><a th:href="@{/purchase-orders/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Receive Order</button></a></td>
                     </tr>
@@ -63,7 +65,7 @@
                     <tbody>
                     <tr th:each="order : ${receivedPurchaseOrders}">
                         <td th:text="${order.orderNumber}"></td>
-                        <td th:text="${order.totalCost}"></td>
+                        <td th:text="'$' + ${order.totalCost}"></td>
                         <td th:text="${order.statusChangeDate}"></td>
                     </tr>
                     </tbody>

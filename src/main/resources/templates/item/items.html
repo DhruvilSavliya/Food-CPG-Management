@@ -21,6 +21,8 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Item Name</th>
+                    <th scope="col">Cooking Cost</th>
+                    <th scope="col">Total Cost</th>
                     <th scope="col">Delete</th>
                 </tr>
                 </thead>
@@ -28,7 +30,8 @@
                 <tr th:each="item : ${items}">
                     <td th:text="${item.id}"></td>
                     <td th:text="${item.name}"></td>
-                    <!--                        <td><a th:href="@{/item/edit/{id}(id=${item.itemId})}"><i class="fa fa-pencil fa-lg pl-2" aria-hidden="true"></i></a></td>-->
+                    <td th:text="'$' + ${item.cookingCost}"></td>
+                    <td th:text="'$' + ${item.totalCost}"></td>
                     <td><a th:href="@{/item/delete/{id}(id=${item.id})}"><i class="fa fa-trash fa-lg pl-2"
                                                                             aria-hidden="true"></i></a></td>
                 </tr>

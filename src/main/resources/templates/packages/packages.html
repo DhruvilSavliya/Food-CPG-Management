@@ -19,6 +19,10 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Package Name</th>
+                        <th scope="col">Item Quantity</th>
+                        <th scope="col">Manufacturing Cost</th>
+                        <th scope="col">Wholesale Cost</th>
+                        <th scope="col">Retail Cost</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -27,6 +31,10 @@
                     <tr th:each="packages : ${packages}">
                         <td th:text="${packages.packageId}"></td>
                         <td th:text="${packages.packageName}"></td>
+                        <td th:text="${packages.quantity}"></td>
+                        <td th:text="'$' + ${packages.manufacturingCost}"></td>
+                        <td th:text="'$' + ${packages.wholesaleCost}"></td>
+                        <td th:text="'$' + ${packages.retailCost}"></td>
                         <td><a th:href="@{/packages/edit/{id}(id=${packages.packageId})}"><i class="fa fa-pencil fa-lg pl-2" aria-hidden="true"></i></a></td>
                         <td><a th:href="@{/packages/delete/{id}(id=${packages.packageId})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
                     </tr>

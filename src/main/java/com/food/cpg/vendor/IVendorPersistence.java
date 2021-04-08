@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface IVendorPersistence {
 
-    List<Vendor> getAll(int manufacturerId);
+    List<IVendor> getAll(int manufacturerId);
 
-    void load(Vendor vendor);
+    void load(IVendor vendor);
 
-    void save(Vendor vendor);
+    void save(IVendor vendor);
 
-    void update(Vendor vendor);
+    void update(IVendor vendor);
 
     void delete(int vendorId);
 }

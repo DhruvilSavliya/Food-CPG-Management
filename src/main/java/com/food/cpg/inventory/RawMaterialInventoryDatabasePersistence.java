@@ -1,10 +1,5 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-import com.food.cpg.item.Item;
-import com.food.cpg.vendor.Vendor;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RawMaterialInventoryDatabasePersistence  implements IRawMaterialInventoryPersistence{
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+
+public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInventoryPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
@@ -21,35 +18,11 @@ public class RawMaterialInventoryDatabasePersistence  implements IRawMaterialInv
     }
 
     @Override
-    public List<RawMaterialInventory> getDefaulter() {
-        List<RawMaterialInventory> rawMaterialDefaulterList = new ArrayList<>();
+    public List<IRawMaterialInventory> getAll(int manufacturerId) {
 
-        String sql = "select rmi.raw_material_id, rmi.quantity, rmi.quantity_uom, rm.manufacturer_id, rm.raw_material_name, v.vendor_name, m.manufacturer_email  from raw_material_inventory rmi join raw_materials rm on rmi.raw_material_id = rm.raw_material_id join vendors v on rm.vendor_id = v.vendor_id join manufacturer m on rm.manufacturer_id= m.manufacturer_id\n" +
-                "where rmi.quantity < rm.reorder_point_quantity";
+        List<IRawMaterialInventory> rawMaterialInventories = new ArrayList<>();
 
-        try (Connection connection = commonDatabaseOperation.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                try (ResultSet rs = preparedStatement.executeQuery()) {
-                    while (rs.next()) {
-                        RawMaterialInventory rawMaterialInventory = new RawMaterialInventory();
-                        loadRawMaterialInventoryDefaulterDetailsFromResultSet(rs, rawMaterialInventory);
-
-                        rawMaterialDefaulterList.add(rawMaterialInventory);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new ServiceException(e);
-        }
-        return rawMaterialDefaulterList;
-    }
-
-    @Override
-    public List<RawMaterialInventory> getAll(int manufacturerId) {
-
-        List<RawMaterialInventory> rawMaterialInventoryList = new ArrayList<>();
-
-        String sql = "select rmi.raw_material_id, rmi.quantity, rmi. quantity_uom, rm.raw_material_name from raw_material_inventory rmi join raw_materials rm on rmi.raw_material_id = rm.raw_material_id where rm.manufacturer_id = ?";
+        String sql = "select rmi.raw_material_id, rmi.quantity, rmi.quantity_uom, rm.raw_material_name from raw_material_inventory rmi join raw_materials rm on rmi.raw_material_id = rm.raw_material_id where rm.manufacturer_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -58,60 +31,60 @@ public class RawMaterialInventoryDatabasePersistence  implements IRawMaterialInv
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        RawMaterialInventory rawMaterialInventory = new RawMaterialInventory();
+                        IRawMaterialInventory rawMaterialInventory = InventoryFactory.instance().makeRawMaterialInventory();
                         loadRawMaterialInventoryDetailsFromResultSet(rs, rawMaterialInventory);
-                        rawMaterialInventoryList.add(rawMaterialInventory);
+                        rawMaterialInventories.add(rawMaterialInventory);
                     }
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
-        return rawMaterialInventoryList;
+        return rawMaterialInventories;
     }
 
     @Override
-    public void increaseQuantity(RawMaterialInventory rawMaterialInventory) {
-        String sql = "update raw_material_inventory set quantity = quantity + ?, quantity_uom = ? where raw_material_id = ?";
+    public void save(int rawMaterialId) {
+        String sql = "insert into raw_material_inventory (raw_material_id) values (?)";
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(rawMaterialId);
+
+        try {
+            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void increaseQuantity(IRawMaterialInventory rawMaterialInventory) {
+        String sql = "update raw_material_inventory set quantity = quantity + ? where raw_material_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialInventory.getRawMaterialQuantity());
-        placeholderValues.add(rawMaterialInventory.getRawMaterialQuantityUOM());
         placeholderValues.add(rawMaterialInventory.getRawMaterialId());
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void decreaseQuantity(RawMaterialInventory rawMaterialInventory) {
-        String sql = "update raw_material_inventory set quantity = quantity - ?, quantity_uom = ? where raw_material_id = ?";
+    public void decreaseQuantity(IRawMaterialInventory rawMaterialInventory) {
+        String sql = "update raw_material_inventory set quantity = quantity - ? where raw_material_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialInventory.getRawMaterialQuantity());
-        placeholderValues.add(rawMaterialInventory.getRawMaterialQuantityUOM());
         placeholderValues.add(rawMaterialInventory.getRawMaterialId());
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void loadRawMaterialInventoryDefaulterDetailsFromResultSet(ResultSet resultSet, RawMaterialInventory rawMaterialInventory) throws SQLException {
-        rawMaterialInventory.setRawMaterialId(resultSet.getInt("raw_material_id"));
-        rawMaterialInventory.setRawMaterialQuantity(resultSet.getDouble("quantity"));
-        rawMaterialInventory.setRawMaterialQuantityUOM(resultSet.getString("quantity_uom"));
-        rawMaterialInventory.setManufacturerId(resultSet.getInt("manufacturer_id"));
-        rawMaterialInventory.setRawMaterialName(resultSet.getString("raw_material_name"));
-        rawMaterialInventory.setVendorName(resultSet.getString("vendor_name"));
-        rawMaterialInventory.setManufacturerEmail(resultSet.getString("manufacturer_email"));
-
-    }
-
-    private void loadRawMaterialInventoryDetailsFromResultSet(ResultSet resultSet, RawMaterialInventory rawMaterialInventory) throws SQLException {
+    private void loadRawMaterialInventoryDetailsFromResultSet(ResultSet resultSet, IRawMaterialInventory rawMaterialInventory) throws SQLException {
         rawMaterialInventory.setRawMaterialId(resultSet.getInt("raw_material_id"));
         rawMaterialInventory.setRawMaterialQuantity(resultSet.getDouble("quantity"));
         rawMaterialInventory.setRawMaterialQuantityUOM(resultSet.getString("quantity_uom"));

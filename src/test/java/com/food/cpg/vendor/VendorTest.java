@@ -21,6 +21,8 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(Vendor.class)
 public class VendorTest {
 
+    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final String EMPTY_STRING = "";
     private static final String NAME_ATTRIBUTE = "name";
     private static final String CONTACT_NAME_ATTRIBUTE = "contactPersonName";
@@ -32,15 +34,13 @@ public class VendorTest {
     private static final String TEST_CONTACT_NAME = "Kartik";
     private static final String TEST_CONTACT_EMAIL = "kartik@testvendor.com";
     private static final Long TEST_CONTACT_PHONE = 9876543210L;
-    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
-    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
 
     @Mock
     IVendorPersistence vendorPersistence;
 
     @Test
     public void isValidVendorNameTest() {
-        Vendor vendor = new Vendor();
+        IVendor vendor = new Vendor();
         vendor.setName(EMPTY_STRING);
 
         boolean isValidName = vendor.isValidVendor();
@@ -52,7 +52,7 @@ public class VendorTest {
 
     @Test
     public void isValidVendorContactPersonNameTest() {
-        Vendor vendor = new Vendor();
+        IVendor vendor = new Vendor();
         vendor.setContactPersonName(EMPTY_STRING);
 
         boolean isValidContact = vendor.isValidVendor();
@@ -64,7 +64,7 @@ public class VendorTest {
 
     @Test
     public void isValidVendorContactPersonEmailTest() {
-        Vendor vendor = new Vendor();
+        IVendor vendor = new Vendor();
         vendor.setContactPersonEmail(EMPTY_STRING);
 
         boolean isValidContactEmail = vendor.isValidVendor();
@@ -76,7 +76,7 @@ public class VendorTest {
 
     @Test
     public void isValidVendorContactPersonPhoneTest() {
-        Vendor vendor = new Vendor();
+        IVendor vendor = new Vendor();
 
         boolean isValidContactPhone = vendor.isValidVendor();
 
@@ -87,7 +87,7 @@ public class VendorTest {
 
     @Test
     public void isValidVendorContactPersonPhoneDigitTest() {
-        Vendor vendor = new Vendor();
+        IVendor vendor = new Vendor();
         vendor.setContactPersonPhone(98765432L);
 
         boolean isValidContactPhone = vendor.isValidVendor();
@@ -99,7 +99,7 @@ public class VendorTest {
 
     @Test
     public void allVendorPropertiesValidTest() {
-        Vendor vendor = new Vendor();
+        IVendor vendor = new Vendor();
         vendor.setName(TEST_VENDOR_NAME);
         vendor.setContactPersonName(TEST_CONTACT_NAME);
         vendor.setContactPersonEmail(TEST_CONTACT_EMAIL);
@@ -113,17 +113,17 @@ public class VendorTest {
 
     @Test
     public void getAllTest() throws Exception {
-        Vendor vendor = spy(new Vendor());
+        IVendor vendor = spy(new Vendor());
         vendor.setManufacturerId(TEST_MANUFACTURER_ID);
         vendor.setName(TEST_VENDOR_NAME);
 
-        List<Vendor> vendors = new ArrayList<>();
+        List<IVendor> vendors = new ArrayList<>();
         vendors.add(vendor);
 
         PowerMockito.doReturn(vendorPersistence).when(vendor, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(vendors).when(vendorPersistence).getAll(anyInt());
 
-        List<Vendor> vendorsResult = vendor.getAll();
+        List<IVendor> vendorsResult = vendor.getAll();
         Assert.assertNotNull(vendorsResult);
         Assert.assertEquals(1, vendorsResult.size());
         Assert.assertEquals(TEST_VENDOR_NAME, vendorsResult.get(0).getName());
@@ -131,7 +131,7 @@ public class VendorTest {
 
     @Test
     public void saveTest() throws Exception {
-        Vendor vendor = spy(new Vendor());
+        IVendor vendor = spy(new Vendor());
         vendor.setManufacturerId(TEST_MANUFACTURER_ID);
         vendor.setName(TEST_VENDOR_NAME);
 
@@ -146,7 +146,7 @@ public class VendorTest {
 
     @Test
     public void loadSuccessTest() throws Exception {
-        Vendor vendor = spy(new Vendor());
+        IVendor vendor = spy(new Vendor());
         vendor.setId(TEST_VENDOR_ID);
         vendor.setManufacturerId(TEST_MANUFACTURER_ID);
         vendor.setName(TEST_VENDOR_NAME);
@@ -161,7 +161,7 @@ public class VendorTest {
 
     @Test
     public void loadFailTest() throws Exception {
-        Vendor vendor = spy(new Vendor());
+        IVendor vendor = spy(new Vendor());
         vendor.setId(0);
         vendor.setManufacturerId(TEST_MANUFACTURER_ID);
         vendor.setName(TEST_VENDOR_NAME);
@@ -175,7 +175,7 @@ public class VendorTest {
 
     @Test
     public void updateTest() throws Exception {
-        Vendor vendor = spy(new Vendor());
+        IVendor vendor = spy(new Vendor());
         vendor.setManufacturerId(TEST_MANUFACTURER_ID);
         vendor.setName(TEST_VENDOR_NAME);
 
@@ -189,7 +189,7 @@ public class VendorTest {
 
     @Test
     public void deleteTest() throws Exception {
-        Vendor vendor = spy(new Vendor());
+        IVendor vendor = spy(new Vendor());
         vendor.setId(TEST_VENDOR_ID);
         vendor.setManufacturerId(TEST_MANUFACTURER_ID);
         vendor.setName(TEST_VENDOR_NAME);

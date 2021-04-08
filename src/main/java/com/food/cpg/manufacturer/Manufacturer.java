@@ -3,12 +3,12 @@ package com.food.cpg.manufacturer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
-import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.authentication.AuthenticationFactory;
 
-public class Manufacturer {
+public class Manufacturer implements IManufacturer {
     private Integer id;
     private String companyName;
     private String email;
@@ -18,62 +18,77 @@ public class Manufacturer {
 
     private Map<String, String> errors = new HashMap<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
+    @Override
     public String getCompanyName() {
         return companyName;
     }
 
+    @Override
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
+    @Override
     public String getEmail() {
         return email;
     }
 
+    @Override
     public void setEmail(String email) {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
+    @Override
     public void setPassword(String password) {
         this.password = password;
     }
 
+    @Override
     public Long getContact() {
         return contact;
     }
 
+    @Override
     public void setContact(Long contact) {
         this.contact = contact;
     }
 
+    @Override
     public String getAddress() {
         return address;
     }
 
+    @Override
     public void setAddress(String address) {
         this.address = address;
     }
 
+    @Override
     public Map<String, String> getErrors() {
         return errors;
     }
 
+    @Override
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
     }
 
+    @Override
     public boolean isValidManufacturer() {
         errors = new HashMap<>();
 
@@ -99,7 +114,7 @@ public class Manufacturer {
             isValid = false;
         }
 
-        if (getContact() != null && String.valueOf(getContact()).length() != 10) {
+        if (String.valueOf(getContact()).length() > 10 || String.valueOf(getContact()).length() < 10) {
             errors.put("contactLength", "Invalid phone number.");
             isValid = false;
         }
@@ -111,22 +126,23 @@ public class Manufacturer {
         return isValid;
     }
 
+    @Override
     public void register() {
         getPersistence().register(this);
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        PasswordEncoder passwordEncoder = AuthenticationFactory.instance().makePasswordEncoder();
         String encodedPassword = passwordEncoder.encode(this.getPassword());
         this.setPassword(encodedPassword);
 
         getPersistence().createLoginAccount(this);
     }
 
+    @Override
     public void load() {
         getPersistence().load(this);
     }
 
     private IManufacturerPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getManufacturerPersistence();
+        return ManufacturerFactory.instance().makeManufacturerPersistence();
     }
 }

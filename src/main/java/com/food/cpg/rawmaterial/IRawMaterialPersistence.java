@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface IRawMaterialPersistence {
 
-    List<RawMaterial> getAll(int manufacturerId);
+    List<IRawMaterial> getAll(int manufacturerId);
 
-    void load(RawMaterial rawMaterial);
+    void load(IRawMaterial rawMaterial);
 
-    void save(RawMaterial rawMaterial);
+    Integer save(IRawMaterial rawMaterial);
 
-    void update(RawMaterial rawMaterial);
+    void update(IRawMaterial rawMaterial);
 
     void delete(int rawMaterialId);
 }

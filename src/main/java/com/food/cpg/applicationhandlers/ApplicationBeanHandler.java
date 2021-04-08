@@ -9,13 +9,12 @@ public class ApplicationBeanHandler implements ApplicationContextAware {
 
     private static ApplicationContext context;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        context = applicationContext;
-    }
-
     public static <T> T getBean(Class<T> beanClass) {
         return context.getBean(beanClass);
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        context = applicationContext;
+    }
 }

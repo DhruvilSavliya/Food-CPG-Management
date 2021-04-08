@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
 
@@ -19,10 +18,10 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
     }
 
     @Override
-    public List<RawMaterial> getAll(int manufacturerId) {
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+    public List<IRawMaterial> getAll(int manufacturerId) {
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
 
-        String sql = "select * from raw_materials where manufacturer_id = ?";
+        String sql = RawMaterialDatabaseQuery.SELECT_ALL_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -31,7 +30,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        RawMaterial rawMaterial = new RawMaterial();
+                        IRawMaterial rawMaterial = RawMaterialFactory.instance().makeRawMaterial();
                         loadRawMaterialDetailsFromResultSet(rs, rawMaterial);
 
                         rawMaterials.add(rawMaterial);
@@ -39,14 +38,14 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return rawMaterials;
     }
 
     @Override
-    public void load(RawMaterial rawMaterial) {
-        String sql = "select * from raw_materials where raw_material_id = ?";
+    public void load(IRawMaterial rawMaterial) {
+        String sql = RawMaterialDatabaseQuery.LOAD_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getId());
 
@@ -60,18 +59,16 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
+
     @Override
-    public void save(RawMaterial rawMaterial) {
+    public Integer save(IRawMaterial rawMaterial) {
         Integer rawMaterialId = null;
-        String sql = "insert into raw_materials (raw_material_name, vendor_id, unit_cost, unit_measurement, unit_measurement_uom, reorder_point_quantity, reorder_point_quantity_uom, manufacturer_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?)";
-        String inventorySql= "insert into raw_material_inventory (raw_material_id) values(?)";
+        String sql = RawMaterialDatabaseQuery.INSERT_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
-        List<Object> placeholderValuesInventory = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
         placeholderValues.add(rawMaterial.getVendorId());
         placeholderValues.add(rawMaterial.getUnitCost());
@@ -84,22 +81,14 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
         try {
             rawMaterialId = commonDatabaseOperation.executeUpdateGetId(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
-
-        placeholderValuesInventory.add(rawMaterialId);
-        try {
-           commonDatabaseOperation.executeUpdate(inventorySql, placeholderValuesInventory);
-        } catch (SQLException e) {
-            throw new ServiceException(e);
-        }
-
-
+        return rawMaterialId;
     }
 
     @Override
-    public void update(RawMaterial rawMaterial) {
-        String sql = "update raw_materials set raw_material_name = ?, vendor_id = ?, unit_cost = ?, unit_measurement = ?, unit_measurement_uom = ?, reorder_point_quantity = ?, reorder_point_quantity_uom = ? where raw_material_id = ?";
+    public void update(IRawMaterial rawMaterial) {
+        String sql = RawMaterialDatabaseQuery.UPDATE_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
         placeholderValues.add(rawMaterial.getVendorId());
@@ -113,31 +102,31 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(int rawMaterialId) {
-        String sql = "delete from raw_materials where raw_material_id = ?";
+        String sql = RawMaterialDatabaseQuery.DELETE_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialId);
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void loadRawMaterialDetailsFromResultSet(ResultSet resultSet, RawMaterial rawMaterial) throws SQLException {
-        rawMaterial.setId(resultSet.getInt("raw_material_id"));
-        rawMaterial.setName(resultSet.getString("raw_material_name"));
-        rawMaterial.setVendorId(resultSet.getInt("vendor_id"));
-        rawMaterial.setUnitCost(resultSet.getDouble("unit_cost"));
-        rawMaterial.setUnitMeasurement(resultSet.getDouble("unit_measurement"));
-        rawMaterial.setUnitMeasurementUOM(resultSet.getString("unit_measurement_uom"));
-        rawMaterial.setReorderPointQuantity(resultSet.getDouble("reorder_point_quantity"));
-        rawMaterial.setReorderPointQuantityUOM(resultSet.getString("reorder_point_quantity_uom"));
+    private void loadRawMaterialDetailsFromResultSet(ResultSet resultSet, IRawMaterial rawMaterial) throws SQLException {
+        rawMaterial.setId(resultSet.getInt(RawMaterialDatabaseColumn.RAW_MATERIAL_ID));
+        rawMaterial.setName(resultSet.getString(RawMaterialDatabaseColumn.RAW_MATERIAL_NAME));
+        rawMaterial.setVendorId(resultSet.getInt(RawMaterialDatabaseColumn.VENDOR_ID));
+        rawMaterial.setUnitCost(resultSet.getDouble(RawMaterialDatabaseColumn.UNIT_COST));
+        rawMaterial.setUnitMeasurement(resultSet.getDouble(RawMaterialDatabaseColumn.UNIT_MEASUREMENT));
+        rawMaterial.setUnitMeasurementUOM(resultSet.getString(RawMaterialDatabaseColumn.UNIT_MEASUREMENT_UOM));
+        rawMaterial.setReorderPointQuantity(resultSet.getDouble(RawMaterialDatabaseColumn.RECORDER_POINT_QUANTITY));
+        rawMaterial.setReorderPointQuantityUOM(resultSet.getString(RawMaterialDatabaseColumn.RECORDER_POINT_QUANTITY_UOM));
     }
 }

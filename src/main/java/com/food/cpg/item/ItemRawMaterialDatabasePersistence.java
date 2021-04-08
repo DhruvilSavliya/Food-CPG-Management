@@ -1,8 +1,5 @@
 package com.food.cpg.item;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersistence{
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+
+public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
@@ -19,9 +18,9 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
     }
 
     @Override
-    public void save(ItemRawMaterial itemRawMaterial) {
+    public void save(IItemRawMaterial itemRawMaterial) {
 
-        String sql = "insert into item_raw_materials (item_id, raw_material_id, vendor_id, raw_material_quantity, raw_material_quantity_uom, raw_material_unit_cost, cost) values (?, ?, ?, ?,?,?,?)";
+        String sql = ItemRawMaterialDatabaseQuery.SAVE_ITEM_RAW_MATERIAL;
 
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(itemRawMaterial.getItemId());
@@ -35,7 +34,7 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
 
     }
@@ -43,14 +42,14 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
     @Override
     public void delete(int itemId) {
 
-        String sql = "delete from item_raw_materials where item_id = ?";
+        String sql = ItemRawMaterialDatabaseQuery.DELETE_ITEM_RAW_MATERIAL;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(itemId);
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -58,7 +57,7 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
     public Double loadUnitCost(Integer rawMaterialId) {
 
         Double unitCost = 0.0;
-        String sql = "select unit_cost from raw_materials where raw_material_id = ?";
+        String sql = ItemRawMaterialDatabaseQuery.LOAD_ITEM_RAW_MATERIAL_UNIT_COST;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialId);
 
@@ -67,13 +66,13 @@ public class ItemRawMaterialDatabasePersistence implements IItemRawMaterialPersi
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        unitCost = resultSet.getDouble("unit_cost");
+                        unitCost = resultSet.getDouble(ItemRawMaterialDatabaseColumn.UNIT_COST);
 
                     }
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return unitCost;
     }

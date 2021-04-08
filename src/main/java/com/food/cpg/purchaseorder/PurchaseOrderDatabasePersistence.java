@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersistence {
 
@@ -19,23 +18,28 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
     }
 
     @Override
-    public List<PurchaseOrder> getOpenPurchaseOrder(int manufacturerId) {
+    public List<IPurchaseOrder> getOpenPurchaseOrder(int manufacturerId) {
         return getPurchaseOrders(manufacturerId, PurchaseOrderStatus.Status.OPEN.name());
     }
 
     @Override
-    public List<PurchaseOrder> getPlacedPurchaseOrder(int manufacturerId) {
+    public List<IPurchaseOrder> getPlacedPurchaseOrder(int manufacturerId) {
         return getPurchaseOrders(manufacturerId, PurchaseOrderStatus.Status.PLACED.name());
     }
 
     @Override
-    public List<PurchaseOrder> getReceivedPurchaseOrder(int manufacturerId) {
+    public List<IPurchaseOrder> getReceivedPurchaseOrder(int manufacturerId) {
         return getPurchaseOrders(manufacturerId, PurchaseOrderStatus.Status.RECEIVED.name());
     }
 
     @Override
-    public void save(PurchaseOrder purchaseOrder) {
-        String sql = "insert into purchase_orders (order_number, vendor_id, total_cost, manufacturer_id) values (?, ?, ?, ?)";
+    public List<IPurchaseOrder> getPaidPurchaseOrder(int manufacturerId) {
+        return getPurchaseOrders(manufacturerId, PurchaseOrderStatus.Status.PAID.name());
+    }
+
+    @Override
+    public void save(IPurchaseOrder purchaseOrder) {
+        String sql = PurchaseOrderDatabaseQuery.INSERT_PURCHASE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(purchaseOrder.getOrderNumber());
         placeholderValues.add(purchaseOrder.getVendorId());
@@ -45,38 +49,38 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void changeStatus(String orderNumber, String orderStatus) {
-        String sql = "update purchase_orders set order_status = ?, status_change_date = current_timestamp() where order_number = ?";
+        String sql = PurchaseOrderDatabaseQuery.CHANGE_PURCHASE_ORDER_STATUS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderStatus);
         placeholderValues.add(orderNumber);
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void delete(PurchaseOrder purchaseOrder) {
-        String sql = "delete from purchase_orders where order_number = ?";
+    public void delete(IPurchaseOrder purchaseOrder) {
+        String sql = PurchaseOrderDatabaseQuery.DELETE_PURCHASE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(purchaseOrder.getOrderNumber());
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void load(PurchaseOrder purchaseOrder) {
-        String sql = "select * from purchase_orders where order_number = ?";
+    public void load(IPurchaseOrder purchaseOrder) {
+        String sql = PurchaseOrderDatabaseQuery.LOAD_PURCHASE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(purchaseOrder.getOrderNumber());
 
@@ -90,14 +94,14 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
-    private List<PurchaseOrder> getPurchaseOrders(int manufacturerId, String orderStatus) {
-        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+    private List<IPurchaseOrder> getPurchaseOrders(int manufacturerId, String orderStatus) {
+        List<IPurchaseOrder> purchaseOrders = new ArrayList<>();
 
-        String sql = "select * from purchase_orders where manufacturer_id = ? and order_status = ?";
+        String sql = PurchaseOrderDatabaseQuery.SELECT_ALL_PURCHASE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
         placeholderValues.add(orderStatus);
@@ -107,7 +111,7 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        PurchaseOrder purchaseOrder = new PurchaseOrder();
+                        IPurchaseOrder purchaseOrder = PurchaseOrderFactory.instance().makePurchaseOrder();
                         loadPurchaseOrderDetailsFromResultSet(rs, purchaseOrder);
 
                         purchaseOrders.add(purchaseOrder);
@@ -115,18 +119,18 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
 
         return purchaseOrders;
     }
 
-    private void loadPurchaseOrderDetailsFromResultSet(ResultSet resultSet, PurchaseOrder purchaseOrder) throws SQLException {
-        purchaseOrder.setOrderNumber(resultSet.getString("order_number"));
-        purchaseOrder.setTotalCost(resultSet.getDouble("total_cost"));
-        purchaseOrder.setStatusChangeDate(resultSet.getTimestamp("status_change_date"));
-        String orderStatus = resultSet.getString("order_status");
-        PurchaseOrderStatus purchaseOrderStatus = PurchaseOrderStatusFactory.getInstance().makeOrderStatus(orderStatus);
+    private void loadPurchaseOrderDetailsFromResultSet(ResultSet resultSet, IPurchaseOrder purchaseOrder) throws SQLException {
+        purchaseOrder.setOrderNumber(resultSet.getString(PurchaseOrderDatabaseColumn.ORDER_NUMBER));
+        purchaseOrder.setTotalCost(resultSet.getDouble(PurchaseOrderDatabaseColumn.TOTAL_COST));
+        purchaseOrder.setStatusChangeDate(resultSet.getTimestamp(PurchaseOrderDatabaseColumn.STATUS_CHANGE_DATE));
+        String orderStatus = resultSet.getString(PurchaseOrderDatabaseColumn.ORDER_STATUS);
+        PurchaseOrderStatus purchaseOrderStatus = PurchaseOrderFactory.instance().makeOrderStatus(orderStatus);
         purchaseOrder.setPurchaseOrderStatus(purchaseOrderStatus);
     }
 }

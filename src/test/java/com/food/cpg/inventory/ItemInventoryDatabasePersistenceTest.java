@@ -1,20 +1,19 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.packaging.PackagesDatabasePersistence;
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyObject;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItemInventoryDatabasePersistenceTest extends TestCase {
+public class ItemInventoryDatabasePersistenceTest {
 
     private static final Integer TEST_ITEM_ID = 10;
     private static final Double TEST_ITEM_QUANTITY = 2.0;

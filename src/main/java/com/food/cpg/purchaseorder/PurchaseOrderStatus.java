@@ -1,7 +1,5 @@
 package com.food.cpg.purchaseorder;
 
-import com.food.cpg.databasepersistence.PersistenceFactory;
-
 public abstract class PurchaseOrderStatus {
     enum Status {
         OPEN, PLACED, RECEIVED, PAID
@@ -13,10 +11,9 @@ public abstract class PurchaseOrderStatus {
         return this.orderStatus;
     }
 
-    public abstract void moveOrder(String orderNumber);
+    public abstract void moveOrder(IPurchaseOrder purchaseOrder);
 
     protected IPurchaseOrderPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPurchaseOrderPersistence();
+        return PurchaseOrderFactory.instance().makePurchaseOrderPersistence();
     }
 }

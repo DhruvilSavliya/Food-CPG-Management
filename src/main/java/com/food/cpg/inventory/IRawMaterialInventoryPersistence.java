@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface IRawMaterialInventoryPersistence {
 
-    List<RawMaterialInventory> getDefaulter();
+    List<IRawMaterialInventory> getAll(int manufacturerId);
 
-    List<RawMaterialInventory> getAll(int manufacturerId);
+    void increaseQuantity(IRawMaterialInventory rawMaterialInventory);
 
-    void increaseQuantity(RawMaterialInventory rawMaterialInventory);
+    void decreaseQuantity(IRawMaterialInventory rawMaterialInventory);
 
-    void decreaseQuantity(RawMaterialInventory rawMaterialInventory);
-
+    void save(int rawMaterialId);
 }
+
