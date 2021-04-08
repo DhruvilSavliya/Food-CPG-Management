@@ -7,9 +7,8 @@ import java.util.Map;
 import org.springframework.util.StringUtils;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
 
-public class Vendor {
+public class Vendor implements IVendor {
 
     private Integer id;
     private Integer manufacturerId;
@@ -21,70 +20,87 @@ public class Vendor {
 
     private Map<String, String> errors = new HashMap<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
+    @Override
     public Integer getManufacturerId() {
         return manufacturerId;
     }
 
+    @Override
     public void setManufacturerId(Integer manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getAddress() {
         return address;
     }
 
+    @Override
     public void setAddress(String address) {
         this.address = address;
     }
 
+    @Override
     public String getContactPersonName() {
         return contactPersonName;
     }
 
+    @Override
     public void setContactPersonName(String contactPersonName) {
         this.contactPersonName = contactPersonName;
     }
 
+    @Override
     public String getContactPersonEmail() {
         return contactPersonEmail;
     }
 
+    @Override
     public void setContactPersonEmail(String contactPersonEmail) {
         this.contactPersonEmail = contactPersonEmail;
     }
 
+    @Override
     public Long getContactPersonPhone() {
         return contactPersonPhone;
     }
 
+    @Override
     public void setContactPersonPhone(Long contactPersonPhone) {
         this.contactPersonPhone = contactPersonPhone;
     }
 
+    @Override
     public Map<String, String> getErrors() {
         return errors;
     }
 
+    @Override
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
     }
 
+    @Override
     public boolean isValidVendor() {
         errors = new HashMap<>();
 
@@ -118,11 +134,13 @@ public class Vendor {
         return isValid;
     }
 
+    @Override
     public List<Vendor> getAll() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAll(loggedInManufacturerId);
     }
 
+    @Override
     public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
@@ -130,23 +148,25 @@ public class Vendor {
         getPersistence().save(this);
     }
 
+    @Override
     public void load() {
         if (this.getId() > 0) {
             getPersistence().load(this);
         }
     }
 
+    @Override
     public void update() {
         getPersistence().update(this);
     }
 
+    @Override
     public void delete() {
         getPersistence().delete(this.getId());
     }
 
     private IVendorPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getVendorPersistence();
+        return VendorFactory.instance().makeVendorPersistence();
     }
 
     private int getLoggedInManufacturerId() {
