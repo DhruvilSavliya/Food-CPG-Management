@@ -2,7 +2,6 @@ package com.food.cpg.purchaseorder;
 
 import java.util.List;
 
-import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.inventory.IRawMaterialInventory;
 import com.food.cpg.inventory.InventoryFactory;
 
@@ -13,17 +12,17 @@ public class PurchasePlacedOrderStatus extends PurchaseOrderStatus {
     }
 
     @Override
-    public void moveOrder(PurchaseOrder purchaseOrder) {
+    public void moveOrder(IPurchaseOrder purchaseOrder) {
         getPersistence().changeStatus(purchaseOrder.getOrderNumber(), Status.RECEIVED.name());
 
         increaseRawMaterialQuantity(purchaseOrder);
     }
 
-    public void increaseRawMaterialQuantity(PurchaseOrder purchaseOrder) {
+    public void increaseRawMaterialQuantity(IPurchaseOrder purchaseOrder) {
         List<PurchaseOrderRawMaterial> purchaseOrderRawMaterialsDetail = getPurchaseOrderRawMaterialPersistence().getPurchaseOrderRawMaterials(purchaseOrder.getOrderNumber());
         purchaseOrder.setPurchaseOrderRawMaterials(purchaseOrderRawMaterialsDetail);
 
-        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrder.getPurchaseOrderRawMaterials()) {
+        for (IPurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrder.getPurchaseOrderRawMaterials()) {
             IRawMaterialInventory rawMaterialInventory = InventoryFactory.instance().makeRawMaterialInventory();
             rawMaterialInventory.setRawMaterialId(purchaseOrderRawMaterial.getRawMaterialId());
             rawMaterialInventory.setRawMaterialQuantity(purchaseOrderRawMaterial.getRawMaterialQuantity());
@@ -34,7 +33,6 @@ public class PurchasePlacedOrderStatus extends PurchaseOrderStatus {
     }
 
     private IPurchaseOrderRawMaterialPersistence getPurchaseOrderRawMaterialPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPurchaseOrderRawMaterialPersistence();
+        return PurchaseOrderFactory.instance().makePurchaseOrderRawMaterialPersistence();
     }
 }

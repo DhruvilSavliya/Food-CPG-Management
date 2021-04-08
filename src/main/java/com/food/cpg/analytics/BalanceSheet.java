@@ -8,8 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
+import com.food.cpg.purchaseorder.IPurchaseOrder;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
-import com.food.cpg.purchaseorder.PurchaseOrder;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrder;
 
@@ -97,12 +97,12 @@ public class BalanceSheet {
     public void generateBalanceSheet() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
 
-        List<PurchaseOrder> purchaseOrders = getPurchaseOrderPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+        List<IPurchaseOrder> purchaseOrders = getPurchaseOrderPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
 
         List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
 
         double totalExpenditure = 0.0;
-        for (PurchaseOrder purchaseOrder : purchaseOrders) {
+        for (IPurchaseOrder purchaseOrder : purchaseOrders) {
             if (isDateInRange(purchaseOrder.getStatusChangeDate())) {
                 totalExpenditure += purchaseOrder.getTotalCost();
             }

@@ -48,10 +48,10 @@ public class PurchasePlacedOrderStatusTest {
     IRawMaterialInventory rawMaterialInventory;
 
     @Mock
-    PurchaseOrder purchaseOrder;
+    IPurchaseOrder purchaseOrder;
 
     @Mock
-    PurchaseOrderRawMaterial purchaseOrderRawMaterial;
+    IPurchaseOrderRawMaterial purchaseOrderRawMaterial;
 
     @Test
     public void getOrderStatusTest() {
@@ -78,7 +78,7 @@ public class PurchasePlacedOrderStatusTest {
     public void increaseRawMaterialQuantityTest() throws Exception {
         PurchasePlacedOrderStatus purchasePlacedOrderStatus = spy(new PurchasePlacedOrderStatus());
 
-        List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials = new ArrayList<>();
+        List<IPurchaseOrderRawMaterial> purchaseOrderRawMaterials = new ArrayList<>();
         purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
 
         PowerMockito.mockStatic(InventoryFactory.class);
