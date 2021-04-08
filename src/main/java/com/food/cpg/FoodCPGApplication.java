@@ -1,5 +1,7 @@
 package com.food.cpg;
 
+import com.food.cpg.vendor.DefaultVendorFactory;
+import com.food.cpg.vendor.VendorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -42,6 +44,7 @@ public class FoodCPGApplication {
         AuthenticationFactory.setAuthenticationFactory(new DefaultAuthenticationFactory());
         ManufacturerFactory.setManufacturerFactory(new DefaultManufacturerFactory(persistenceFactory));
         RawMaterialFactory.setRawMaterialFactory(new DefaultRawMaterialFactory(persistenceFactory));
+        VendorFactory.setVendorFactory(new DefaultVendorFactory(persistenceFactory));
         RegistrationFactory.setRegistrationFactory(new DefaultRegistrationFactory(persistenceFactory));
         InventoryFactory.setInventoryFactory(new DefaultInventoryFactory(persistenceFactory));
         NotificationFactory.setNotificationFactory(new DefaultNotificationFactory(persistenceFactory));

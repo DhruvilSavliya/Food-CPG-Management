@@ -38,7 +38,7 @@ public interface IVendor {
 
     boolean isValidVendor();
 
-    List<Vendor> getAll();
+    List<IVendor> getAll();
 
     void save();
 

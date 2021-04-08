@@ -1,14 +1,14 @@
 package com.food.cpg.vendor;
 
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.exceptions.ServiceException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class VendorDatabasePersistence implements IVendorPersistence {
 
@@ -46,7 +46,7 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public void load(Vendor vendor) {
+    public void load(IVendor vendor) {
         String sql = VendorDatabaseQuery.LOAD_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getId());
@@ -66,7 +66,7 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public void save(Vendor vendor) {
+    public void save(IVendor vendor) {
         String sql = VendorDatabaseQuery.INSERT_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getName());
@@ -84,7 +84,7 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public void update(Vendor vendor) {
+    public void update(IVendor vendor) {
         String sql = VendorDatabaseQuery.UPDATE_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getName());
