@@ -9,7 +9,7 @@ build:
   script:
     - mvn clean compile
   tags:
-    - dalfcs_gitlab_docker_ci,dalfcs_docker_autoscale
+    - dalfcs_docker_kvm
 
 test:
   stage: test
@@ -22,7 +22,7 @@ test:
       junit:
         - target/surefire-reports/TEST-*.xml
   tags:
-    - dalfcs_gitlab_docker_ci,dalfcs_docker_autoscale
+    - dalfcs_docker_kvm
 
 deploy_test:
   stage: deploy
