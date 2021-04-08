@@ -1,8 +1,7 @@
-package com.food.cpg.manufacturingorder;
+package com.food.cpg.manufactureorder;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.item.Item;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

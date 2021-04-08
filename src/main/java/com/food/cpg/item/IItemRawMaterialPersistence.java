@@ -2,7 +2,7 @@ package com.food.cpg.item;
 
 public interface IItemRawMaterialPersistence {
 
-    void save(ItemRawMaterial itemRawMaterial);
+    void save(IItemRawMaterial itemRawMaterial);
 
     void delete(int itemId);
 

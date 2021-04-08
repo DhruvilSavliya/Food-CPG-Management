@@ -36,18 +36,18 @@ public class ItemTest {
 
     @Test
     public void getAllTest() throws Exception {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         item.setManufacturerId(TEST_MANUFACTURER_ID);
         item.setName(TEST_ITEM_NAME);
         item.setCookingCost(TEST_COOKING_COST);
 
-        List<Item> itemList = new ArrayList<>();
+        List<IItem> itemList = new ArrayList<>();
         itemList.add(item);
 
         PowerMockito.doReturn(itemPersistence).when(item, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doReturn(itemList).when(itemPersistence).getAll(anyInt());
 
-        List<Item> itemResult = item.getAll();
+        List<IItem> itemResult = item.getAll();
         Assert.assertNotNull(itemResult);
         Assert.assertEquals(1, itemList.size());
         Assert.assertEquals(TEST_ITEM_NAME, itemList.get(0).getName());
@@ -55,7 +55,7 @@ public class ItemTest {
 
     @Test
     public void loadSuccessTest() throws Exception {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         item.setId(TEST_ITEM_ID);
         item.setManufacturerId(TEST_MANUFACTURER_ID);
         item.setName(TEST_ITEM_NAME);
@@ -70,7 +70,7 @@ public class ItemTest {
 
     @Test
     public void loadFailTest() throws Exception {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         item.setId(0);
         item.setManufacturerId(TEST_MANUFACTURER_ID);
         item.setName(TEST_ITEM_NAME);
@@ -84,7 +84,7 @@ public class ItemTest {
 
     @Test
     public void saveTest() throws Exception {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         item.setId(TEST_ITEM_ID);
         item.setTotalCost(TEST_TOTAL_COST);
 
@@ -112,7 +112,7 @@ public class ItemTest {
 
     @Test
     public void deleteTest() throws Exception {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         item.setId(TEST_ITEM_ID);
         item.setManufacturerId(TEST_MANUFACTURER_ID);
         item.setName(TEST_ITEM_NAME);
@@ -127,7 +127,7 @@ public class ItemTest {
 
     @Test
     public void addItemRawMaterialTest() throws Exception {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
         item.setId(1);
 
@@ -145,7 +145,7 @@ public class ItemTest {
 
     @Test
     public void calculateTotalCostTest() {
-        Item item = spy(new Item());
+        IItem item = spy(new Item());
         item.setCookingCost(10.0);
 
         ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());

@@ -43,7 +43,7 @@ public class ItemRawMaterialDatabasePersistenceTest {
     ICommonDatabaseOperation commonDatabaseOperation;
 
     @Mock
-    ItemRawMaterial itemRawMaterial;
+    IItemRawMaterial itemRawMaterial;
 
     @Before
     public void setUp() throws SQLException {

@@ -6,9 +6,11 @@ public interface IPackage {
     public void setPackageId(Integer packageId);
 
     public Integer getItemId();
+
     public void setItemId(Integer itemId);
 
     public String getPackageName();
+
     public void setPackageName(String packageName);
 
     public Double getQuantity();

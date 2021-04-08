@@ -1,6 +1,4 @@
-package com.food.cpg.manufacturingorder;
-
-import com.food.cpg.item.Item;
+package com.food.cpg.manufactureorder;
 
 import java.util.List;
 

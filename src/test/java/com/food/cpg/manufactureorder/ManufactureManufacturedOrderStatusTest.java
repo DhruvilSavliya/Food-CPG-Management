@@ -1,8 +1,7 @@
-package com.food.cpg.manufacturingorder;
+package com.food.cpg.manufactureorder;
 
 import com.food.cpg.inventory.IItemInventory;
 import com.food.cpg.inventory.InventoryFactory;
-import com.food.cpg.inventory.ItemInventory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

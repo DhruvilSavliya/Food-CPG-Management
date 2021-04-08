@@ -3,13 +3,14 @@ package com.food.cpg.packaging;
 import java.util.List;
 
 public interface IPackagePersistence {
-    List<Package> getAll(int manufacturerId);
 
-    void load(Package packages);
+    List<IPackage> getAll(int manufacturerId);
 
-    void save(Package packages);
+    void load(IPackage packages);
 
-    void update(Package packages);
+    void save(IPackage packages);
+
+    void update(IPackage packages);
 
     void delete(int packageId);
 }
