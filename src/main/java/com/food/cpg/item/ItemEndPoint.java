@@ -9,7 +9,7 @@ public class ItemEndPoint {
     public static final String SAVE_ITEM_FORM_END_POINT = "/save-item";
     public static final String DELETE_ITEM_END_POINT = "/item/delete/{id}";
 
-    private  ItemEndPoint(){
+    private ItemEndPoint() {
 
     }
 }

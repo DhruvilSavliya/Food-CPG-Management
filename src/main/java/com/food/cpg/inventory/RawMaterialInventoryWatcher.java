@@ -1,17 +1,5 @@
 package com.food.cpg.inventory;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
 import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
@@ -26,6 +14,17 @@ import com.food.cpg.purchaseorder.PurchaseOrderFactory;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
 import com.food.cpg.rawmaterial.RawMaterial;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 @Component
 @ConditionalOnProperty(name = "scheduling.enabled", matchIfMissing = true)
