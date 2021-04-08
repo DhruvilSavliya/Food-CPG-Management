@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
-public class RawMaterial {
+public class RawMaterial implements IRawMaterial{
     private Integer id;
     private Integer manufacturerId;
     private String name;
@@ -25,86 +25,107 @@ public class RawMaterial {
 
     private Map<String, String> errors = new HashMap<>();
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
+    @Override
     public Integer getManufacturerId() {
         return manufacturerId;
     }
 
+    @Override
     public void setManufacturerId(Integer manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public Integer getVendorId() {
         return vendorId;
     }
 
+    @Override
     public void setVendorId(Integer vendorId) {
         this.vendorId = vendorId;
     }
 
+    @Override
     public Double getUnitCost() {
         return unitCost;
     }
 
+    @Override
     public void setUnitCost(Double unitCost) {
         this.unitCost = unitCost;
     }
 
+    @Override
     public Double getUnitMeasurement() {
         return unitMeasurement;
     }
 
+    @Override
     public void setUnitMeasurement(Double unitMeasurement) {
         this.unitMeasurement = unitMeasurement;
     }
 
+    @Override
     public String getUnitMeasurementUOM() {
         return unitMeasurementUOM;
     }
 
+    @Override
     public void setUnitMeasurementUOM(String unitMeasurementUOM) {
         this.unitMeasurementUOM = unitMeasurementUOM;
     }
 
+    @Override
     public Double getReorderPointQuantity() {
         return reorderPointQuantity;
     }
 
+    @Override
     public void setReorderPointQuantity(Double reorderPointQuantity) {
         this.reorderPointQuantity = reorderPointQuantity;
     }
 
+    @Override
     public String getReorderPointQuantityUOM() {
         return reorderPointQuantityUOM;
     }
 
+    @Override
     public void setReorderPointQuantityUOM(String reorderPointQuantityUOM) {
         this.reorderPointQuantityUOM = reorderPointQuantityUOM;
     }
 
+    @Override
     public Map<String, String> getErrors() {
         return errors;
     }
 
+    @Override
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
     }
 
+    @Override
     public boolean isValidRawMaterial() {
         errors = new HashMap<>();
 
@@ -138,11 +159,13 @@ public class RawMaterial {
         return isValid;
     }
 
+    @Override
     public List<RawMaterial> getAll() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAll(loggedInManufacturerId);
     }
 
+    @Override
     public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
@@ -152,25 +175,30 @@ public class RawMaterial {
         saveRawMaterialInventory(rawMaterialId);
     }
 
+    @Override
     public void saveRawMaterialInventory(Integer rawMaterialID){
         IRawMaterialInventory rawMaterialInventory = InventoryFactory.instance().makeRawMaterialInventory();
         rawMaterialInventory.save(rawMaterialID);
     }
 
+    @Override
     public void load() {
         if (this.getId() > 0) {
             getPersistence().load(this);
         }
     }
 
+    @Override
     public void update() {
         getPersistence().update(this);
     }
 
+    @Override
     public void delete() {
         getPersistence().delete(this.getId());
     }
 
+    @Override
     public double getCost(int rawMaterialId) {
         List<RawMaterial> rawMaterials = getAll();
         for (RawMaterial rawMaterial : rawMaterials) {

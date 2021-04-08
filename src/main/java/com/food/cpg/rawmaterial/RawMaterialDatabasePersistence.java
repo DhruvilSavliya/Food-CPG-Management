@@ -22,7 +22,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
     public List<RawMaterial> getAll(int manufacturerId) {
         List<RawMaterial> rawMaterials = new ArrayList<>();
 
-        String sql = "select * from raw_materials where manufacturer_id = ?";
+        String sql = RawMaterialDatabaseQuery.SELECT_ALL_RAWMATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -46,7 +46,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
 
     @Override
     public void load(RawMaterial rawMaterial) {
-        String sql = "select * from raw_materials where raw_material_id = ?";
+        String sql = RawMaterialDatabaseQuery.LOAD_RAWMATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getId());
 
@@ -68,8 +68,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
     @Override
     public Integer save(RawMaterial rawMaterial) {
         Integer rawMaterialId = null;
-        String sql = "insert into raw_materials (raw_material_name, vendor_id, unit_cost, unit_measurement, unit_measurement_uom, reorder_point_quantity, reorder_point_quantity_uom, manufacturer_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = RawMaterialDatabaseQuery.INSERT_RAWMATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
         placeholderValues.add(rawMaterial.getVendorId());
@@ -90,7 +89,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
 
     @Override
     public void update(RawMaterial rawMaterial) {
-        String sql = "update raw_materials set raw_material_name = ?, vendor_id = ?, unit_cost = ?, unit_measurement = ?, unit_measurement_uom = ?, reorder_point_quantity = ?, reorder_point_quantity_uom = ? where raw_material_id = ?";
+        String sql = RawMaterialDatabaseQuery.UPDATE_RAWMATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
         placeholderValues.add(rawMaterial.getVendorId());
@@ -110,7 +109,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
 
     @Override
     public void delete(int rawMaterialId) {
-        String sql = "delete from raw_materials where raw_material_id = ?";
+        String sql = RawMaterialDatabaseQuery.DELETE_RAWMATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialId);
 
@@ -122,13 +121,13 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
     }
 
     private void loadRawMaterialDetailsFromResultSet(ResultSet resultSet, RawMaterial rawMaterial) throws SQLException {
-        rawMaterial.setId(resultSet.getInt("raw_material_id"));
-        rawMaterial.setName(resultSet.getString("raw_material_name"));
-        rawMaterial.setVendorId(resultSet.getInt("vendor_id"));
-        rawMaterial.setUnitCost(resultSet.getDouble("unit_cost"));
-        rawMaterial.setUnitMeasurement(resultSet.getDouble("unit_measurement"));
-        rawMaterial.setUnitMeasurementUOM(resultSet.getString("unit_measurement_uom"));
-        rawMaterial.setReorderPointQuantity(resultSet.getDouble("reorder_point_quantity"));
-        rawMaterial.setReorderPointQuantityUOM(resultSet.getString("reorder_point_quantity_uom"));
+        rawMaterial.setId(resultSet.getInt(RawMaterialDatabaseColumn.RAW_MATERIAL_ID));
+        rawMaterial.setName(resultSet.getString(RawMaterialDatabaseColumn.RAW_MATERIAL_NAME));
+        rawMaterial.setVendorId(resultSet.getInt(RawMaterialDatabaseColumn.VENDO_ID));
+        rawMaterial.setUnitCost(resultSet.getDouble(RawMaterialDatabaseColumn.UNIT_COST));
+        rawMaterial.setUnitMeasurement(resultSet.getDouble(RawMaterialDatabaseColumn.UNIT_MEASUREMENT));
+        rawMaterial.setUnitMeasurementUOM(resultSet.getString(RawMaterialDatabaseColumn.UNIT_MEASUREMENT_UOM));
+        rawMaterial.setReorderPointQuantity(resultSet.getDouble(RawMaterialDatabaseColumn.RECORDER_POINT_QUANTITY));
+        rawMaterial.setReorderPointQuantityUOM(resultSet.getString(RawMaterialDatabaseColumn.RECORDER_POINT_QUANTITY_UOM));
     }
 }
