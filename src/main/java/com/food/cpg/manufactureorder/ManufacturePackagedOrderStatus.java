@@ -1,8 +1,8 @@
 package com.food.cpg.manufactureorder;
 
-public class ManufacturePackagedOrderStatus extends ManufactureOrderStatus{
+public class ManufacturePackagedOrderStatus extends ManufactureOrderStatus {
 
-    public ManufacturePackagedOrderStatus(){
+    public ManufacturePackagedOrderStatus() {
         this.orderStatus = Status.PACKAGED;
     }
 

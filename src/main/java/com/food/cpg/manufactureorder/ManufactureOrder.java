@@ -207,7 +207,7 @@ public class ManufactureOrder implements IManufactureOrder {
     }
 
     @Override
-    public void load(){
+    public void load() {
         getPersistence().load(this);
     }
 
@@ -232,7 +232,7 @@ public class ManufactureOrder implements IManufactureOrder {
         totalCost = costForAllQauntities;
         totalCost += this.getManufacturingCost();
         Double tax = this.getTax();
-        totalCost += (totalCost * tax/100);
+        totalCost += (totalCost * tax / 100);
         this.setCost(totalCost);
     }
 
@@ -240,7 +240,6 @@ public class ManufactureOrder implements IManufactureOrder {
     public void moveOrderToNextStage() {
         this.getManufactureOrderStatus().moveOrder(this);
     }
-
 
     private IManufactureOrderPersistence getPersistence() {
         return ManufactureOrderFactory.instance().makeManufactureOrderPersistence();

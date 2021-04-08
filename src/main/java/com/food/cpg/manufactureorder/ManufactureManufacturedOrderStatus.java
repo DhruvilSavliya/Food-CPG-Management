@@ -15,7 +15,6 @@ public class ManufactureManufacturedOrderStatus extends ManufactureOrderStatus {
         getPersistence().changeStatus(orderNumber, Status.PACKAGED.name());
 
         increaseItemQuantity(manufactureOrder);
-
     }
 
     public void increaseItemQuantity(IManufactureOrder manufactureOrder) {

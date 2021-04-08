@@ -1,9 +1,9 @@
 package com.food.cpg.manufactureorder;
 
+import com.food.cpg.databasepersistence.PersistenceFactory;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class DefaultManufactureOrderFactory extends ManufactureOrderFactory {
 

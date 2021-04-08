@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManufactureOrderDatabasePersistence implements IManufactureOrderPersistence{
+public class ManufactureOrderDatabasePersistence implements IManufactureOrderPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
@@ -132,7 +132,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
 
     }
 
-    public Double loadItemCost(int itemId){
+    public Double loadItemCost(int itemId) {
         Double itemCost = null;
         String sql = ManufactureOrderDatabaseQuery.LOAD_ITEM_COST;
         List<Object> placeholderValues = new ArrayList<>();

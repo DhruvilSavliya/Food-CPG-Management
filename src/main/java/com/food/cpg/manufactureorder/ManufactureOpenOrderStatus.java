@@ -2,7 +2,7 @@ package com.food.cpg.manufactureorder;
 
 public class ManufactureOpenOrderStatus extends ManufactureOrderStatus {
 
-    public ManufactureOpenOrderStatus(){
+    public ManufactureOpenOrderStatus() {
         this.orderStatus = Status.OPEN;
     }
 
