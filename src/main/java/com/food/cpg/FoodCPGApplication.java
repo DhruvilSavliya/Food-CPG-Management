@@ -1,7 +1,5 @@
 package com.food.cpg;
 
-import com.food.cpg.vendor.DefaultVendorFactory;
-import com.food.cpg.vendor.VendorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +25,8 @@ import com.food.cpg.registration.DefaultRegistrationFactory;
 import com.food.cpg.registration.RegistrationFactory;
 import com.food.cpg.salesorder.DefaultSalesOrderFactory;
 import com.food.cpg.salesorder.SalesOrderFactory;
+import com.food.cpg.vendor.DefaultVendorFactory;
+import com.food.cpg.vendor.VendorFactory;
 
 @SpringBootApplication
 @EnableScheduling

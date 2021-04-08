@@ -1,6 +1,12 @@
 package com.food.cpg.vendor;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,12 +15,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyObject;
@@ -167,5 +168,4 @@ public class VendorDatabasePersistenceTest {
 
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
     }
-
 }
