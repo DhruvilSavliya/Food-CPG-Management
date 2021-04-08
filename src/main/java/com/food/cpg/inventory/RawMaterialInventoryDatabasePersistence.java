@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInventoryPersistence {
 
@@ -53,7 +52,7 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 

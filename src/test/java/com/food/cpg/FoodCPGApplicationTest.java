@@ -5,9 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * @author Kartik Gevariya
- */
 @SpringBootTest
 public class FoodCPGApplicationTest {
 

@@ -17,5 +17,4 @@ public class ApplicationBeanHandler implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) {
         context = applicationContext;
     }
-
 }

@@ -1,9 +1,9 @@
 package com.food.cpg.inventory;
 
+import java.util.List;
+
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
-
-import java.util.List;
 
 public class ItemInventory implements IItemInventory {
     private Integer itemId;
@@ -81,6 +81,4 @@ public class ItemInventory implements IItemInventory {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
-
-
 }

@@ -19,6 +19,9 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Vendor Name</th>
+                        <th scope="col">Contact Person</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -27,6 +30,9 @@
                     <tr th:each="vendor : ${vendors}">
                         <td th:text="${vendor.id}"></td>
                         <td th:text="${vendor.name}"></td>
+                        <td th:text="${vendor.contactPersonName}"></td>
+                        <td th:text="${vendor.contactPersonPhone}"></td>
+                        <td th:text="${vendor.contactPersonEmail}"></td>
                         <td><a th:href="@{/vendors/edit/{id}(id=${vendor.id})}"><i class="fa fa-pencil fa-lg pl-2" aria-hidden="true"></i></a></td>
                         <td><a th:href="@{/vendors/delete/{id}(id=${vendor.id})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
                     </tr>

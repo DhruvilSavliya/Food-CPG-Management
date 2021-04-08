@@ -10,7 +10,6 @@ import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.inventory.IRawMaterialInventory;
 import com.food.cpg.inventory.InventoryFactory;
 
-
 public class RawMaterial implements IRawMaterial {
     private Integer id;
     private Integer manufacturerId;

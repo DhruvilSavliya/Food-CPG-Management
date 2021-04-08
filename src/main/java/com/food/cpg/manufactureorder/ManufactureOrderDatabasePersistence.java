@@ -1,14 +1,13 @@
 package com.food.cpg.manufactureorder;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
 public class ManufactureOrderDatabasePersistence implements IManufactureOrderPersistence {
 
@@ -61,7 +60,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return manufactureOrders;
 
@@ -78,7 +77,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -99,7 +98,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
 
     }
@@ -121,7 +120,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -134,7 +133,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
 
     }
@@ -155,7 +154,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return itemCost;
     }

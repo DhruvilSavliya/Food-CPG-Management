@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class NotificationDatabasePersistence implements INotificationPersistence {
 
@@ -42,7 +41,7 @@ public class NotificationDatabasePersistence implements INotificationPersistence
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
 
         return notifications;
@@ -58,7 +57,7 @@ public class NotificationDatabasePersistence implements INotificationPersistence
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 }

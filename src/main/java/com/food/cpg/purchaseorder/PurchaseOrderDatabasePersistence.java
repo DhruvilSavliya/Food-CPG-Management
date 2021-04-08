@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.salesorder.ISalesOrder;
-import com.food.cpg.salesorder.SalesOrderStatus;
 
 public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersistence {
 
@@ -38,7 +36,6 @@ public class PurchaseOrderDatabasePersistence implements IPurchaseOrderPersisten
     public List<IPurchaseOrder> getPaidPurchaseOrder(int manufacturerId) {
         return getPurchaseOrders(manufacturerId, PurchaseOrderStatus.Status.PAID.name());
     }
-
 
     @Override
     public void save(IPurchaseOrder purchaseOrder) {

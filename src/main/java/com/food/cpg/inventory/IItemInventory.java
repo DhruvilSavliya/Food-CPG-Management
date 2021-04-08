@@ -3,27 +3,27 @@ package com.food.cpg.inventory;
 import java.util.List;
 
 public interface IItemInventory {
-    public Integer getItemId();
+    Integer getItemId();
 
-    public void setItemId(Integer itemId);
+    void setItemId(Integer itemId);
 
-    public String getItemName();
+    String getItemName();
 
-    public void setItemName(String itemName);
+    void setItemName(String itemName);
 
-    public Double getItemQuantity();
+    Double getItemQuantity();
 
-    public void setItemQuantity(Double itemQuantity);
+    void setItemQuantity(Double itemQuantity);
 
-    public Integer getManufacturerId();
+    Integer getManufacturerId();
 
-    public void setManufacturerId(Integer manufacturerId);
+    void setManufacturerId(Integer manufacturerId);
 
-    public List<ItemInventory> getAll();
+    List<ItemInventory> getAll();
 
-    public void save();
+    void save();
 
-    public void increaseQuantity();
+    void increaseQuantity();
 
-    public void decreaseQuantity();
+    void decreaseQuantity();
 }

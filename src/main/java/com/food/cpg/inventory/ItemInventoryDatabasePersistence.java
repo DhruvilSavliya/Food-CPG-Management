@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class ItemInventoryDatabasePersistence implements IItemInventoryPersistence {
 
@@ -39,7 +38,7 @@ public class ItemInventoryDatabasePersistence implements IItemInventoryPersisten
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return itemInventoryList;
     }
@@ -54,7 +53,7 @@ public class ItemInventoryDatabasePersistence implements IItemInventoryPersisten
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -73,7 +72,7 @@ public class ItemInventoryDatabasePersistence implements IItemInventoryPersisten
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -86,7 +85,7 @@ public class ItemInventoryDatabasePersistence implements IItemInventoryPersisten
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 }

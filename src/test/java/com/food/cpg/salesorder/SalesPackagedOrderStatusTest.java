@@ -1,9 +1,5 @@
 package com.food.cpg.salesorder;
 
-import com.food.cpg.inventory.IItemInventory;
-import com.food.cpg.inventory.InventoryFactory;
-import com.food.cpg.packaging.IPackage;
-import com.food.cpg.packaging.PackageFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,12 +8,21 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.food.cpg.inventory.IItemInventory;
+import com.food.cpg.inventory.InventoryFactory;
+import com.food.cpg.packaging.IPackage;
+import com.food.cpg.packaging.PackageFactory;
+
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({SalesPackagedOrderStatus.class,InventoryFactory.class, PackageFactory.class})
+@PrepareForTest({SalesPackagedOrderStatus.class, InventoryFactory.class, PackageFactory.class})
 public class SalesPackagedOrderStatusTest {
 
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";

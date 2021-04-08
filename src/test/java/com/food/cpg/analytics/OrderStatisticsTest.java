@@ -1,11 +1,8 @@
 package com.food.cpg.analytics;
 
-import com.food.cpg.manufactureorder.IManufactureOrder;
-import com.food.cpg.manufactureorder.IManufactureOrderPersistence;
-import com.food.cpg.purchaseorder.IPurchaseOrder;
-import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
-import com.food.cpg.salesorder.ISalesOrder;
-import com.food.cpg.salesorder.ISalesOrderPersistence;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +11,12 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.food.cpg.manufactureorder.IManufactureOrder;
+import com.food.cpg.manufactureorder.IManufactureOrderPersistence;
+import com.food.cpg.purchaseorder.IPurchaseOrder;
+import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
+import com.food.cpg.salesorder.ISalesOrder;
+import com.food.cpg.salesorder.ISalesOrderPersistence;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -177,7 +178,7 @@ public class OrderStatisticsTest {
     }
 
     @Test
-    public void calculateTotalOrderNumberTest(){
+    public void calculateTotalOrderNumberTest() {
         OrderStatistics orderStatistics = spy(new OrderStatistics());
 
         orderStatistics.setTotalPurchaseOrders(TOTAL_PURCHASE_ORDER_NUMBERS);
@@ -193,5 +194,4 @@ public class OrderStatisticsTest {
         Assert.assertNotNull(orderStatistics.getTotalOrders());
 
     }
-
 }

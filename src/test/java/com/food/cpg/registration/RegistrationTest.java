@@ -24,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest(Registration.class)
 public class RegistrationTest {
 
-    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    private static final String GET_PERSISTENCE_METHOD = "getPersistence";
     private static final String TEST_CONTACT_EMAIL = "rotesh@testregistration.com";
     private static final String TEST_MANUFACTURER_COMPANY_NAME = "Test manufacturer";
 

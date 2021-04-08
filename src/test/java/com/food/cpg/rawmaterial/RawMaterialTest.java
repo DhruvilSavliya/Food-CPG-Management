@@ -3,8 +3,6 @@ package com.food.cpg.rawmaterial;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.food.cpg.inventory.IRawMaterialInventory;
-import com.food.cpg.inventory.InventoryFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +11,13 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.food.cpg.inventory.IRawMaterialInventory;
+import com.food.cpg.inventory.InventoryFactory;
+
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 
@@ -22,9 +25,9 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest({RawMaterial.class, InventoryFactory.class})
 public class RawMaterialTest {
 
-    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    private static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    private static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final String GET_INSTANCE_METHOD = "instance";
-    public static final String GET_LOGGED_IN_MANUFACTURER_ID_METHOD = "getLoggedInManufacturerId";
     private static final double DELTA = 1e-15;
     private static final String EMPTY_STRING = "";
     private static final String NAME_ATTRIBUTE = "name";
@@ -173,7 +176,7 @@ public class RawMaterialTest {
     }
 
     @Test
-    public void saveRawMaterialInventory() throws Exception{
+    public void saveRawMaterialInventory() throws Exception {
         PowerMockito.mockStatic(InventoryFactory.class);
         PowerMockito.doReturn(inventoryFactory).when(InventoryFactory.class, GET_INSTANCE_METHOD);
         when(inventoryFactory.makeRawMaterialInventory()).thenReturn(rawMaterialInventory);

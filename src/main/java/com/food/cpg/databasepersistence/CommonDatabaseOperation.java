@@ -1,18 +1,19 @@
 package com.food.cpg.databasepersistence;
 
-import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
-import com.mysql.cj.exceptions.ConnectionIsClosedException;
-
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+
+import com.food.cpg.applicationhandlers.ApplicationBeanHandler;
+import com.mysql.cj.exceptions.ConnectionIsClosedException;
 
 @Repository
 @DependsOn("ApplicationBeanHandler")
