@@ -19,6 +19,9 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Raw Material Name</th>
+                        <th scope="col">Unit Cost</th>
+                        <th scope="col">Unit Measurement</th>
+                        <th scope="col">Re-Order Point</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -27,6 +30,9 @@
                     <tr th:each="rawMaterial : ${rawMaterials}">
                         <td th:text="${rawMaterial.id}"></td>
                         <td th:text="${rawMaterial.name}"></td>
+                        <td th:text="'$' + ${rawMaterial.unitCost}"></td>
+                        <td th:text="${rawMaterial.unitMeasurement} + ${rawMaterial.unitMeasurementUOM}"></td>
+                        <td th:text="${rawMaterial.reorderPointQuantity} + ${rawMaterial.reorderPointQuantityUOM}"></td>
                         <td><a th:href="@{/raw-materials/edit/{id}(id=${rawMaterial.id})}"><i class="fa fa-pencil fa-lg pl-2" aria-hidden="true"></i></a></td>
                         <td><a th:href="@{/raw-materials/delete/{id}(id=${rawMaterial.id})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
                     </tr>

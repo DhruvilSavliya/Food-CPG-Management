@@ -27,10 +27,10 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td th:text="*{expenditure}"></td>
-                        <td th:text="*{revenue}"></td>
-                        <td th:text="*{amountUsedForCharity}"></td>
-                        <td th:text="*{netIncome}"></td>
+                        <td th:text="'$' + *{expenditure}"></td>
+                        <td th:text="'$' + *{revenue}"></td>
+                        <td th:text="'$' + *{amountUsedForCharity}"></td>
+                        <td th:text="'$' + *{netIncome}"></td>
                     </tr>
                     </tbody>
                 </table>

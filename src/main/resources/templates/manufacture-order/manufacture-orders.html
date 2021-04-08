@@ -16,6 +16,7 @@
                 <tr>
                     <th scope="col">Order Number</th>
                     <th scope="col">Cost</th>
+                    <th scope="col">Created On</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -23,7 +24,8 @@
                 <tbody>
                 <tr th:each="order : ${openManufactureOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.cost}"></td>
+                    <td th:text="'$' + ${order.cost}"></td>
+                    <td th:text="${order.statusChangeDate}"></td>
                     <td><a th:href="@{/manufacture-order/delete/{id}(id=${order.orderNumber})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
                     <td><a th:href="@{/manufacture-order/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Manufacture Order</button></a></td>
                 </tr>
@@ -43,7 +45,7 @@
                 <tbody>
                 <tr th:each="order : ${manufacturedManufactureOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.cost}"></td>
+                    <td th:text="'$' + ${order.cost}"></td>
                     <td th:text="${order.statusChangeDate}"></td>
                     <td><a th:href="@{/manufacture-order/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Pack Order</button></a></td>
                 </tr>
@@ -62,7 +64,7 @@
                 <tbody>
                 <tr th:each="order : ${packagedManufactureOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.cost}"></td>
+                    <td th:text="'$' + ${order.cost}"></td>
                     <td th:text="${order.statusChangeDate}"></td>
                 </tr>
                 </tbody>
