@@ -1,4 +1,4 @@
-package com.food.cpg.manufacturingorder;
+package com.food.cpg.manufactureorder;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,9 +13,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
+
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(ManufactureManufacturedOrderStatus.class)
-public class ManufacturePackagedOrderStatusTest{
+@PrepareForTest(ManufactureOpenOrderStatus.class)
+public class ManufactureOpenOrderStatusTest{
 
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
     private static final String TEST_ORDER_NO = "Test order no";
@@ -25,20 +26,21 @@ public class ManufacturePackagedOrderStatusTest{
 
     @Test
     public void getOrderStatusTest() {
-        ManufacturePackagedOrderStatus manufacturePackagedOrderStatus = new ManufacturePackagedOrderStatus();
+        ManufactureOpenOrderStatus manufactureOpenOrderStatus = new ManufactureOpenOrderStatus();
 
-        Assert.assertEquals(ManufactureOrderStatus.Status.PACKAGED, manufacturePackagedOrderStatus.getOrderStatus());
+        Assert.assertEquals(ManufactureOrderStatus.Status.OPEN, manufactureOpenOrderStatus.getOrderStatus());
     }
 
     @Test
     public void moveOrderTest() throws Exception {
-        ManufacturePackagedOrderStatus manufacturePackagedOrderStatus = spy(new ManufacturePackagedOrderStatus());
+        ManufactureOpenOrderStatus manufactureOpenOrderStatus = spy(new ManufactureOpenOrderStatus());
         ManufactureOrder manufactureOrder = new ManufactureOrder();
         manufactureOrder.setOrderNumber(TEST_ORDER_NO);
-        PowerMockito.doReturn(manufactureOrderPersistence).when(manufacturePackagedOrderStatus, GET_PERSISTENCE_METHOD_NAME);
+
+        PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOpenOrderStatus, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(manufactureOrderPersistence).changeStatus(anyString(), anyString());
 
-        manufacturePackagedOrderStatus.moveOrder(manufactureOrder);
+        manufactureOpenOrderStatus.moveOrder(manufactureOrder);
         verify(manufactureOrderPersistence, times(1)).changeStatus(anyString(), anyString());
     }
 

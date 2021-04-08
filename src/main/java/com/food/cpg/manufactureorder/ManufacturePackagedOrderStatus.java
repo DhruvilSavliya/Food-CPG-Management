@@ -1,6 +1,4 @@
-package com.food.cpg.manufacturingorder;
-
-import com.food.cpg.inventory.ItemInventory;
+package com.food.cpg.manufactureorder;
 
 public class ManufacturePackagedOrderStatus extends ManufactureOrderStatus{
 

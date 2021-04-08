@@ -1,13 +1,12 @@
 package com.food.cpg.inventory;
 
-import java.util.List;
-
+import com.food.cpg.item.Item;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.food.cpg.item.Item;
+import java.util.List;
 
 @Controller
 public class ItemInventoryController {

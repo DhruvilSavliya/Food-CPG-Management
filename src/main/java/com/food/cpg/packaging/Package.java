@@ -1,14 +1,13 @@
 package com.food.cpg.packaging;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Package implements IPackage{
+public class Package implements IPackage {
     private Integer packageId;
     private Integer itemId;
     private Integer manufacturerId;
@@ -17,7 +16,6 @@ public class Package implements IPackage{
     private Double manufacturingCost;
     private Double wholesaleCost;
     private Double retailCost;
-
 
     private Map<String, String> errors = new HashMap<>();
 
@@ -147,7 +145,7 @@ public class Package implements IPackage{
         return isValid;
     }
 
-    public List<Package> getAll() {
+    public List<IPackage> getAll() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAll(loggedInManufacturerId);
     }
@@ -175,8 +173,7 @@ public class Package implements IPackage{
     }
 
     private IPackagePersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPackagesPersistence();
+        return PackageFactory.instance().makePackagePersistence();
     }
 
     private int getLoggedInManufacturerId() {

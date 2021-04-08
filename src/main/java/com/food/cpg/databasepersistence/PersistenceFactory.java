@@ -5,7 +5,7 @@ import com.food.cpg.inventory.IRawMaterialInventoryPersistence;
 import com.food.cpg.item.IItemPersistence;
 import com.food.cpg.item.IItemRawMaterialPersistence;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
-import com.food.cpg.manufacturingorder.IManufactureOrderPersistence;
+import com.food.cpg.manufactureorder.IManufactureOrderPersistence;
 import com.food.cpg.notification.INotificationPersistence;
 import com.food.cpg.packaging.IPackagePersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;

@@ -28,7 +28,7 @@ public class ItemRawMaterialTest {
 
     @Test
     public void saveTest() throws Exception {
-        ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
+        IItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
 
         PowerMockito.doReturn(itemRawMaterialPersistence).when(itemRawMaterial, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(itemRawMaterialPersistence).save(itemRawMaterial);
@@ -40,7 +40,7 @@ public class ItemRawMaterialTest {
 
     @Test
     public void deleteTest() throws Exception {
-        ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
+        IItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
         itemRawMaterial.setItemId(TEST_ITEM_ID);
 
         PowerMockito.doReturn(itemRawMaterialPersistence).when(itemRawMaterial, GET_PERSISTENCE_METHOD_NAME);
@@ -53,7 +53,7 @@ public class ItemRawMaterialTest {
 
     @Test
     public void loadUnitCostTest() throws Exception {
-        ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
+        IItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
 
         PowerMockito.doReturn(itemRawMaterialPersistence).when(itemRawMaterial, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doReturn(30.0).when(itemRawMaterialPersistence).loadUnitCost(TEST_RAW_MATERIAL_ID);
@@ -65,7 +65,7 @@ public class ItemRawMaterialTest {
 
     @Test
     public void calculateCostTest() throws Exception {
-        ItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
+        IItemRawMaterial itemRawMaterial = spy(new ItemRawMaterial());
         itemRawMaterial.setRawMaterialQuantity(TEST_RAW_MATERIAL_QUANTITY);
 
         PowerMockito.doReturn(itemRawMaterialPersistence).when(itemRawMaterial, GET_PERSISTENCE_METHOD_NAME);

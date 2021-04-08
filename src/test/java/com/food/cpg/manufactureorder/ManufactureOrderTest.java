@@ -1,4 +1,4 @@
-package com.food.cpg.manufacturingorder;
+package com.food.cpg.manufactureorder;
 
 
 import java.util.ArrayList;

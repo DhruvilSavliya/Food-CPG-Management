@@ -1,4 +1,4 @@
-package com.food.cpg.manufacturingorder;
+package com.food.cpg.manufactureorder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.food.cpg.manufacturer.ManufacturerDatabasePersistence;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
