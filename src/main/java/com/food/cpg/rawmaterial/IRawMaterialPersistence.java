@@ -6,11 +6,11 @@ public interface IRawMaterialPersistence {
 
     List<IRawMaterial> getAll(int manufacturerId);
 
-    void load(RawMaterial rawMaterial);
+    void load(IRawMaterial rawMaterial);
 
-    Integer save(RawMaterial rawMaterial);
+    Integer save(IRawMaterial rawMaterial);
 
-    void update(RawMaterial rawMaterial);
+    void update(IRawMaterial rawMaterial);
 
     void delete(int rawMaterialId);
 }

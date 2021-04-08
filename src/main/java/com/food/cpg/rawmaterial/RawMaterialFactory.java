@@ -1,9 +1,5 @@
 package com.food.cpg.rawmaterial;
 
-import com.food.cpg.manufacturer.IManufacturer;
-import com.food.cpg.manufacturer.IManufacturerPersistence;
-import com.food.cpg.manufacturer.ManufacturerFactory;
-
 public abstract class RawMaterialFactory {
 
     private static RawMaterialFactory rawMaterialFactory;

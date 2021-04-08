@@ -12,15 +12,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.notification.NotificationFactory;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(RawMaterialFactory.class)
 public class RawMaterialDatabasePersistenceTest {
 
     private static final Integer TEST_MANUFACTURER_ID = 1;
@@ -32,6 +37,7 @@ public class RawMaterialDatabasePersistenceTest {
     private static final String TEST_RAW_MATERIAL_UNIT_MEASUREMENT_UOM = "g";
     private static final Double TEST_RAW_MATERIAL_REORDER_QUANTITY = 15.0;
     private static final String TEST_RAW_MATERIAL_REORDER_QUANTITY_UOM = "g";
+    public static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -46,7 +52,10 @@ public class RawMaterialDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
+
+    @Mock
+    RawMaterialFactory rawMaterialFactory;
 
     @Before
     public void setUp() throws SQLException {
@@ -56,7 +65,11 @@ public class RawMaterialDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void getAllTest() throws Exception {
+        PowerMockito.mockStatic(RawMaterialFactory.class);
+        PowerMockito.doReturn(rawMaterialFactory).when(RawMaterialFactory.class, GET_INSTANCE_METHOD);
+        when(rawMaterialFactory.makeRawMaterial()).thenReturn(rawMaterial);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
 
@@ -22,7 +21,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
     public List<IRawMaterial> getAll(int manufacturerId) {
         List<IRawMaterial> rawMaterials = new ArrayList<>();
 
-        String sql = RawMaterialDatabaseQuery.SELECT_ALL_RAWMATERIALS;
+        String sql = RawMaterialDatabaseQuery.SELECT_ALL_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -39,14 +38,14 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return rawMaterials;
     }
 
     @Override
-    public void load(RawMaterial rawMaterial) {
-        String sql = RawMaterialDatabaseQuery.LOAD_RAWMATERIALS;
+    public void load(IRawMaterial rawMaterial) {
+        String sql = RawMaterialDatabaseQuery.LOAD_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getId());
 
@@ -60,15 +59,15 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
 
     @Override
-    public Integer save(RawMaterial rawMaterial) {
+    public Integer save(IRawMaterial rawMaterial) {
         Integer rawMaterialId = null;
-        String sql = RawMaterialDatabaseQuery.INSERT_RAWMATERIALS;
+        String sql = RawMaterialDatabaseQuery.INSERT_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
         placeholderValues.add(rawMaterial.getVendorId());
@@ -82,14 +81,14 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
         try {
             rawMaterialId = commonDatabaseOperation.executeUpdateGetId(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return rawMaterialId;
     }
 
     @Override
-    public void update(RawMaterial rawMaterial) {
-        String sql = RawMaterialDatabaseQuery.UPDATE_RAWMATERIALS;
+    public void update(IRawMaterial rawMaterial) {
+        String sql = RawMaterialDatabaseQuery.UPDATE_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterial.getName());
         placeholderValues.add(rawMaterial.getVendorId());
@@ -103,27 +102,27 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(int rawMaterialId) {
-        String sql = RawMaterialDatabaseQuery.DELETE_RAWMATERIALS;
+        String sql = RawMaterialDatabaseQuery.DELETE_RAW_MATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(rawMaterialId);
 
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     private void loadRawMaterialDetailsFromResultSet(ResultSet resultSet, IRawMaterial rawMaterial) throws SQLException {
         rawMaterial.setId(resultSet.getInt(RawMaterialDatabaseColumn.RAW_MATERIAL_ID));
         rawMaterial.setName(resultSet.getString(RawMaterialDatabaseColumn.RAW_MATERIAL_NAME));
-        rawMaterial.setVendorId(resultSet.getInt(RawMaterialDatabaseColumn.VENDO_ID));
+        rawMaterial.setVendorId(resultSet.getInt(RawMaterialDatabaseColumn.VENDOR_ID));
         rawMaterial.setUnitCost(resultSet.getDouble(RawMaterialDatabaseColumn.UNIT_COST));
         rawMaterial.setUnitMeasurement(resultSet.getDouble(RawMaterialDatabaseColumn.UNIT_MEASUREMENT));
         rawMaterial.setUnitMeasurementUOM(resultSet.getString(RawMaterialDatabaseColumn.UNIT_MEASUREMENT_UOM));

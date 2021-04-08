@@ -3,7 +3,7 @@ package com.food.cpg.purchaseorder;
 import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 public class PurchaseOrderByItem {
 
@@ -26,7 +26,7 @@ public class PurchaseOrderByItem {
         this.itemQuantity = itemQuantity;
     }
 
-    public void createPurchaseOrderByItem(RawMaterial rawMaterial) {
+    public void createPurchaseOrderByItem(IRawMaterial rawMaterial) {
         IPurchaseOrder purchaseOrder = PurchaseOrderFactory.instance().makePurchaseOrder();
 
         List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());

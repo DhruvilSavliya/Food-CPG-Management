@@ -3,7 +3,6 @@ package com.food.cpg.inventory;
 import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.Manufacturer;
-import com.food.cpg.manufacturer.ManufacturerFactory;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 import com.food.cpg.purchaseorder.IPurchaseOrder;
@@ -11,9 +10,8 @@ import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
 import com.food.cpg.purchaseorder.PurchaseOrderFactory;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
-import com.food.cpg.rawmaterial.RawMaterial;
-import com.food.cpg.registration.RegistrationFactory;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +72,7 @@ public class RawMaterialInventoryWatcherTest {
     Manufacturer manufacturer;
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
 
     @Mock
     IRawMaterialInventory rawMaterialInventory;
@@ -112,7 +110,7 @@ public class RawMaterialInventoryWatcherTest {
     public void inventoryCheckForEachManufacturerTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
         List<IRawMaterialInventory> rawMaterialInventoryList = new ArrayList<>();
         rawMaterialInventoryList.add(rawMaterialInventory);
@@ -143,7 +141,7 @@ public class RawMaterialInventoryWatcherTest {
     public void createPurchaseOrderTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
 
         purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);

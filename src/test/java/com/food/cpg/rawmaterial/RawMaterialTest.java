@@ -3,7 +3,6 @@ package com.food.cpg.rawmaterial;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.food.cpg.inventory.IItemInventory;
 import com.food.cpg.inventory.IRawMaterialInventory;
 import com.food.cpg.inventory.InventoryFactory;
 import org.junit.Assert;
@@ -39,7 +38,7 @@ public class RawMaterialTest {
     private static final String TEST_RAW_MATERIAL_NAME = "Test raw material 1";
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
 
     @Mock
     IRawMaterialPersistence rawMaterialPersistence;
@@ -53,7 +52,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialNameTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setName(EMPTY_STRING);
 
         boolean isValidName = rawMaterial.isValidRawMaterial();
@@ -65,7 +64,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialVendorTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setVendorId(null);
 
         boolean isValidVendor = rawMaterial.isValidRawMaterial();
@@ -77,7 +76,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialUnitCostTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setUnitCost(null);
 
         boolean isValidUnitCost = rawMaterial.isValidRawMaterial();
@@ -89,7 +88,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialUnitMeasurementTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setUnitMeasurement(null);
         rawMaterial.setUnitMeasurementUOM(TEST_RAW_MATERIAL_UNIT);
 
@@ -102,7 +101,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialUnitMeasurementUOMTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setUnitMeasurement(20.5);
         rawMaterial.setUnitMeasurementUOM(null);
 
@@ -115,7 +114,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialReorderPointTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setReorderPointQuantity(null);
         rawMaterial.setReorderPointQuantityUOM(TEST_RAW_MATERIAL_UNIT);
 
@@ -128,7 +127,7 @@ public class RawMaterialTest {
 
     @Test
     public void isValidRawMaterialReorderPointUOMTest() {
-        RawMaterial rawMaterial = new RawMaterial();
+        IRawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setReorderPointQuantity(25.10);
         rawMaterial.setReorderPointQuantityUOM(null);
 
@@ -141,17 +140,17 @@ public class RawMaterialTest {
 
     @Test
     public void getAllTest() throws Exception {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
 
         PowerMockito.doReturn(rawMaterialPersistence).when(rawMaterial, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(rawMaterials).when(rawMaterialPersistence).getAll(anyInt());
 
-        List<RawMaterial> rawMaterialsResult = rawMaterial.getAll();
+        List<IRawMaterial> rawMaterialsResult = rawMaterial.getAll();
         Assert.assertNotNull(rawMaterialsResult);
         Assert.assertEquals(1, rawMaterialsResult.size());
         Assert.assertEquals(TEST_RAW_MATERIAL_NAME, rawMaterialsResult.get(0).getName());
@@ -159,7 +158,7 @@ public class RawMaterialTest {
 
     @Test
     public void saveTest() throws Exception {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
 
@@ -188,7 +187,7 @@ public class RawMaterialTest {
 
     @Test
     public void loadSuccessTest() throws Exception {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setId(TEST_RAW_MATERIAL_ID);
         rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
@@ -203,7 +202,7 @@ public class RawMaterialTest {
 
     @Test
     public void loadFailTest() throws Exception {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setId(0);
         rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
@@ -217,7 +216,7 @@ public class RawMaterialTest {
 
     @Test
     public void updateTest() throws Exception {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
 
@@ -231,7 +230,7 @@ public class RawMaterialTest {
 
     @Test
     public void deleteTest() throws Exception {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setId(TEST_RAW_MATERIAL_ID);
         rawMaterial.setManufacturerId(TEST_MANUFACTURER_ID);
         rawMaterial.setName(TEST_RAW_MATERIAL_NAME);
@@ -246,11 +245,11 @@ public class RawMaterialTest {
 
     @Test
     public void getCostTest() {
-        RawMaterial rawMaterial = spy(new RawMaterial());
+        IRawMaterial rawMaterial = spy(new RawMaterial());
         rawMaterial.setId(TEST_RAW_MATERIAL_ID);
         rawMaterial.setUnitCost(20.0);
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
 
         PowerMockito.doReturn(rawMaterials).when(rawMaterial).getAll();

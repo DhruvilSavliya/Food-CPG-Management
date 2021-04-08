@@ -16,7 +16,6 @@ import com.food.cpg.vendor.Vendor;
 public class RawMaterialController {
 
     private static final String REDIRECT_NOTATION = "redirect:";
-
     private static final String SHOW_RAW_MATERIALS_ROUTE = "raw-material/raw-materials";
     private static final String SHOW_ADD_RAW_MATERIAL_FORM_ROUTE = "raw-material/add-raw-material";
     private static final String SHOW_EDIT_RAW_MATERIAL_FORM_ROUTE = "raw-material/edit-raw-material";
@@ -24,6 +23,7 @@ public class RawMaterialController {
     private static final String VIEW_RAW_MATERIALS_KEY = "rawMaterials";
     private static final String VIEW_UNITS_KEY = "units";
     private static final String VIEW_VENDORS_KEY = "vendors";
+    private static final String RAW_MATERIAL_ID_PATH_VARIABLE_NAME = "rawMaterialId";
 
     @GetMapping(RawMaterialEndpoint.RAW_MATERIALS_END_POINT)
     public String showRawMaterials(RawMaterial rawMaterial, Model model) {
@@ -62,7 +62,7 @@ public class RawMaterialController {
     }
 
     @GetMapping(RawMaterialEndpoint.EDIT_RAW_MATERIALS_FORM_END_POINT)
-    public String showEditRawMaterialForm(@PathVariable("rawMaterialId") int rawMaterialId, RawMaterial rawMaterial, Vendor vendor, Model model) {
+    public String showEditRawMaterialForm(@PathVariable(RAW_MATERIAL_ID_PATH_VARIABLE_NAME) int rawMaterialId, RawMaterial rawMaterial, Vendor vendor, Model model) {
         rawMaterial.setId(rawMaterialId);
         rawMaterial.load();
 
@@ -73,7 +73,7 @@ public class RawMaterialController {
     }
 
     @GetMapping(RawMaterialEndpoint.DELETE_RAW_MATERIALS_END_POINT)
-    public String deleteRawMaterial(@PathVariable("rawMaterialId") int rawMaterialId, RawMaterial rawMaterial) {
+    public String deleteRawMaterial(@PathVariable(RAW_MATERIAL_ID_PATH_VARIABLE_NAME) int rawMaterialId, RawMaterial rawMaterial) {
         rawMaterial.setId(rawMaterialId);
         rawMaterial.delete();
 
