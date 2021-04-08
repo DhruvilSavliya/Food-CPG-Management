@@ -10,15 +10,14 @@ public class ManufactureManufacturedOrderStatus extends ManufactureOrderStatus {
     }
 
     @Override
-    public void moveOrder(ManufactureOrder manufactureOrder) {
+    public void moveOrder(IManufactureOrder manufactureOrder) {
         String orderNumber = manufactureOrder.getOrderNumber();
         getPersistence().changeStatus(orderNumber, Status.PACKAGED.name());
 
         increaseItemQuantity(manufactureOrder);
-
     }
 
-    public void increaseItemQuantity(ManufactureOrder manufactureOrder) {
+    public void increaseItemQuantity(IManufactureOrder manufactureOrder) {
         IItemInventory itemInventory = InventoryFactory.instance().makeItemInventory();
         Integer itemID = manufactureOrder.getItemId();
         Double itemQuantity = manufactureOrder.getItemQuantity();

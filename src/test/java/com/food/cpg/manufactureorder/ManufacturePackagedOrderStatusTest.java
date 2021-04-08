@@ -33,7 +33,7 @@ public class ManufacturePackagedOrderStatusTest{
     @Test
     public void moveOrderTest() throws Exception {
         ManufacturePackagedOrderStatus manufacturePackagedOrderStatus = spy(new ManufacturePackagedOrderStatus());
-        ManufactureOrder manufactureOrder = new ManufactureOrder();
+        IManufactureOrder manufactureOrder = new ManufactureOrder();
         manufactureOrder.setOrderNumber(TEST_ORDER_NO);
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufacturePackagedOrderStatus, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(manufactureOrderPersistence).changeStatus(anyString(), anyString());

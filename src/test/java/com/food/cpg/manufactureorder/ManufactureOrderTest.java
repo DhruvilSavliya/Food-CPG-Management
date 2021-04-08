@@ -43,18 +43,18 @@ public class ManufactureOrderTest {
 
     @Test
     public void getAllOpenOrdersTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
-        List<ManufactureOrder> manufactureOrders = new ArrayList<>();
+        List<IManufactureOrder> manufactureOrders = new ArrayList<>();
         manufactureOrders.add(manufactureOrder);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(manufactureOrders).when(manufactureOrderPersistence).getAllOpenOrders(anyInt());
         PowerMockito.doReturn(1).when(manufactureOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<ManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllOpenOrders();
+        List<IManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllOpenOrders();
 
         verifyPrivate(manufactureOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(manufactureOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -67,18 +67,18 @@ public class ManufactureOrderTest {
 
     @Test
     public void getAllManufacturedOrdersTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
-        List<ManufactureOrder> manufactureOrders = new ArrayList<>();
+        List<IManufactureOrder> manufactureOrders = new ArrayList<>();
         manufactureOrders.add(manufactureOrder);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(manufactureOrders).when(manufactureOrderPersistence).getAllManufacturedOrders(anyInt());
         PowerMockito.doReturn(1).when(manufactureOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<ManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllManufacturedOrders();
+        List<IManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllManufacturedOrders();
 
         verifyPrivate(manufactureOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(manufactureOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -91,18 +91,18 @@ public class ManufactureOrderTest {
 
     @Test
     public void getAllPackagedOrdersTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
-        List<ManufactureOrder> manufactureOrders = new ArrayList<>();
+        List<IManufactureOrder> manufactureOrders = new ArrayList<>();
         manufactureOrders.add(manufactureOrder);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(manufactureOrders).when(manufactureOrderPersistence).getAllPackagedOrders(anyInt());
         PowerMockito.doReturn(1).when(manufactureOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<ManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllPackagedOrders();
+        List<IManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllPackagedOrders();
 
         verifyPrivate(manufactureOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(manufactureOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -115,7 +115,7 @@ public class ManufactureOrderTest {
 
     @Test
     public void loadTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
 
@@ -130,7 +130,7 @@ public class ManufactureOrderTest {
 
     @Test
     public void deleteTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setOrderNumber(TEST_ORDER_NUMBER);
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
@@ -146,7 +146,7 @@ public class ManufactureOrderTest {
 
     @Test
     public void moveOrderToNextStageTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setOrderNumber(TEST_ORDER_NUMBER);
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         manufactureOrder.setManufactureOrderStatus(manufactureOrderStatus);
@@ -161,7 +161,7 @@ public class ManufactureOrderTest {
 
     @Test
     public void generateOrderNumberTest() throws Exception {
-        ManufactureOrder manufactureOrder = new ManufactureOrder();
+        IManufactureOrder manufactureOrder = new ManufactureOrder();
 
         Assert.assertNotNull(manufactureOrder.getOrderNumber());
         Assert.assertTrue(manufactureOrder.getOrderNumber().contains(ORDER_NUMBER_PREFIX));
@@ -169,7 +169,7 @@ public class ManufactureOrderTest {
 
     @Test
     public void saveTest() throws Exception {
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
@@ -183,7 +183,7 @@ public class ManufactureOrderTest {
 
     @Test
     public void calculateTotalCostTest() throws Exception{
-        ManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setOrderNumber(TEST_ORDER_NUMBER);
         manufactureOrder.setManufacturingCost(TEST_MANUFACTURING_COST);
         manufactureOrder.setTax(TEST_MANUFACTURE_ORDER_TAX);
