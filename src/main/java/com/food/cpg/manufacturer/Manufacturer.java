@@ -3,7 +3,6 @@ package com.food.cpg.manufacturer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
@@ -141,14 +140,6 @@ public class Manufacturer implements IManufacturer {
     @Override
     public void load() {
         getPersistence().load(this);
-    }
-
-    public void resetPassword(String email,String password){
-        getPersistence().resetPassword(email,password);
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(this.getPassword());
-        this.setPassword(encodedPassword);
     }
 
     private IManufacturerPersistence getPersistence() {

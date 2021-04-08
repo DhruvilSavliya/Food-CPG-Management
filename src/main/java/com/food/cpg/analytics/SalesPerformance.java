@@ -1,14 +1,14 @@
 package com.food.cpg.analytics;
 
-import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.salesorder.ISalesOrderPersistence;
-import com.food.cpg.salesorder.SalesOrder;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.salesorder.ISalesOrder;
+import com.food.cpg.salesorder.ISalesOrderPersistence;
+import com.food.cpg.salesorder.SalesOrderFactory;
 
 public class SalesPerformance {
 
@@ -45,9 +45,9 @@ public class SalesPerformance {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         Map<String, SalesPerformance> salesPerformances = new HashMap<>();
 
-        List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
+        List<ISalesOrder> salesOrders = getSalesOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
 
-        for (SalesOrder salesOrder : salesOrders) {
+        for (ISalesOrder salesOrder : salesOrders) {
             String monthname = getMonthFromDate(salesOrder.getStatusChangeDate());
             if (salesPerformances.containsKey(monthname)) {
                 SalesPerformance salesPerformance = salesPerformances.get(monthname);
@@ -68,8 +68,7 @@ public class SalesPerformance {
 
 
     private ISalesOrderPersistence getSalesOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getSalesOrderPersistence();
+        return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }
 
     private int getLoggedInManufacturerId() {

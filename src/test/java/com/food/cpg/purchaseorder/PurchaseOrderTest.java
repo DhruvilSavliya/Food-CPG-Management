@@ -11,9 +11,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -216,5 +214,4 @@ public class PurchaseOrderTest {
         verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
         verify(purchaseOrderPersistence, times(1)).load(purchaseOrder);
     }
-
 }

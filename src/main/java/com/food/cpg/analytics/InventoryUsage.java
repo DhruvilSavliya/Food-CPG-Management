@@ -1,16 +1,22 @@
 package com.food.cpg.analytics;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.packaging.Packages;
+import com.food.cpg.packaging.IPackage;
+import com.food.cpg.packaging.PackageFactory;
 import com.food.cpg.purchaseorder.PurchaseOrderByItem;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
 import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.salesorder.ISalesOrder;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
-import com.food.cpg.salesorder.SalesOrder;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.*;
+import com.food.cpg.salesorder.SalesOrderFactory;
 
 import static java.util.Calendar.DATE;
 
@@ -82,7 +88,6 @@ public class InventoryUsage {
         this.endDate = endDate;
     }
 
-
     public void initializeInventory() {
         Date endDateValue = new Date();
 
@@ -96,14 +101,14 @@ public class InventoryUsage {
 
     public Map<String, InventoryUsage> generateInventoryUsage() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
-        Packages packages = new Packages();
+        IPackage packages = PackageFactory.instance().makePackage();
         RawMaterial rawMaterial = new RawMaterial();
         PurchaseOrderByItem purchaseOrderByItem = new PurchaseOrderByItem();
-        List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
+        List<ISalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
         Map<String, InventoryUsage> inventoryUsages = new HashMap<>();
 
 
-        for (SalesOrder salesOrder : salesOrders) {
+        for (ISalesOrder salesOrder : salesOrders) {
             if (isDateInRange(salesOrder.getStatusChangeDate())) {
                 int packageid = salesOrder.getPackageId();
                 packages.setPackageId(packageid);
@@ -114,34 +119,34 @@ public class InventoryUsage {
                 List<PurchaseOrderRawMaterial> itemRawMaterials = purchaseOrderByItem.getPurchaseOrderItemRawMaterial(itemid);
 
                 for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : itemRawMaterials) {
-                    int rawmaterialid = purchaseOrderRawMaterial.getRawMaterialId();
-                    double rawmaterialquantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
-                    double totalrawmaterialquantity = rawmaterialquantity * itemquantity;
-                    rawMaterial.setId(rawmaterialid);
+                    int rawMaterialId = purchaseOrderRawMaterial.getRawMaterialId();
+                    double rawMaterialQuantity = purchaseOrderRawMaterial.getRawMaterialQuantity();
+                    double totalRawMaterialQuantity = rawMaterialQuantity * itemquantity;
+                    rawMaterial.setId(rawMaterialId);
                     rawMaterial.load();
-                    String rawmaterialname = rawMaterial.getName();
+                    String rawMaterialName = rawMaterial.getName();
 
-                    if (inventoryUsages.containsKey(rawmaterialname)) {
-                        InventoryUsage inventoryUsage = inventoryUsages.get(rawmaterialname);
+                    if (inventoryUsages.containsKey(rawMaterialName)) {
+                        InventoryUsage inventoryUsage = inventoryUsages.get(rawMaterialName);
                         if (salesOrder.getIsForCharity()) {
-                            double updatedForCharityQuantity = inventoryUsage.getQuantityForCharity() + totalrawmaterialquantity;
+                            double updatedForCharityQuantity = inventoryUsage.getQuantityForCharity() + totalRawMaterialQuantity;
                             inventoryUsage.setQuantityForCharity(updatedForCharityQuantity);
                         } else {
-                            double updatedForSalesQuantity = inventoryUsage.getQuantityForSales() + totalrawmaterialquantity;
+                            double updatedForSalesQuantity = inventoryUsage.getQuantityForSales() + totalRawMaterialQuantity;
                             inventoryUsage.setQuantityForSales(updatedForSalesQuantity);
                         }
                         inventoryUsage.setTotalQuantity(inventoryUsage.getQuantityForCharity() + inventoryUsage.getQuantityForSales());
-                        inventoryUsages.replace(rawmaterialname, inventoryUsage);
+                        inventoryUsages.replace(rawMaterialName, inventoryUsage);
                     } else {
                         InventoryUsage inventoryUsage = new InventoryUsage();
-                        inventoryUsage.setRawMaterialName(rawmaterialname);
+                        inventoryUsage.setRawMaterialName(rawMaterialName);
                         if (salesOrder.getIsForCharity()) {
-                            inventoryUsage.setQuantityForCharity(totalrawmaterialquantity);
+                            inventoryUsage.setQuantityForCharity(totalRawMaterialQuantity);
                         } else {
-                            inventoryUsage.setQuantityForSales(totalrawmaterialquantity);
+                            inventoryUsage.setQuantityForSales(totalRawMaterialQuantity);
                         }
                         inventoryUsage.setTotalQuantity(inventoryUsage.getQuantityForCharity() + inventoryUsage.getQuantityForSales());
-                        inventoryUsages.put(rawmaterialname, inventoryUsage);
+                        inventoryUsages.put(rawMaterialName, inventoryUsage);
                     }
 
                 }
@@ -158,14 +163,11 @@ public class InventoryUsage {
     }
 
     private ISalesOrderPersistence getSalesOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getSalesOrderPersistence();
+        return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }
 
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
-
-
 }

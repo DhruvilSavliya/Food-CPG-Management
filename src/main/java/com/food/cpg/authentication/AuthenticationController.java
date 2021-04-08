@@ -17,7 +17,6 @@ public class AuthenticationController {
     private static final String LOGIN_PAGE_ROUTE = "login";
     private static final String VIEW_PROJECT_NAME_KEY = "projectName";
     private static final String UNAUTHORIZED_ERROR_PAGE_ROUTE = "403-error";
-    private static final String FORGOT_PASSWORD_PAGE_ROUTE = "forgot-password";
 
     @Value(APPLICATION_NAME_PROPERTY)
     private String projectName;
@@ -40,10 +39,5 @@ public class AuthenticationController {
     @GetMapping(AuthenticationEndpoint.UNAUTHORIZED_ERROR_PAGE_END_POINT)
     public String unauthorisedError() {
         return UNAUTHORIZED_ERROR_PAGE_ROUTE;
-    }
-
-    @GetMapping("/forgot-password")
-    public String getForgotPasswordPageRoute() {
-        return FORGOT_PASSWORD_PAGE_ROUTE;
     }
 }

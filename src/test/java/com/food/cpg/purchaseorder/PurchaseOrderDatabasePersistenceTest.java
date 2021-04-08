@@ -7,29 +7,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.food.cpg.salesorder.SalesOrderDatabasePersistence;
-import com.food.cpg.salesorder.SalesOrderStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.salesorder.SalesOrderFactory;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(PurchaseOrderFactory.class)
 public class PurchaseOrderDatabasePersistenceTest {
 
     private static final String TEST_PURCHASE_ORDER_NUMBER = "PO-123";
     private static final Integer TEST_PURCHASE_ORDER_VENDOR_ID = 1;
     private static final Integer TEST_PURCHASE_ORDER_MANUFACTURER_ID = 1;
     private static final Double TEST_PURCHASE_ORDER_COST = 10.0;
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -45,6 +51,12 @@ public class PurchaseOrderDatabasePersistenceTest {
 
     @Mock
     ResultSet resultSet;
+
+    @Mock
+    PurchaseOrderFactory purchaseOrderFactory;
+
+    @Mock
+    PurchaseOrderStatus purchaseOrderStatus;
 
     @Before
     public void setUp() throws SQLException {
@@ -73,7 +85,11 @@ public class PurchaseOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getOpenPurchaseOrder() throws SQLException {
+    public void getOpenPurchaseOrder() throws Exception {
+        PowerMockito.mockStatic(PurchaseOrderFactory.class);
+        PowerMockito.doReturn(purchaseOrderFactory).when(PurchaseOrderFactory.class, GET_INSTANCE_METHOD);
+        when(purchaseOrderFactory.makePurchaseOrder()).thenReturn(purchaseOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -96,7 +112,11 @@ public class PurchaseOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getPlacedPurchaseOrder() throws SQLException {
+    public void getPlacedPurchaseOrder() throws Exception {
+        PowerMockito.mockStatic(PurchaseOrderFactory.class);
+        PowerMockito.doReturn(purchaseOrderFactory).when(PurchaseOrderFactory.class, GET_INSTANCE_METHOD);
+        when(purchaseOrderFactory.makePurchaseOrder()).thenReturn(purchaseOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -119,7 +139,11 @@ public class PurchaseOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getReceivedPurchaseOrder() throws SQLException {
+    public void getReceivedPurchaseOrder() throws Exception {
+        PowerMockito.mockStatic(PurchaseOrderFactory.class);
+        PowerMockito.doReturn(purchaseOrderFactory).when(PurchaseOrderFactory.class, GET_INSTANCE_METHOD);
+        when(purchaseOrderFactory.makePurchaseOrder()).thenReturn(purchaseOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -142,7 +166,11 @@ public class PurchaseOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void loadTest() throws SQLException {
+    public void loadTest() throws Exception {
+        PowerMockito.mockStatic(PurchaseOrderFactory.class);
+        PowerMockito.doReturn(purchaseOrderFactory).when(PurchaseOrderFactory.class, GET_INSTANCE_METHOD);
+        when(purchaseOrderFactory.makeOrderStatus(anyString())).thenReturn(purchaseOrderStatus);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
         when(purchaseOrder.getOrderNumber()).thenReturn(TEST_PURCHASE_ORDER_NUMBER);

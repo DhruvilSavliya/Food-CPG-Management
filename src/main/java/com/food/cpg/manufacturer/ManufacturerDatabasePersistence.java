@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
 
 public class ManufacturerDatabasePersistence implements IManufacturerPersistence {
 
@@ -96,20 +95,6 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void resetPassword(String email,String password) {
-        String sql = "update users set password =? where email =?";
-        List<Object> placeholderValues = new ArrayList<>();
-        placeholderValues.add(password);
-        placeholderValues.add(email);
-
-        try {
-            commonDatabaseOperation.executeUpdate(sql, placeholderValues);
-        } catch (SQLException e) {
-            throw new ServiceException(e);
         }
     }
 

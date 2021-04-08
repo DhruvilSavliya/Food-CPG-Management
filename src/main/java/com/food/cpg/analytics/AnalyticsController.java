@@ -15,26 +15,26 @@ public class AnalyticsController {
     private static final String LOAD_SALES_PERFORMANCE_ROUTE = "analytics/sales-performance";
     private static final String VIEW_SALES_PERFORMANCE_KEY = "salesPerformances";
 
-    @GetMapping("/analytics")
+    @GetMapping(AnalyticsEndpoint.ANALYTICS_ROOT_END_POINT)
     public String showAnalytics() {
         return ANALYTICS_ROUTE;
     }
 
-    @RequestMapping("/load-balance-sheet")
+    @RequestMapping(AnalyticsEndpoint.LOAD_BALANCE_SHEET_END_POINT)
     public String loadBalanceSheet(BalanceSheet balanceSheet) {
         balanceSheet.generateBalanceSheet();
 
         return LOAD_BALANCE_SHEET_ROUTE;
     }
 
-    @RequestMapping("/load-inventory-usage")
+    @RequestMapping(AnalyticsEndpoint.LOAD_INVENTORY_USAGE_END_POINT)
     public String loadInventoryUsage(InventoryUsage inventoryUsage, Model model) {
         model.addAttribute(VIEW_INVENTORY_USAGE_KEY, inventoryUsage.generateInventoryUsage());
 
         return LOAD_INVENTORY_USAGE_ROUTE;
     }
 
-    @RequestMapping("/load-sales-performance")
+    @RequestMapping(AnalyticsEndpoint.LOAD_SALES_PERFORMANCE_END_POINT)
     public String loadSalesPerformance(SalesPerformance salesPerformance, Model model) {
         model.addAttribute(VIEW_SALES_PERFORMANCE_KEY, salesPerformance.generateSalesPerformance());
 
