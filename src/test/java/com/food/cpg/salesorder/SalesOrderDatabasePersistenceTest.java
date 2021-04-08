@@ -59,6 +59,9 @@ public class SalesOrderDatabasePersistenceTest {
     @Mock
     SalesOrderFactory salesOrderFactory;
 
+    @Mock
+    SalesOrderStatus salesOrderStatus;
+
     @Before
     public void setUp() throws SQLException {
         when(commonDatabaseOperation.getConnection()).thenReturn(connection);
@@ -95,7 +98,11 @@ public class SalesOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllPackagedOrdersTest() throws SQLException {
+    public void getAllPackagedOrdersTest() throws Exception {
+        PowerMockito.mockStatic(SalesOrderFactory.class);
+        PowerMockito.doReturn(salesOrderFactory).when(SalesOrderFactory.class, GET_INSTANCE_METHOD);
+        when(salesOrderFactory.makeSalesOrder()).thenReturn(salesOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -119,7 +126,11 @@ public class SalesOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllShippedOrdersTest() throws SQLException {
+    public void getAllShippedOrdersTest() throws Exception {
+        PowerMockito.mockStatic(SalesOrderFactory.class);
+        PowerMockito.doReturn(salesOrderFactory).when(SalesOrderFactory.class, GET_INSTANCE_METHOD);
+        when(salesOrderFactory.makeSalesOrder()).thenReturn(salesOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -143,7 +154,11 @@ public class SalesOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllPaidOrdersTest() throws SQLException {
+    public void getAllPaidOrdersTest() throws Exception {
+        PowerMockito.mockStatic(SalesOrderFactory.class);
+        PowerMockito.doReturn(salesOrderFactory).when(SalesOrderFactory.class, GET_INSTANCE_METHOD);
+        when(salesOrderFactory.makeSalesOrder()).thenReturn(salesOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -167,7 +182,11 @@ public class SalesOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void loadTest() throws SQLException {
+    public void loadTest() throws Exception {
+        PowerMockito.mockStatic(SalesOrderFactory.class);
+        PowerMockito.doReturn(salesOrderFactory).when(SalesOrderFactory.class, GET_INSTANCE_METHOD);
+        when(salesOrderFactory.makeOrderStatus(anyString())).thenReturn(salesOrderStatus);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
         when(salesOrder.getOrderNumber()).thenReturn(TEST_ORDER_NUMBER);
