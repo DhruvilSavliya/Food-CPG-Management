@@ -19,7 +19,7 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 @PrepareForTest({ManufactureManufacturedOrderStatus.class,InventoryFactory.class})
 public class ManufactureManufacturedOrderStatusTest  {
 
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final String GET_PERSISTENCE_METHOD = "getPersistence";
     private static final String GET_ITEM_INVENTORY_INSTANCE_METHOD_NAME = "getItemInventoryInstance";
     private static final String TEST_MANUFACTURE_ORDER_NUMBER = "MO-123";

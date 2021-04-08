@@ -4,17 +4,17 @@ import java.util.List;
 
 public interface ISalesOrderPersistence {
 
-    List<SalesOrder> getAllOpenOrders(int manufacturerId);
+    List<ISalesOrder> getAllOpenOrders(int manufacturerId);
 
-    List<SalesOrder> getAllPackagedOrders(int manufacturerId);
+    List<ISalesOrder> getAllPackagedOrders(int manufacturerId);
 
-    List<SalesOrder> getAllShippedOrders(int manufacturerId);
+    List<ISalesOrder> getAllShippedOrders(int manufacturerId);
 
-    List<SalesOrder> getAllPaidOrders(int manufacturerId);
+    List<ISalesOrder> getAllPaidOrders(int manufacturerId);
 
-    void load(SalesOrder salesOrder);
+    void load(ISalesOrder salesOrder);
 
-    void save(SalesOrder salesOrder);
+    void save(ISalesOrder salesOrder);
 
     void delete(String orderNumber);
 

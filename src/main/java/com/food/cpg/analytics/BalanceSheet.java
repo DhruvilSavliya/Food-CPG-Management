@@ -7,11 +7,12 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.purchaseorder.IPurchaseOrder;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
+import com.food.cpg.purchaseorder.PurchaseOrderFactory;
+import com.food.cpg.salesorder.ISalesOrder;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
-import com.food.cpg.salesorder.SalesOrder;
+import com.food.cpg.salesorder.SalesOrderFactory;
 
 import static java.util.Calendar.DATE;
 
@@ -99,7 +100,7 @@ public class BalanceSheet {
 
         List<IPurchaseOrder> purchaseOrders = getPurchaseOrderPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
 
-        List<SalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
+        List<ISalesOrder> salesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
 
         double totalExpenditure = 0.0;
         for (IPurchaseOrder purchaseOrder : purchaseOrders) {
@@ -111,7 +112,7 @@ public class BalanceSheet {
 
         double totalRevenue = 0.0;
         double totalAmountUsedForCharity = 0.0;
-        for (SalesOrder salesOrder : salesOrders) {
+        for (ISalesOrder salesOrder : salesOrders) {
             if (isDateInRange(salesOrder.getStatusChangeDate())) {
                 if (salesOrder.getIsForCharity()) {
                     totalAmountUsedForCharity += salesOrder.getTotalCost();
@@ -134,13 +135,11 @@ public class BalanceSheet {
     }
 
     private IPurchaseOrderPersistence getPurchaseOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPurchaseOrderPersistence();
+        return PurchaseOrderFactory.instance().makePurchaseOrderPersistence();
     }
 
     private ISalesOrderPersistence getSalesOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getSalesOrderPersistence();
+        return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }
 
     private int getLoggedInManufacturerId() {

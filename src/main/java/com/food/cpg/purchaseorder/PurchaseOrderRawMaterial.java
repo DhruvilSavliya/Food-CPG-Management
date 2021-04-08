@@ -1,6 +1,6 @@
 package com.food.cpg.purchaseorder;
 
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 public class PurchaseOrderRawMaterial implements IPurchaseOrderRawMaterial {
 
@@ -77,7 +77,7 @@ public class PurchaseOrderRawMaterial implements IPurchaseOrderRawMaterial {
     }
 
     @Override
-    public void loadDetails(RawMaterial rawMaterial) {
+    public void loadDetails(IRawMaterial rawMaterial) {
         rawMaterial.setId(this.getRawMaterialId());
         rawMaterial.load();
 

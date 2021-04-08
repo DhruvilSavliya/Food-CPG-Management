@@ -57,7 +57,7 @@ public class SalesOrderWatcherTest {
     IManufacturer manufacturer;
 
     @Mock
-    SalesOrder salesOrder;
+    ISalesOrder salesOrder;
 
     @Test
     public void checkSalesOrdersForDueDateTest() throws Exception {
@@ -82,7 +82,7 @@ public class SalesOrderWatcherTest {
     public void checkSalesOrdersForDueDateByManufacturerTest() throws Exception {
         SalesOrderWatcher salesOrderWatcher = spy(new SalesOrderWatcher());
 
-        List<SalesOrder> salesOrders = new ArrayList<>();
+        List<ISalesOrder> salesOrders = new ArrayList<>();
         salesOrders.add(salesOrder);
 
         Date currentDate = new Date();

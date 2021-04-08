@@ -3,7 +3,6 @@ package com.food.cpg.inventory;
 import com.food.cpg.manufacturer.IManufacturer;
 import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.Manufacturer;
-import com.food.cpg.manufacturer.ManufacturerFactory;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
 import com.food.cpg.purchaseorder.IPurchaseOrder;
@@ -11,9 +10,8 @@ import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
 import com.food.cpg.purchaseorder.PurchaseOrderFactory;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
-import com.food.cpg.rawmaterial.RawMaterial;
-import com.food.cpg.registration.RegistrationFactory;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,12 +32,12 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest({RawMaterialInventoryWatcher.class, NotificationFactory.class, PurchaseOrderFactory.class})
 public class RawMaterialInventoryWatcherTest {
 
-    public static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
-    public static final String GET_RAW_MATERIAL_INVENTORY_PERSISTENCE_METHOD = "getRawMaterialInventoryPersistence";
-    public static final String GET_RAW_MATERIAL_PERSISTENCE_METHOD = "getRawMaterialPersistence";
-    public static final String GET_PURCHASE_ORDER_PERSISTENCE_METHOD = "getPurchaseOrderPersistence";
-    public static final String GET_PURCHASE_ORDER_RAW_MATERIAL_PERSISTENCE_METHOD = "getPurchaseOrderRawMaterialPersistence";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
+    private static final String GET_RAW_MATERIAL_INVENTORY_PERSISTENCE_METHOD = "getRawMaterialInventoryPersistence";
+    private static final String GET_RAW_MATERIAL_PERSISTENCE_METHOD = "getRawMaterialPersistence";
+    private static final String GET_PURCHASE_ORDER_PERSISTENCE_METHOD = "getPurchaseOrderPersistence";
+    private static final String GET_PURCHASE_ORDER_RAW_MATERIAL_PERSISTENCE_METHOD = "getPurchaseOrderRawMaterialPersistence";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final int TEST_MANUFACTURER_ID = 1;
     private static final int TEST_RAW_MATERIAL_ID = 1;
     private static final String TEST_RAW_MATERIAL_NAME= "Test raw material";
@@ -74,7 +72,7 @@ public class RawMaterialInventoryWatcherTest {
     Manufacturer manufacturer;
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
 
     @Mock
     IRawMaterialInventory rawMaterialInventory;
@@ -112,7 +110,7 @@ public class RawMaterialInventoryWatcherTest {
     public void inventoryCheckForEachManufacturerTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
         List<IRawMaterialInventory> rawMaterialInventoryList = new ArrayList<>();
         rawMaterialInventoryList.add(rawMaterialInventory);
@@ -143,7 +141,7 @@ public class RawMaterialInventoryWatcherTest {
     public void createPurchaseOrderTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
 
         purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);

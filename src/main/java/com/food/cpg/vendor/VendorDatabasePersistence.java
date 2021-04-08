@@ -19,10 +19,10 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public List<Vendor> getAll(int manufacturerId) {
-        List<Vendor> vendorList = new ArrayList<>();
+    public List<IVendor> getAll(int manufacturerId) {
+        List<IVendor> vendorList = new ArrayList<>();
 
-        String sql = "select * from vendors where manufacturer_id = ?";
+        String sql = VendorDatabaseQuery.SELECT_ALL_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -31,7 +31,7 @@ public class VendorDatabasePersistence implements IVendorPersistence {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        Vendor vendor = new Vendor();
+                        IVendor vendor = VendorFactory.instance().makeVendor();
                         loadVendorDetailsFromResultSet(rs, vendor);
 
                         vendorList.add(vendor);
@@ -46,8 +46,8 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public void load(Vendor vendor) {
-        String sql = "select * from vendors where vendor_id = ?";
+    public void load(IVendor vendor) {
+        String sql = VendorDatabaseQuery.LOAD_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getId());
 
@@ -66,8 +66,8 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public void save(Vendor vendor) {
-        String sql = "insert into vendors (vendor_name, vendor_address, contact_person_name, contact_person_email, contact_person_phone, manufacturer_id) values (?, ?, ?, ?, ?, ?)";
+    public void save(IVendor vendor) {
+        String sql = VendorDatabaseQuery.INSERT_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getName());
         placeholderValues.add(vendor.getAddress());
@@ -84,8 +84,8 @@ public class VendorDatabasePersistence implements IVendorPersistence {
     }
 
     @Override
-    public void update(Vendor vendor) {
-        String sql = "update vendors set vendor_name = ?, vendor_address = ?, contact_person_name = ?, contact_person_email = ?, contact_person_phone = ? where vendor_id = ?";
+    public void update(IVendor vendor) {
+        String sql = VendorDatabaseQuery.UPDATE_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getName());
         placeholderValues.add(vendor.getAddress());
@@ -103,7 +103,7 @@ public class VendorDatabasePersistence implements IVendorPersistence {
 
     @Override
     public void delete(int vendorId) {
-        String sql = "delete from vendors where vendor_id = ?";
+        String sql = VendorDatabaseQuery.DELETE_VENDOR;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendorId);
 
@@ -114,12 +114,12 @@ public class VendorDatabasePersistence implements IVendorPersistence {
         }
     }
 
-    private void loadVendorDetailsFromResultSet(ResultSet resultSet, Vendor vendor) throws SQLException {
-        vendor.setId(resultSet.getInt("vendor_id"));
-        vendor.setName(resultSet.getString("vendor_name"));
-        vendor.setAddress(resultSet.getString("vendor_address"));
-        vendor.setContactPersonName(resultSet.getString("contact_person_name"));
-        vendor.setContactPersonEmail(resultSet.getString("contact_person_email"));
-        vendor.setContactPersonPhone(resultSet.getLong("contact_person_phone"));
+    private void loadVendorDetailsFromResultSet(ResultSet resultSet, IVendor vendor) throws SQLException {
+        vendor.setId(resultSet.getInt(VendorDatabaseColumn.VENDOR_ID));
+        vendor.setName(resultSet.getString(VendorDatabaseColumn.VENDOR_NAME));
+        vendor.setAddress(resultSet.getString(VendorDatabaseColumn.VENDOR_ADDRESS));
+        vendor.setContactPersonName(resultSet.getString(VendorDatabaseColumn.CONTACT_PERSON_NAME));
+        vendor.setContactPersonEmail(resultSet.getString(VendorDatabaseColumn.CONTACT_PERSON_EMAIL));
+        vendor.setContactPersonPhone(resultSet.getLong(VendorDatabaseColumn.CONTACT_PERSON_PHONE));
     }
 }

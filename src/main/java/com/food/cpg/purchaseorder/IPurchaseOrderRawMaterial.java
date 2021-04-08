@@ -1,6 +1,6 @@
 package com.food.cpg.purchaseorder;
 
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 public interface IPurchaseOrderRawMaterial {
     String getPurchaseOrderNumber();
@@ -29,7 +29,7 @@ public interface IPurchaseOrderRawMaterial {
 
     void save();
 
-    void loadDetails(RawMaterial rawMaterial);
+    void loadDetails(IRawMaterial rawMaterial);
 
     void delete();
 }
