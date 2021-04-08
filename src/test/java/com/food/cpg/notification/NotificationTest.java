@@ -26,7 +26,7 @@ public class NotificationTest {
     private static final int TEST_USER_ID = 1;
     private static final String TEST_CONTENT_ID = "Test notification content";
     private static final Timestamp TEST_NOTIFICATION_DATE = Timestamp.from(Instant.now());
-    public static final String GET_PERSISTENCE_METHOD = "getPersistence";
+    private static final String GET_PERSISTENCE_METHOD = "getPersistence";
 
     @Mock
     INotificationPersistence notificationPersistence;

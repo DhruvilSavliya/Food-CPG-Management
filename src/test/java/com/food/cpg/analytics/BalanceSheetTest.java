@@ -29,7 +29,6 @@ public class BalanceSheetTest {
     private static final double DELTA = 1e-15;
     private static final String GET_PURCHASE_ORDER_PERSISTENCE_METHOD = "getPurchaseOrderPersistence";
     private static final String GET_SALES_ORDER_PERSISTENCE_METHOD = "getSalesOrderPersistence";
-    private static final String GET_MANUFACTURER_ID_METHOD_NAME = "getLoggedInManufacturerId";
 
     @Mock
     IPurchaseOrderPersistence purchaseOrderPersistence;

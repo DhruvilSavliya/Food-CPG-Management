@@ -66,7 +66,6 @@ public class SalesPerformance {
         return salesPerformances;
     }
 
-
     private ISalesOrderPersistence getSalesOrderPersistence() {
         return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }

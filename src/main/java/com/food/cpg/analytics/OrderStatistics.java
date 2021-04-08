@@ -1,5 +1,7 @@
 package com.food.cpg.analytics;
 
+import java.util.List;
+
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.manufactureorder.IManufactureOrder;
 import com.food.cpg.manufactureorder.IManufactureOrderPersistence;
@@ -10,8 +12,6 @@ import com.food.cpg.purchaseorder.PurchaseOrderFactory;
 import com.food.cpg.salesorder.ISalesOrder;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrderFactory;
-
-import java.util.List;
 
 public class OrderStatistics {
 
@@ -31,7 +31,6 @@ public class OrderStatistics {
     private Integer totalShippedSalesOrders;
     private Integer totalPaidSalesOrders;
     private Integer totalSalesOrders;
-
 
     public Integer getTotalOrders() {
         return totalOrders;
@@ -230,8 +229,6 @@ public class OrderStatistics {
         totalStoredManufactureOrders = storedManufactureOrders.size();
 
         totalManufactureOrders = totalOpenManufactureOrders + totalManufacturedManufactureOrders + totalPackagedManufactureOrders + totalStoredManufactureOrders;
-
-
     }
 
     public void generateSalesOrderStatistics(int loggedInManufacturerId) {
@@ -269,5 +266,4 @@ public class OrderStatistics {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
     }
-
 }

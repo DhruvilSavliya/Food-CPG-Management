@@ -126,7 +126,7 @@ public class Vendor implements IVendor {
             isValid = false;
         }
 
-        if (getContactPersonPhone() != null && String.valueOf(getContactPersonPhone()).length() != 10) {
+        if (String.valueOf(getContactPersonPhone()).length() > 10 || String.valueOf(getContactPersonPhone()).length() < 10) {
             errors.put("contactPersonPhone", "Invalid phone number.");
             isValid = false;
         }

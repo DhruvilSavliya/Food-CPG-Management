@@ -114,7 +114,7 @@ public class Manufacturer implements IManufacturer {
             isValid = false;
         }
 
-        if (getContact() != null && String.valueOf(getContact()).length() != 10) {
+        if (String.valueOf(getContact()).length() > 10 || String.valueOf(getContact()).length() < 10) {
             errors.put("contactLength", "Invalid phone number.");
             isValid = false;
         }
