@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IRawMaterialPersistence {
 
-    List<RawMaterial> getAll(int manufacturerId);
+    List<IRawMaterial> getAll(int manufacturerId);
 
     void load(RawMaterial rawMaterial);
 

@@ -4,60 +4,59 @@ import java.util.List;
 import java.util.Map;
 
 public interface IRawMaterial {
-    public Integer getId();
+    Integer getId();
 
-    public void setId(Integer id);
+    void setId(Integer id);
 
-    public Integer getManufacturerId();
+    Integer getManufacturerId();
 
-    public void setManufacturerId(Integer manufacturerId);
+    void setManufacturerId(Integer manufacturerId);
 
-    public String getName();
+    String getName();
 
-    public void setName(String name);
+    void setName(String name);
 
-    public Integer getVendorId();
+    Integer getVendorId();
 
-    public void setVendorId(Integer vendorId);
+    void setVendorId(Integer vendorId);
 
-    public Double getUnitCost();
+    Double getUnitCost();
 
-    public void setUnitCost(Double unitCost);
+    void setUnitCost(Double unitCost);
 
-    public Double getUnitMeasurement();
+    Double getUnitMeasurement();
 
-    public void setUnitMeasurement(Double unitMeasurement);
+    void setUnitMeasurement(Double unitMeasurement);
 
-    public String getUnitMeasurementUOM();
+    String getUnitMeasurementUOM();
 
-    public void setUnitMeasurementUOM(String unitMeasurementUOM);
+    void setUnitMeasurementUOM(String unitMeasurementUOM);
 
-    public Double getReorderPointQuantity();
+    Double getReorderPointQuantity();
 
-    public void setReorderPointQuantity(Double reorderPointQuantity);
+    void setReorderPointQuantity(Double reorderPointQuantity);
 
-    public String getReorderPointQuantityUOM();
+    String getReorderPointQuantityUOM();
 
-    public void setReorderPointQuantityUOM(String reorderPointQuantityUOM);
+    void setReorderPointQuantityUOM(String reorderPointQuantityUOM);
 
-    public Map<String, String> getErrors();
+    Map<String, String> getErrors();
 
-    public void setErrors(Map<String, String> errors);
+    void setErrors(Map<String, String> errors);
 
-    public boolean isValidRawMaterial();
+    boolean isValidRawMaterial();
 
-    public List<RawMaterial> getAll();
+    List<IRawMaterial> getAll();
 
-    public void save();
+    void save();
 
-    public void saveRawMaterialInventory(Integer rawMaterialID);
+    void saveRawMaterialInventory(Integer rawMaterialID);
 
-    public void load();
+    void load();
 
-    public void update();
+    void update();
 
-    public void delete();
+    void delete();
 
-    public double getCost(int rawMaterialId);
-
+    double getCost(int rawMaterialId);
 }

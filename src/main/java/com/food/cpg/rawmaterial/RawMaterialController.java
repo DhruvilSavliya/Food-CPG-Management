@@ -27,7 +27,7 @@ public class RawMaterialController {
 
     @GetMapping(RawMaterialEndpoint.RAW_MATERIALS_END_POINT)
     public String showRawMaterials(RawMaterial rawMaterial, Model model) {
-        List<RawMaterial> rawMaterials = rawMaterial.getAll();
+        List<IRawMaterial> rawMaterials = rawMaterial.getAll();
         model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterials);
         return SHOW_RAW_MATERIALS_ROUTE;
     }

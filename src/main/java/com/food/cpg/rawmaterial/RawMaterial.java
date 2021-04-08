@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.food.cpg.inventory.DefaultInventoryFactory;
 import com.food.cpg.inventory.IRawMaterialInventory;
 import com.food.cpg.inventory.InventoryFactory;
 import org.springframework.util.StringUtils;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
+
 
 public class RawMaterial implements IRawMaterial{
     private Integer id;
@@ -160,7 +159,7 @@ public class RawMaterial implements IRawMaterial{
     }
 
     @Override
-    public List<RawMaterial> getAll() {
+    public List<IRawMaterial> getAll() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAll(loggedInManufacturerId);
     }
@@ -200,8 +199,8 @@ public class RawMaterial implements IRawMaterial{
 
     @Override
     public double getCost(int rawMaterialId) {
-        List<RawMaterial> rawMaterials = getAll();
-        for (RawMaterial rawMaterial : rawMaterials) {
+        List<IRawMaterial> rawMaterials = getAll();
+        for (IRawMaterial rawMaterial : rawMaterials) {
             if (rawMaterial.getId() == rawMaterialId) {
                 return rawMaterial.getUnitCost();
             }
@@ -210,8 +209,7 @@ public class RawMaterial implements IRawMaterial{
     }
 
     private IRawMaterialPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getRawMaterialPersistence();
+        return RawMaterialFactory.instance().makeRawMaterialPersistence();
     }
 
     private int getLoggedInManufacturerId() {

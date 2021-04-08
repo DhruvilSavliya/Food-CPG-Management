@@ -19,8 +19,8 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
     }
 
     @Override
-    public List<RawMaterial> getAll(int manufacturerId) {
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+    public List<IRawMaterial> getAll(int manufacturerId) {
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
 
         String sql = RawMaterialDatabaseQuery.SELECT_ALL_RAWMATERIALS;
         List<Object> placeholderValues = new ArrayList<>();
@@ -31,7 +31,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        RawMaterial rawMaterial = new RawMaterial();
+                        IRawMaterial rawMaterial = RawMaterialFactory.instance().makeRawMaterial();
                         loadRawMaterialDetailsFromResultSet(rs, rawMaterial);
 
                         rawMaterials.add(rawMaterial);
@@ -120,7 +120,7 @@ public class RawMaterialDatabasePersistence implements IRawMaterialPersistence {
         }
     }
 
-    private void loadRawMaterialDetailsFromResultSet(ResultSet resultSet, RawMaterial rawMaterial) throws SQLException {
+    private void loadRawMaterialDetailsFromResultSet(ResultSet resultSet, IRawMaterial rawMaterial) throws SQLException {
         rawMaterial.setId(resultSet.getInt(RawMaterialDatabaseColumn.RAW_MATERIAL_ID));
         rawMaterial.setName(resultSet.getString(RawMaterialDatabaseColumn.RAW_MATERIAL_NAME));
         rawMaterial.setVendorId(resultSet.getInt(RawMaterialDatabaseColumn.VENDO_ID));
