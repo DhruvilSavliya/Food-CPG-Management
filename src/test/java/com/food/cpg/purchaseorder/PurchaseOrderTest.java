@@ -11,6 +11,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
@@ -22,14 +23,20 @@ public class PurchaseOrderTest {
 
     private static final double DELTA = 1e-15;
     private static final String ORDER_NUMBER_PREFIX = "PO-";
+    private static final String TEST_ORDER_NUMBER = "PO-123456";
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
     private static final String GET_MANUFACTURER_ID_METHOD_NAME = "getLoggedInManufacturerId";
+    private static final int TEST_MANUFACTURER_ID = 1;
+    private static final double TEST_PURCHASE_ORDER_COST = 100.0;
 
     @Mock
     IPurchaseOrderPersistence purchaseOrderPersistence;
 
     @Mock
     PurchaseOrderRawMaterial purchaseOrderRawMaterial;
+
+    @Mock
+    PurchaseOrderStatus purchaseOrderStatus;
 
     @Test
     public void addPurchaseOrderRawMaterialsTest() {
@@ -89,5 +96,122 @@ public class PurchaseOrderTest {
         purchaseOrder.calculateTotalCost();
 
         Assert.assertEquals(10.0, purchaseOrder.getTotalCost(), DELTA);
+    }
+
+    @Test
+    public void getAllOpenOrdersTest() throws Exception {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+        purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        purchaseOrder.setTotalCost(TEST_PURCHASE_ORDER_COST);
+
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        purchaseOrders.add(purchaseOrder);
+
+        PowerMockito.doReturn(purchaseOrderPersistence).when(purchaseOrder, GET_PERSISTENCE_METHOD_NAME);
+        PowerMockito.doReturn(purchaseOrders).when(purchaseOrderPersistence).getOpenPurchaseOrder(anyInt());
+        PowerMockito.doReturn(1).when(purchaseOrder, GET_MANUFACTURER_ID_METHOD_NAME);
+
+        List<IPurchaseOrder> purchaseOrdersResult = purchaseOrder.getAllOpenOrders();
+
+        verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
+        verifyPrivate(purchaseOrder).invoke(GET_MANUFACTURER_ID_METHOD_NAME);
+        verify(purchaseOrderPersistence, times(1)).getOpenPurchaseOrder(anyInt());
+        Assert.assertNotNull(purchaseOrdersResult);
+        Assert.assertEquals(1, purchaseOrdersResult.size());
+        Assert.assertEquals(TEST_MANUFACTURER_ID, purchaseOrdersResult.get(0).getManufacturerId().intValue());
+        Assert.assertEquals(TEST_PURCHASE_ORDER_COST, purchaseOrdersResult.get(0).getTotalCost(), DELTA);
+    }
+
+    @Test
+    public void getAllPlacedOrdersTest() throws Exception {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+        purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        purchaseOrder.setTotalCost(TEST_PURCHASE_ORDER_COST);
+
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        purchaseOrders.add(purchaseOrder);
+
+        PowerMockito.doReturn(purchaseOrderPersistence).when(purchaseOrder, GET_PERSISTENCE_METHOD_NAME);
+        PowerMockito.doReturn(purchaseOrders).when(purchaseOrderPersistence).getPlacedPurchaseOrder(anyInt());
+        PowerMockito.doReturn(1).when(purchaseOrder, GET_MANUFACTURER_ID_METHOD_NAME);
+
+        List<IPurchaseOrder> purchaseOrdersResult = purchaseOrder.getAllPlacedOrders();
+
+        verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
+        verifyPrivate(purchaseOrder).invoke(GET_MANUFACTURER_ID_METHOD_NAME);
+        verify(purchaseOrderPersistence, times(1)).getPlacedPurchaseOrder(anyInt());
+        Assert.assertNotNull(purchaseOrdersResult);
+        Assert.assertEquals(1, purchaseOrdersResult.size());
+        Assert.assertEquals(TEST_MANUFACTURER_ID, purchaseOrdersResult.get(0).getManufacturerId().intValue());
+        Assert.assertEquals(TEST_PURCHASE_ORDER_COST, purchaseOrdersResult.get(0).getTotalCost(), DELTA);
+    }
+
+    @Test
+    public void getAllReceivedOrdersTest() throws Exception {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+        purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        purchaseOrder.setTotalCost(TEST_PURCHASE_ORDER_COST);
+
+        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        purchaseOrders.add(purchaseOrder);
+
+        PowerMockito.doReturn(purchaseOrderPersistence).when(purchaseOrder, GET_PERSISTENCE_METHOD_NAME);
+        PowerMockito.doReturn(purchaseOrders).when(purchaseOrderPersistence).getReceivedPurchaseOrder(anyInt());
+        PowerMockito.doReturn(1).when(purchaseOrder, GET_MANUFACTURER_ID_METHOD_NAME);
+
+        List<IPurchaseOrder> purchaseOrdersResult = purchaseOrder.getAllReceivedOrders();
+
+        verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
+        verifyPrivate(purchaseOrder).invoke(GET_MANUFACTURER_ID_METHOD_NAME);
+        verify(purchaseOrderPersistence, times(1)).getReceivedPurchaseOrder(anyInt());
+        Assert.assertNotNull(purchaseOrdersResult);
+        Assert.assertEquals(1, purchaseOrdersResult.size());
+        Assert.assertEquals(TEST_MANUFACTURER_ID, purchaseOrdersResult.get(0).getManufacturerId().intValue());
+        Assert.assertEquals(TEST_PURCHASE_ORDER_COST, purchaseOrdersResult.get(0).getTotalCost(), DELTA);
+    }
+
+    @Test
+    public void moveOrderToNextStageTest() throws Exception {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+        purchaseOrder.setOrderNumber(TEST_ORDER_NUMBER);
+        purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        purchaseOrder.setPurchaseOrderStatus(purchaseOrderStatus);
+
+        PowerMockito.doNothing().when(purchaseOrderStatus).moveOrder(purchaseOrder);
+
+        purchaseOrder.moveOrderToNextStage();
+
+        verify(purchaseOrderStatus, times(1)).moveOrder(purchaseOrder);
+    }
+
+    @Test
+    public void deleteTest() throws Exception {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+        purchaseOrder.setOrderNumber(TEST_ORDER_NUMBER);
+        purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        purchaseOrder.setTotalCost(TEST_PURCHASE_ORDER_COST);
+
+        PowerMockito.doReturn(purchaseOrderPersistence).when(purchaseOrder, GET_PERSISTENCE_METHOD_NAME);
+        PowerMockito.doNothing().when(purchaseOrderPersistence).delete(purchaseOrder);
+
+        purchaseOrder.delete();
+
+        verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
+        verify(purchaseOrderPersistence, times(1)).delete(purchaseOrder);
+    }
+
+    @Test
+    public void loadTest() throws Exception {
+        PurchaseOrder purchaseOrder = spy(new PurchaseOrder());
+        purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        purchaseOrder.setTotalCost(TEST_PURCHASE_ORDER_COST);
+
+        PowerMockito.doReturn(purchaseOrderPersistence).when(purchaseOrder, GET_PERSISTENCE_METHOD_NAME);
+        PowerMockito.doNothing().when(purchaseOrderPersistence).load(purchaseOrder);
+
+        purchaseOrder.load();
+
+        verifyPrivate(purchaseOrder).invoke(GET_PERSISTENCE_METHOD_NAME);
+        verify(purchaseOrderPersistence, times(1)).load(purchaseOrder);
     }
 }
