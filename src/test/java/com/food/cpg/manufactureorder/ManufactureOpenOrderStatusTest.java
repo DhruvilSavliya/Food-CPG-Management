@@ -13,7 +13,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ManufactureOpenOrderStatus.class)
 public class ManufactureOpenOrderStatusTest{
@@ -34,7 +33,7 @@ public class ManufactureOpenOrderStatusTest{
     @Test
     public void moveOrderTest() throws Exception {
         ManufactureOpenOrderStatus manufactureOpenOrderStatus = spy(new ManufactureOpenOrderStatus());
-        ManufactureOrder manufactureOrder = new ManufactureOrder();
+        IManufactureOrder manufactureOrder = new ManufactureOrder();
         manufactureOrder.setOrderNumber(TEST_ORDER_NO);
 
         PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOpenOrderStatus, GET_PERSISTENCE_METHOD_NAME);

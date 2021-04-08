@@ -14,7 +14,7 @@ public abstract class ManufactureOrderStatus {
         return this.orderStatus;
     }
 
-    public abstract void moveOrder(ManufactureOrder manufactureOrder);
+    public abstract void moveOrder(IManufactureOrder manufactureOrder);
 
     protected IManufactureOrderPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
