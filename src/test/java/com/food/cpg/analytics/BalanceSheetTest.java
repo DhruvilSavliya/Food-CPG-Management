@@ -14,8 +14,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.food.cpg.purchaseorder.IPurchaseOrder;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
-import com.food.cpg.purchaseorder.PurchaseOrder;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
 import com.food.cpg.salesorder.SalesOrder;
 
@@ -38,7 +38,7 @@ public class BalanceSheetTest {
     ISalesOrderPersistence salesOrderPersistence;
 
     @Mock
-    PurchaseOrder purchaseOrder;
+    IPurchaseOrder purchaseOrder;
 
     @Mock
     SalesOrder salesOrder;
@@ -51,7 +51,7 @@ public class BalanceSheetTest {
         calendar.setTime(new Date());
         calendar.add(Calendar.DATE, -2);
 
-        List<PurchaseOrder> purchaseOrders = new ArrayList<>();
+        List<IPurchaseOrder> purchaseOrders = new ArrayList<>();
         purchaseOrders.add(purchaseOrder);
 
         List<SalesOrder> salesOrders = new ArrayList<>();
