@@ -1,7 +1,5 @@
 package com.food.cpg;
 
-import com.food.cpg.manufactureorder.DefaultManufactureOrderFactory;
-import com.food.cpg.manufactureorder.ManufactureOrderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,12 +11,14 @@ import com.food.cpg.authentication.DefaultAuthenticationFactory;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 import com.food.cpg.inventory.DefaultInventoryFactory;
 import com.food.cpg.inventory.InventoryFactory;
+import com.food.cpg.item.DefaultItemFactory;
+import com.food.cpg.item.ItemFactory;
+import com.food.cpg.manufactureorder.DefaultManufactureOrderFactory;
+import com.food.cpg.manufactureorder.ManufactureOrderFactory;
 import com.food.cpg.manufacturer.DefaultManufacturerFactory;
 import com.food.cpg.manufacturer.ManufacturerFactory;
 import com.food.cpg.notification.DefaultNotificationFactory;
 import com.food.cpg.notification.NotificationFactory;
-import com.food.cpg.item.DefaultItemFactory;
-import com.food.cpg.item.ItemFactory;
 import com.food.cpg.packaging.DefaultPackageFactory;
 import com.food.cpg.packaging.PackageFactory;
 import com.food.cpg.purchaseorder.DefaultPurchaseOrderFactory;

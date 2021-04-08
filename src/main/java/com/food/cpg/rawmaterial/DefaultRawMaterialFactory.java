@@ -2,7 +2,7 @@ package com.food.cpg.rawmaterial;
 
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
-public class DefaultRawMaterialFactory extends RawMaterialFactory{
+public class DefaultRawMaterialFactory extends RawMaterialFactory {
 
     private final IRawMaterialPersistence rawMaterialPersistence;
 

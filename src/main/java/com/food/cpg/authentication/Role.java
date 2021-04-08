@@ -11,10 +11,6 @@ public enum Role {
         this.landingPage = landingPage;
     }
 
-    public String getLandingPage() {
-        return landingPage;
-    }
-
     public static Role getRole(String authority) {
         for (Role role : values()) {
             if (role.name().equals(authority)) {
@@ -22,5 +18,9 @@ public enum Role {
             }
         }
         return NONE;
+    }
+
+    public String getLandingPage() {
+        return landingPage;
     }
 }
