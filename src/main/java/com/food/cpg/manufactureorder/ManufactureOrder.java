@@ -207,6 +207,12 @@ public class ManufactureOrder implements IManufactureOrder {
     }
 
     @Override
+    public List<IManufactureOrder> getAllStoredOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getAllStoredOrders(loggedInManufacturerId);
+    }
+
+    @Override
     public void load() {
         getPersistence().load(this);
     }

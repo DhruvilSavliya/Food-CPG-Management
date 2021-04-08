@@ -28,7 +28,7 @@ public class AnalyticsController {
         return LOAD_BALANCE_SHEET_ROUTE;
     }
 
-    @RequestMapping("/load-order-statistics")
+    @RequestMapping(AnalyticsEndpoint.LOAD_ORDER_STATISTICS_END_POINT)
     public String loadOrderStatistics(OrderStatistics orderStatistics) {
         orderStatistics.generateOrderStatistics();
 

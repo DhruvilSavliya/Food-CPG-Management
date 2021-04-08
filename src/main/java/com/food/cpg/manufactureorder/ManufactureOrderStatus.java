@@ -17,8 +17,7 @@ public abstract class ManufactureOrderStatus {
     public abstract void moveOrder(IManufactureOrder manufactureOrder);
 
     protected IManufactureOrderPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getManufactureOrderPersistence();
+        return ManufactureOrderFactory.instance().makeManufactureOrderPersistence();
     }
 
 }

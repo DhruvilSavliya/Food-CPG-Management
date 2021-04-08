@@ -5,45 +5,45 @@ import java.util.Map;
 
 public interface IItem {
 
-    public Integer getId();
+    Integer getId();
 
-    public void setId(Integer id);
+    void setId(Integer id);
 
-    public Integer getManufacturerId();
+    Integer getManufacturerId();
 
-    public void setManufacturerId(Integer manufacturerId);
+    void setManufacturerId(Integer manufacturerId);
 
-    public String getName();
+    String getName();
 
-    public void setName(String name);
+    void setName(String name);
 
-    public Double getCookingCost();
+    Double getCookingCost();
 
-    public void setCookingCost(Double cookingCost);
+    void setCookingCost(Double cookingCost);
 
-    public Double getTotalCost();
+    Double getTotalCost();
 
-    public void setTotalCost(Double totalCost);
+    void setTotalCost(Double totalCost);
 
-    public List<ItemRawMaterial> getItemRawMaterials();
+    List<ItemRawMaterial> getItemRawMaterials();
 
-    public void setItemRawMaterials(List<ItemRawMaterial> itemRawMaterials);
+    void setItemRawMaterials(List<ItemRawMaterial> itemRawMaterials);
 
-    public Map<String, String> getErrors();
+    Map<String, String> getErrors();
 
-    public void setErrors(Map<String, String> errors);
+    void setErrors(Map<String, String> errors);
 
-    public List<IItem> getAll();
+    List<IItem> getAll();
 
-    public void save();
+    void save();
 
-    public void saveItemInventory(int itemId);
+    void saveItemInventory(int itemId);
 
-    public void load();
+    void load();
 
-    public void delete();
+    void delete();
 
-    public void addItemRawMaterial(ItemRawMaterial itemRawMaterial);
+    void addItemRawMaterial(ItemRawMaterial itemRawMaterial);
 
-    public void calculateTotalCost();
+    void calculateTotalCost();
 }

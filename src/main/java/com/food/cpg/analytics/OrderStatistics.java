@@ -1,49 +1,36 @@
 package com.food.cpg.analytics;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.manufacturingorder.IManufactureOrderPersistence;
-import com.food.cpg.manufacturingorder.ManufactureOrder;
+import com.food.cpg.manufactureorder.IManufactureOrder;
+import com.food.cpg.manufactureorder.IManufactureOrderPersistence;
+import com.food.cpg.manufactureorder.ManufactureOrderFactory;
+import com.food.cpg.purchaseorder.IPurchaseOrder;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
-import com.food.cpg.purchaseorder.PurchaseOrder;
+import com.food.cpg.purchaseorder.PurchaseOrderFactory;
+import com.food.cpg.salesorder.ISalesOrder;
 import com.food.cpg.salesorder.ISalesOrderPersistence;
-import com.food.cpg.salesorder.SalesOrder;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.food.cpg.salesorder.SalesOrderFactory;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import static java.util.Calendar.DATE;
-
 public class OrderStatistics {
-
-    private static final int DAYS_BETWEEN_START_DATE_AND_TODAY = 7;
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private Integer totalOrders;
     private Integer totalOpenPurchaseOrders;
     private Integer totalPlacedPurchaseOrders;
     private Integer totalReceivedPurchaseOrders;
+    private Integer totalPaidPurchaseOrders;
+    private Integer totalPurchaseOrders;
     private Integer totalOpenManufactureOrders;
     private Integer totalManufacturedManufactureOrders;
     private Integer totalPackagedManufactureOrders;
-    private Integer totalOpenSalesOrder;
-    private Integer totalPackagedSalesOrder;
-    private Integer totalShippedSalesOrder;
-    private Integer totalPaidSalesOrder;
-    private String mostOrderedRawMaterial;
-    private String mostShippedItem;
-
-    @DateTimeFormat(pattern = DATE_FORMAT)
-    private Date startDate;
-
-    @DateTimeFormat(pattern = DATE_FORMAT)
-    private Date endDate;
-
-    public OrderStatistics() {
-        initializeOrderStatistics();
-    }
+    private Integer totalStoredManufactureOrders;
+    private Integer totalManufactureOrders;
+    private Integer totalOpenSalesOrders;
+    private Integer totalPackagedSalesOrders;
+    private Integer totalShippedSalesOrders;
+    private Integer totalPaidSalesOrders;
+    private Integer totalSalesOrders;
 
 
     public Integer getTotalOrders() {
@@ -78,6 +65,14 @@ public class OrderStatistics {
         this.totalReceivedPurchaseOrders = totalReceivedPurchaseOrders;
     }
 
+    public Integer getTotalPaidPurchaseOrders() {
+        return totalPaidPurchaseOrders;
+    }
+
+    public void setTotalPaidPurchaseOrders(Integer totalPaidPurchaseOrders) {
+        this.totalPaidPurchaseOrders = totalPaidPurchaseOrders;
+    }
+
     public Integer getTotalOpenManufactureOrders() {
         return totalOpenManufactureOrders;
     }
@@ -103,111 +98,171 @@ public class OrderStatistics {
     }
 
     public Integer getTotalOpenSalesOrder() {
-        return totalOpenSalesOrder;
+        return totalOpenSalesOrders;
     }
 
     public void setTotalOpenSalesOrder(Integer totalOpenSalesOrder) {
-        this.totalOpenSalesOrder = totalOpenSalesOrder;
+        this.totalOpenSalesOrders = totalOpenSalesOrder;
     }
 
     public Integer getTotalPackagedSalesOrder() {
-        return totalPackagedSalesOrder;
+        return totalPackagedSalesOrders;
     }
 
     public void setTotalPackagedSalesOrder(Integer totalPackagedSalesOrder) {
-        this.totalPackagedSalesOrder = totalPackagedSalesOrder;
+        this.totalPackagedSalesOrders = totalPackagedSalesOrder;
     }
 
     public Integer getTotalShippedSalesOrder() {
-        return totalShippedSalesOrder;
+        return totalShippedSalesOrders;
     }
 
     public void setTotalShippedSalesOrder(Integer totalShippedSalesOrder) {
-        this.totalShippedSalesOrder = totalShippedSalesOrder;
+        this.totalShippedSalesOrders = totalShippedSalesOrder;
     }
 
     public Integer getTotalPaidSalesOrder() {
-        return totalPaidSalesOrder;
+        return totalPaidSalesOrders;
     }
 
     public void setTotalPaidSalesOrder(Integer totalPaidSalesOrder) {
-        this.totalPaidSalesOrder = totalPaidSalesOrder;
+        this.totalPaidSalesOrders = totalPaidSalesOrder;
     }
 
-    public String getMostOrderedRawMaterial() {
-        return mostOrderedRawMaterial;
+    public Integer getTotalPurchaseOrders() {
+        return totalPurchaseOrders;
     }
 
-    public void setMostOrderedRawMaterial(String mostOrderedRawMaterial) {
-        this.mostOrderedRawMaterial = mostOrderedRawMaterial;
+    public void setTotalPurchaseOrders(Integer totalPurchaseOrders) {
+        this.totalPurchaseOrders = totalPurchaseOrders;
     }
 
-    public String getMostShippedItem() {
-        return mostShippedItem;
+    public Integer getTotalStoredManufactureOrders() {
+        return totalStoredManufactureOrders;
     }
 
-    public void setMostShippedItem(String mostShippedItem) {
-        this.mostShippedItem = mostShippedItem;
+    public void setTotalStoredManufactureOrders(Integer totalStoredManufactureOrders) {
+        this.totalStoredManufactureOrders = totalStoredManufactureOrders;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Integer getTotalManufactureOrders() {
+        return totalManufactureOrders;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setTotalManufactureOrders(Integer totalManufactureOrders) {
+        this.totalManufactureOrders = totalManufactureOrders;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Integer getTotalOpenSalesOrders() {
+        return totalOpenSalesOrders;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setTotalOpenSalesOrders(Integer totalOpenSalesOrders) {
+        this.totalOpenSalesOrders = totalOpenSalesOrders;
     }
 
-    public void initializeOrderStatistics() {
-        Date endDateValue = new Date();
+    public Integer getTotalPackagedSalesOrders() {
+        return totalPackagedSalesOrders;
+    }
 
-        Calendar startDateValue = Calendar.getInstance();
-        startDateValue.setTime(endDateValue);
-        startDateValue.add(DATE, (DAYS_BETWEEN_START_DATE_AND_TODAY * -1));
+    public void setTotalPackagedSalesOrders(Integer totalPackagedSalesOrders) {
+        this.totalPackagedSalesOrders = totalPackagedSalesOrders;
+    }
 
-        this.setStartDate(startDateValue.getTime());
-        this.setEndDate(endDateValue);
+    public Integer getTotalShippedSalesOrders() {
+        return totalShippedSalesOrders;
+    }
+
+    public void setTotalShippedSalesOrders(Integer totalShippedSalesOrders) {
+        this.totalShippedSalesOrders = totalShippedSalesOrders;
+    }
+
+    public Integer getTotalPaidSalesOrders() {
+        return totalPaidSalesOrders;
+    }
+
+    public void setTotalPaidSalesOrders(Integer totalPaidSalesOrders) {
+        this.totalPaidSalesOrders = totalPaidSalesOrders;
+    }
+
+    public Integer getTotalSalesOrders() {
+        return totalSalesOrders;
+    }
+
+    public void setTotalSalesOrders(Integer totalSalesOrders) {
+        this.totalSalesOrders = totalSalesOrders;
     }
 
     public void generateOrderStatistics() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
 
-        List<PurchaseOrder> openPurchaseOrders = getPurchaseOrderPersistence().getOpenPurchaseOrder(loggedInManufacturerId);
-        List<PurchaseOrder> placedPurchaseOrders = getPurchaseOrderPersistence().getPlacedPurchaseOrder(loggedInManufacturerId);
-        List<PurchaseOrder> receivedPurchaseOrders = getPurchaseOrderPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+        generatePurchaseOrderStatistics(loggedInManufacturerId);
+        generateManufactureOrderStatistics(loggedInManufacturerId);
+        generateSalesOrderStatistics(loggedInManufacturerId);
 
-        List<ManufactureOrder> openManufactureOrders = getManufactureOrderPersistence().getAllOpenOrders(loggedInManufacturerId);
-        List<ManufactureOrder> manufacturedManufactureOrders = getManufactureOrderPersistence().getAllManufacturedOrders(loggedInManufacturerId);
-        List<ManufactureOrder> packagedManufactureOrders = getManufactureOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
-
-        List<SalesOrder> openSalesOrders = getSalesOrderPersistence().getAllOpenOrders(loggedInManufacturerId);
-        List<SalesOrder> packagedSalesOrders = getSalesOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
-        List<SalesOrder> shippedSalesOrders = getSalesOrderPersistence().getAllShippedOrders(loggedInManufacturerId);
-        List<SalesOrder> paidSalesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
+        calculateTotalOrderNumber();
 
     }
 
-    private IManufactureOrderPersistence getManufactureOrderPersistence(){
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getManufactureOrderPersistence();
+    public void generatePurchaseOrderStatistics(int loggedInManufacturerId) {
+        List<IPurchaseOrder> openPurchaseOrders = getPurchaseOrderPersistence().getOpenPurchaseOrder(loggedInManufacturerId);
+        List<IPurchaseOrder> placedPurchaseOrders = getPurchaseOrderPersistence().getPlacedPurchaseOrder(loggedInManufacturerId);
+        List<IPurchaseOrder> receivedPurchaseOrders = getPurchaseOrderPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+        List<IPurchaseOrder> paidPurchaseOrders = getPurchaseOrderPersistence().getPaidPurchaseOrder(loggedInManufacturerId);
+
+        totalOpenPurchaseOrders = openPurchaseOrders.size();
+        totalPlacedPurchaseOrders = placedPurchaseOrders.size();
+        totalReceivedPurchaseOrders = receivedPurchaseOrders.size();
+        totalPaidPurchaseOrders = paidPurchaseOrders.size();
+
+        totalPurchaseOrders = totalOpenPurchaseOrders + totalPlacedPurchaseOrders + totalReceivedPurchaseOrders + totalPaidPurchaseOrders;
+    }
+
+    public void generateManufactureOrderStatistics(int loggedInManufacturerId) {
+        List<IManufactureOrder> openManufactureOrders = getManufactureOrderPersistence().getAllOpenOrders(loggedInManufacturerId);
+        List<IManufactureOrder> manufacturedManufactureOrders = getManufactureOrderPersistence().getAllManufacturedOrders(loggedInManufacturerId);
+        List<IManufactureOrder> packagedManufactureOrders = getManufactureOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
+        List<IManufactureOrder> storedManufactureOrders = getManufactureOrderPersistence().getAllStoredOrders(loggedInManufacturerId);
+
+        totalOpenManufactureOrders = openManufactureOrders.size();
+        totalManufacturedManufactureOrders = manufacturedManufactureOrders.size();
+        totalPackagedManufactureOrders = packagedManufactureOrders.size();
+        totalStoredManufactureOrders = storedManufactureOrders.size();
+
+        totalManufactureOrders = totalOpenManufactureOrders + totalManufacturedManufactureOrders + totalPackagedManufactureOrders + totalStoredManufactureOrders;
+
+
+    }
+
+    public void generateSalesOrderStatistics(int loggedInManufacturerId) {
+        List<ISalesOrder> openSalesOrders = getSalesOrderPersistence().getAllOpenOrders(loggedInManufacturerId);
+        List<ISalesOrder> packagedSalesOrders = getSalesOrderPersistence().getAllPackagedOrders(loggedInManufacturerId);
+        List<ISalesOrder> shippedSalesOrders = getSalesOrderPersistence().getAllShippedOrders(loggedInManufacturerId);
+        List<ISalesOrder> paidSalesOrders = getSalesOrderPersistence().getAllPaidOrders(loggedInManufacturerId);
+
+        totalOpenSalesOrders = openSalesOrders.size();
+        totalPackagedSalesOrders = packagedSalesOrders.size();
+        totalShippedSalesOrders = shippedSalesOrders.size();
+        totalPaidSalesOrders = paidSalesOrders.size();
+
+        totalSalesOrders = totalOpenSalesOrders + totalPackagedSalesOrders + totalShippedSalesOrders + totalPaidSalesOrders;
+    }
+
+    public void calculateTotalOrderNumber() {
+
+        totalOrders = totalPurchaseOrders + totalManufactureOrders + totalSalesOrders;
+    }
+
+    private IManufactureOrderPersistence getManufactureOrderPersistence() {
+        return ManufactureOrderFactory.instance().makeManufactureOrderPersistence();
     }
 
     private IPurchaseOrderPersistence getPurchaseOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPurchaseOrderPersistence();
+        return PurchaseOrderFactory.instance().makePurchaseOrderPersistence();
     }
 
     private ISalesOrderPersistence getSalesOrderPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getSalesOrderPersistence();
+        return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }
 
     private int getLoggedInManufacturerId() {
