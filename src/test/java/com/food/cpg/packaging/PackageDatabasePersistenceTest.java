@@ -1,13 +1,5 @@
 package com.food.cpg.packaging;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,15 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyObject;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(PackageFactory.class)
 public class PackageDatabasePersistenceTest extends TestCase {
     private static final Integer TEST_MANUFACTURER_ID = 1;
     private static final Integer TEST_ITEM_ID = 1;
@@ -33,6 +31,7 @@ public class PackageDatabasePersistenceTest extends TestCase {
     private static final Double TEST_MANUFACTURING_COST = 50.0;
     private static final Double TEST_WHOLE_SALE_COST = 100.0;
     private static final Double TEST_RETAIL_COST = 150.0;
+    public static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -47,7 +46,10 @@ public class PackageDatabasePersistenceTest extends TestCase {
     ResultSet resultSet;
 
     @Mock
-    Package packages;
+    IPackage packages;
+
+    @Mock
+    PackageFactory packageFactory;
 
     @Before
     public void setUp() throws SQLException {
@@ -57,7 +59,10 @@ public class PackageDatabasePersistenceTest extends TestCase {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void getAllTest() throws Exception {
+        PowerMockito.mockStatic(PackageFactory.class);
+        PowerMockito.doReturn(packageFactory).when(PackageFactory.class, GET_INSTANCE_METHOD);
+        when(packageFactory.makePackage()).thenReturn(packages);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 

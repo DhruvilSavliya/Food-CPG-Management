@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface IItemPersistence {
 
-    List<Item> getAll(int manufacturerId);
+    List<IItem> getAll(int manufacturerId);
 
-    void load(Item item);
+    void load(IItem item);
 
-    Integer save(Item item);
+    Integer save(IItem item);
 
     void delete(int itemId);
 

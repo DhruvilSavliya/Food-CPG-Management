@@ -18,10 +18,10 @@ public class PackageDatabasePersistence implements IPackagePersistence {
     }
 
     @Override
-    public List<Package> getAll(int manufacturerId) {
-        List<Package> packagesList = new ArrayList<>();
+    public List<IPackage> getAll(int manufacturerId) {
+        List<IPackage> packagesList = new ArrayList<>();
 
-        String sql = "select * from packages where manufacturer_id = ?";
+        String sql = PackageDatabaseQuery.SELECT_ALL_PACKAGE;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
@@ -30,7 +30,7 @@ public class PackageDatabasePersistence implements IPackagePersistence {
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        Package packages = new Package();
+                        IPackage packages = PackageFactory.instance().makePackage();
                         loadPackagesDetailsFromResultSet(rs, packages);
 
                         packagesList.add(packages);
@@ -44,8 +44,8 @@ public class PackageDatabasePersistence implements IPackagePersistence {
     }
 
     @Override
-    public void load(Package packages) {
-        String sql = "select * from packages where package_id = ?";
+    public void load(IPackage packages) {
+        String sql = PackageDatabaseQuery.LOAD_PACKAGE;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packages.getPackageId());
 
@@ -64,9 +64,8 @@ public class PackageDatabasePersistence implements IPackagePersistence {
     }
 
     @Override
-    public void save(Package packages) {
-        String sql = "insert into packages (item_id, package_name, quantity, manufacturing_cost, wholesale_cost, retail_cost, manufacturer_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?)";
+    public void save(IPackage packages) {
+        String sql = PackageDatabaseQuery.INSERT_PACKAGE;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packages.getItemId());
         placeholderValues.add(packages.getPackageName());
@@ -84,8 +83,8 @@ public class PackageDatabasePersistence implements IPackagePersistence {
     }
 
     @Override
-    public void update(Package packages) {
-        String sql = "update packages set item_id = ?, package_name = ?, quantity = ?, manufacturing_cost = ?, wholesale_cost = ?, retail_cost = ? where package_id = ?";
+    public void update(IPackage packages) {
+        String sql = PackageDatabaseQuery.UPDATE_PACKAGE;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packages.getItemId());
         placeholderValues.add(packages.getPackageName());
@@ -104,7 +103,7 @@ public class PackageDatabasePersistence implements IPackagePersistence {
 
     @Override
     public void delete(int packageId) {
-        String sql = "delete from packages where package_id = ?";
+        String sql = PackageDatabaseQuery.DELETE_PACKAGE;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(packageId);
 
@@ -115,13 +114,13 @@ public class PackageDatabasePersistence implements IPackagePersistence {
         }
     }
 
-    private void loadPackagesDetailsFromResultSet(ResultSet resultSet, Package packages) throws SQLException {
-        packages.setPackageId(resultSet.getInt("package_id"));
-        packages.setItemId(resultSet.getInt("item_id"));
-        packages.setPackageName(resultSet.getString("package_name"));
-        packages.setQuantity(resultSet.getDouble("quantity"));
-        packages.setManufacturingCost(resultSet.getDouble("manufacturing_cost"));
-        packages.setWholesaleCost(resultSet.getDouble("wholesale_cost"));
-        packages.setRetailCost(resultSet.getDouble("retail_cost"));
+    private void loadPackagesDetailsFromResultSet(ResultSet resultSet, IPackage packages) throws SQLException {
+        packages.setPackageId(resultSet.getInt(PackageDatabaseColumn.PACKAGE_ID));
+        packages.setItemId(resultSet.getInt(PackageDatabaseColumn.ITEM_ID));
+        packages.setPackageName(resultSet.getString(PackageDatabaseColumn.PACKAGE_NAME));
+        packages.setQuantity(resultSet.getDouble(PackageDatabaseColumn.QUANTITY));
+        packages.setManufacturingCost(resultSet.getDouble(PackageDatabaseColumn.MANUFACTURING_COST));
+        packages.setWholesaleCost(resultSet.getDouble(PackageDatabaseColumn.WHOLESALE_COST));
+        packages.setRetailCost(resultSet.getDouble(PackageDatabaseColumn.RETAIL_COST));
     }
 }

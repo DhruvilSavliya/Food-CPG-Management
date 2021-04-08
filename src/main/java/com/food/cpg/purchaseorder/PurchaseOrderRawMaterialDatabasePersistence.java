@@ -18,9 +18,9 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
     }
 
     @Override
-    public void save(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
+    public void save(IPurchaseOrderRawMaterial purchaseOrderRawMaterial) {
 
-        String sql = "insert into purchase_order_raw_materials (purchase_order_number, raw_material_id, quantity, quantity_uom) values (?, ?, ?, ?)";
+        String sql = PurchaseOrderDatabaseQuery.INSERT_PURCHASE_ORDER_RAW_MATERIAL;
 
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(purchaseOrderRawMaterial.getPurchaseOrderNumber());
@@ -39,7 +39,7 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
     public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
         List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = new ArrayList<>();
 
-        String sql = "select * from item_raw_materials where item_id = ?";
+        String sql = PurchaseOrderDatabaseQuery.SELECT_ALL_PO_RAW_MATERIAL_BY_ITEM;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(itemId);
         try (Connection connection = commonDatabaseOperation.getConnection()) {
@@ -47,9 +47,9 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+                        PurchaseOrderRawMaterial purchaseOrderRawMaterial = PurchaseOrderFactory.instance().makePurchaseOrderRawMaterial();
 
-                        loadPurchaseOrderRawMaterialDetailsFromResultSet(rs, purchaseOrderRawMaterial);
+                        loadPurchaseOrderRawMaterialDetailsFromItemResultSet(rs, purchaseOrderRawMaterial);
 
                         purchaseOrderItemRawMaterials.add(purchaseOrderRawMaterial);
                     }
@@ -65,7 +65,7 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
     public List<PurchaseOrderRawMaterial> getPurchaseOrderRawMaterials(String orderNumber) {
         List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials = new ArrayList<>();
 
-        String sql = "select * from purchase_order_raw_materials where purchase_order_number = ?";
+        String sql = PurchaseOrderDatabaseQuery.SELECT_ALL_PO_RAW_MATERIAL;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderNumber);
 
@@ -74,7 +74,7 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+                        PurchaseOrderRawMaterial purchaseOrderRawMaterial = PurchaseOrderFactory.instance().makePurchaseOrderRawMaterial();
 
                         loadPurchaseOrderRawMaterialDetailsFromResultSet(rs, purchaseOrderRawMaterial);
 
@@ -91,7 +91,7 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
     @Override
     public void delete(String purchaseOrderNumber) {
 
-        String sql = "delete from purchase_order_raw_materials where purchase_order_number = ?";
+        String sql = PurchaseOrderDatabaseQuery.DELETE_PURCHASE_ORDER_RAW_MATERIAL;
 
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(purchaseOrderNumber);
@@ -102,9 +102,15 @@ public class PurchaseOrderRawMaterialDatabasePersistence implements IPurchaseOrd
         }
     }
 
-    private void loadPurchaseOrderRawMaterialDetailsFromResultSet(ResultSet resultSet, PurchaseOrderRawMaterial purchaseOrderRawMaterial) throws SQLException {
-        purchaseOrderRawMaterial.setRawMaterialId(resultSet.getInt("raw_material_id"));
-        purchaseOrderRawMaterial.setRawMaterialQuantity(resultSet.getDouble("quantity"));
-        purchaseOrderRawMaterial.setRawMaterialQuantityUOM(resultSet.getString("quantity_uom"));
+    private void loadPurchaseOrderRawMaterialDetailsFromItemResultSet(ResultSet resultSet, IPurchaseOrderRawMaterial purchaseOrderRawMaterial) throws SQLException {
+        purchaseOrderRawMaterial.setRawMaterialId(resultSet.getInt(PurchaseOrderDatabaseColumn.PO_RAW_MATERIAL_ID));
+        purchaseOrderRawMaterial.setRawMaterialQuantity(resultSet.getDouble(PurchaseOrderDatabaseColumn.PO_RAW_MATERIAL_QUANTITY_BY_IEM));
+        purchaseOrderRawMaterial.setRawMaterialQuantityUOM(resultSet.getString(PurchaseOrderDatabaseColumn.PO_RAW_MATERIAL_UOM_BY_ITEM));
+    }
+
+    private void loadPurchaseOrderRawMaterialDetailsFromResultSet(ResultSet resultSet, IPurchaseOrderRawMaterial purchaseOrderRawMaterial) throws SQLException {
+        purchaseOrderRawMaterial.setRawMaterialId(resultSet.getInt(PurchaseOrderDatabaseColumn.PO_RAW_MATERIAL_ID));
+        purchaseOrderRawMaterial.setRawMaterialQuantity(resultSet.getDouble(PurchaseOrderDatabaseColumn.PO_RAW_MATERIAL_QUANTITY));
+        purchaseOrderRawMaterial.setRawMaterialQuantityUOM(resultSet.getString(PurchaseOrderDatabaseColumn.PO_RAW_MATERIAL_UOM));
     }
 }

@@ -109,13 +109,13 @@ public class PackageTest {
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
 
-        List<Package> packagesList = new ArrayList<>();
+        List<IPackage> packagesList = new ArrayList<>();
         packagesList.add(packages);
 
         PowerMockito.doReturn(packagesPersistence).when(packages, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(packagesList).when(packagesPersistence).getAll(anyInt());
 
-        List<Package> packagesResult = packages.getAll();
+        List<IPackage> packagesResult = packages.getAll();
         Assert.assertNotNull(packagesResult);
         Assert.assertEquals(1, packagesResult.size());
         Assert.assertEquals(TEST_PACKAGE_NAME, packagesResult.get(0).getPackageName());
@@ -138,7 +138,7 @@ public class PackageTest {
 
     @Test
     public void loadSuccessTest() throws Exception {
-        Package packages = spy(new Package());
+        IPackage packages = spy(new Package());
         packages.setPackageId(TEST_PACKAGE_ID);
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
@@ -153,7 +153,7 @@ public class PackageTest {
 
     @Test
     public void loadFailTest() throws Exception {
-        Package packages = spy(new Package());
+        IPackage packages = spy(new Package());
         packages.setPackageId(0);
         packages.setManufacturerId(TEST_MANUFACTURER_ID);
         packages.setPackageName(TEST_PACKAGE_NAME);
