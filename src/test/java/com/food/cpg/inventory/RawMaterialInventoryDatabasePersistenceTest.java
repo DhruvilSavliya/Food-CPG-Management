@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(InventoryFactory.class)
 public class RawMaterialInventoryDatabasePersistenceTest {
 
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
     private static final Double TEST_RAW_MATERIAL_QUANTITY = 10.0;
 

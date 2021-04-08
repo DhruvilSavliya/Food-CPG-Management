@@ -27,7 +27,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest({PurchasePlacedOrderStatus.class, InventoryFactory.class})
 public class PurchasePlacedOrderStatusTest {
 
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final String TEST_PURCHASE_ORDER_NUMBER = "PO-1234";
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
     private static final String TEST_RAW_MATERIAL_UOM = "g";

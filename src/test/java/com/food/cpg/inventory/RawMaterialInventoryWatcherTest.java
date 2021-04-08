@@ -32,12 +32,12 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest({RawMaterialInventoryWatcher.class, NotificationFactory.class, PurchaseOrderFactory.class})
 public class RawMaterialInventoryWatcherTest {
 
-    public static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
-    public static final String GET_RAW_MATERIAL_INVENTORY_PERSISTENCE_METHOD = "getRawMaterialInventoryPersistence";
-    public static final String GET_RAW_MATERIAL_PERSISTENCE_METHOD = "getRawMaterialPersistence";
-    public static final String GET_PURCHASE_ORDER_PERSISTENCE_METHOD = "getPurchaseOrderPersistence";
-    public static final String GET_PURCHASE_ORDER_RAW_MATERIAL_PERSISTENCE_METHOD = "getPurchaseOrderRawMaterialPersistence";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
+    private static final String GET_RAW_MATERIAL_INVENTORY_PERSISTENCE_METHOD = "getRawMaterialInventoryPersistence";
+    private static final String GET_RAW_MATERIAL_PERSISTENCE_METHOD = "getRawMaterialPersistence";
+    private static final String GET_PURCHASE_ORDER_PERSISTENCE_METHOD = "getPurchaseOrderPersistence";
+    private static final String GET_PURCHASE_ORDER_RAW_MATERIAL_PERSISTENCE_METHOD = "getPurchaseOrderRawMaterialPersistence";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final int TEST_MANUFACTURER_ID = 1;
     private static final int TEST_RAW_MATERIAL_ID = 1;
     private static final String TEST_RAW_MATERIAL_NAME= "Test raw material";
