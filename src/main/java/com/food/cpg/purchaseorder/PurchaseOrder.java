@@ -10,18 +10,16 @@ import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class PurchaseOrder {
-    private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmm";
+    private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmmssSSS";
     private static final String PO_PREFIX = "PO-";
 
     private String orderNumber;
     private Integer manufacturerId;
     private Integer vendorId;
-    private String orderStatus;
-    private Timestamp orderCreationDate;
-    private Timestamp orderPlacedDate;
-    private Timestamp orderReceivedDate;
+    private Timestamp statusChangeDate;
     private Double totalCost;
     private List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials;
+    private PurchaseOrderStatus purchaseOrderStatus;
 
     public PurchaseOrder() {
         String generatedOrderNumber = generateOrderNumber();
@@ -53,44 +51,20 @@ public class PurchaseOrder {
         this.vendorId = vendorId;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public Timestamp getOrderCreationDate() {
-        return orderCreationDate;
-    }
-
-    public void setOrderCreationDate(Timestamp orderCreationDate) {
-        this.orderCreationDate = orderCreationDate;
-    }
-
-    public Timestamp getOrderPlacedDate() {
-        return orderPlacedDate;
-    }
-
-    public void setOrderPlacedDate(Timestamp orderPlacedDate) {
-        this.orderPlacedDate = orderPlacedDate;
-    }
-
-    public Timestamp getOrderReceivedDate() {
-        return orderReceivedDate;
-    }
-
-    public void setOrderReceivedDate(Timestamp orderReceivedDate) {
-        this.orderReceivedDate = orderReceivedDate;
-    }
-
     public Double getTotalCost() {
         return totalCost;
     }
 
     public void setTotalCost(Double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public Timestamp getStatusChangeDate() {
+        return statusChangeDate;
+    }
+
+    public void setStatusChangeDate(Timestamp statusChangeDate) {
+        this.statusChangeDate = statusChangeDate;
     }
 
     public List<PurchaseOrderRawMaterial> getPurchaseOrderRawMaterials() {
@@ -101,12 +75,21 @@ public class PurchaseOrder {
         this.purchaseOrderRawMaterials = purchaseOrderRawMaterials;
     }
 
+    public PurchaseOrderStatus getPurchaseOrderStatus() {
+        return purchaseOrderStatus;
+    }
+
+    public void setPurchaseOrderStatus(PurchaseOrderStatus purchaseOrderStatus) {
+        this.purchaseOrderStatus = purchaseOrderStatus;
+    }
+
     public void addPurchaseOrderRawMaterials(PurchaseOrderRawMaterial purchaseOrderRawMaterial) {
         if (this.purchaseOrderRawMaterials == null) {
             this.purchaseOrderRawMaterials = new ArrayList<>();
         }
         purchaseOrderRawMaterial.setPurchaseOrderNumber(this.getOrderNumber());
         this.purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
+        this.calculateTotalCost();
     }
 
     private String generateOrderNumber() {
@@ -127,6 +110,16 @@ public class PurchaseOrder {
         }
     }
 
+    public void calculateTotalCost() {
+        double poRawMaterialCost = 0.0;
+
+        for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : getPurchaseOrderRawMaterials()) {
+            poRawMaterialCost += purchaseOrderRawMaterial.getRawMaterialCost();
+        }
+
+        this.setTotalCost(poRawMaterialCost);
+    }
+
     private IPurchaseOrderPersistence getPersistence() {
         PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
         return persistenceFactory.getPurchaseOrderPersistence();
@@ -135,5 +128,34 @@ public class PurchaseOrder {
     private int getLoggedInManufacturerId() {
         AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
         return authenticationSessionDetails.getAuthenticatedUserId();
+    }
+
+    public List<PurchaseOrder> getAllOpenOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getOpenPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getAllPlacedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getPlacedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public List<PurchaseOrder> getAllReceivedOrders() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        return getPersistence().getReceivedPurchaseOrder(loggedInManufacturerId);
+    }
+
+    public void delete() {
+        int loggedInManufacturerId = getLoggedInManufacturerId();
+        this.setManufacturerId(loggedInManufacturerId);
+        getPersistence().delete(this);
+    }
+
+    public void load() {
+        getPersistence().load(this);
+    }
+
+    public void moveOrderToNextStage() {
+        this.getPurchaseOrderStatus().moveOrder(this);
     }
 }

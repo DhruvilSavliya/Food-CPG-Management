@@ -1,12 +1,16 @@
 package com.food.cpg.manufacturer;
 
+import java.util.List;
+
 public interface IManufacturerPersistence {
 
-    Manufacturer get(String manufacturerEmail);
+    List<IManufacturer> getAll();
 
-    void load(Manufacturer manufacturer);
+    IManufacturer get(String manufacturerEmail);
 
-    void register(Manufacturer manufacturer);
+    void load(IManufacturer manufacturer);
 
-    void createLoginAccount(Manufacturer manufacturer);
+    void register(IManufacturer manufacturer);
+
+    void createLoginAccount(IManufacturer manufacturer);
 }

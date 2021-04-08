@@ -1,17 +1,16 @@
 package com.food.cpg.item;
 
-import com.food.cpg.models.Unit;
-import com.food.cpg.purchaseorder.PurchaseOrder;
-import com.food.cpg.rawmaterial.RawMaterial;
-import com.food.cpg.vendor.Vendor;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.food.cpg.inventory.Unit;
+import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.vendor.Vendor;
 
 @Controller
 public class ItemController {
@@ -43,18 +42,18 @@ public class ItemController {
     @PostMapping("/add-item-raw-material")
     public String addItemRawMaterial(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         item.addItemRawMaterial(itemRawMaterial);
-        model.addAttribute("units", Unit.values());
-        model.addAttribute("vendors", vendor.getAll());
-        model.addAttribute("rawMaterials", rawMaterial.getAll());
+        model.addAttribute(VIEW_UNITS_KEY, Unit.values());
+        model.addAttribute(VIEW_VENDORS_KEY, vendor.getAll());
+        model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
         return SHOW_ADD_ITEM_FORM_ROUTE;
     }
 
     @PostMapping("/calculate-total-item-cost")
     public String calculateTotalCost(Item item, ItemRawMaterial itemRawMaterial, RawMaterial rawMaterial, Vendor vendor, Model model) {
         item.calculateTotalCost();
-        model.addAttribute("units", Unit.values());
-        model.addAttribute("vendors", vendor.getAll());
-        model.addAttribute("rawMaterials", rawMaterial.getAll());
+        model.addAttribute(VIEW_UNITS_KEY, Unit.values());
+        model.addAttribute(VIEW_VENDORS_KEY, vendor.getAll());
+        model.addAttribute(VIEW_RAW_MATERIALS_KEY, rawMaterial.getAll());
         return SHOW_ADD_ITEM_FORM_ROUTE;
     }
 
@@ -72,7 +71,6 @@ public class ItemController {
         itemRawMaterial.delete();
         return redirectToItems();
     }
-
 
     private String redirectToItems() {
         return REDIRECT_NOTATION + ITEM_LIST_REQUEST_END_POINT;

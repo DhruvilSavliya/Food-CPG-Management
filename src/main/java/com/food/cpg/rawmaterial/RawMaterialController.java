@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.food.cpg.models.Unit;
+import com.food.cpg.inventory.Unit;
 import com.food.cpg.vendor.Vendor;
 
 @Controller

@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class AuthenticationSessionDetailsTest {
 
-    public static final int AUTHENTICATED_USER_ID = 1;
+    private static final int AUTHENTICATED_USER_ID = 1;
 
     @Test
     public void getInstanceTest() {
