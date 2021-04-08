@@ -1,8 +1,5 @@
 package com.food.cpg.inventory;
 
-import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-
 import java.util.List;
 
 public interface IItemInventory {

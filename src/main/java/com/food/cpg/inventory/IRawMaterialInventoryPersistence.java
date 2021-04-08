@@ -12,3 +12,4 @@ public interface IRawMaterialInventoryPersistence {
 
     void save(int rawMaterialId);
 }
+

@@ -10,7 +10,7 @@ import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
 public class PurchaseOrder {
-    private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmm";
+    private static final String PO_ORDER_TIME_FORMAT = "ddMMHHmmssSSS";
     private static final String PO_PREFIX = "PO-";
 
     private String orderNumber;

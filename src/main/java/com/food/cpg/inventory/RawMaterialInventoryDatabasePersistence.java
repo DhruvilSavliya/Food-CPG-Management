@@ -23,7 +23,7 @@ public class RawMaterialInventoryDatabasePersistence implements IRawMaterialInve
 
         List<IRawMaterialInventory> rawMaterialInventories = new ArrayList<>();
 
-        String sql = "select rmi.raw_material_id, rmi.quantity, rmi. quantity_uom, rm.raw_material_name from raw_material_inventory rmi join raw_materials rm on rmi.raw_material_id = rm.raw_material_id where rm.manufacturer_id = ?";
+        String sql = "select rmi.raw_material_id, rmi.quantity, rmi.quantity_uom, rm.raw_material_name from raw_material_inventory rmi join raw_materials rm on rmi.raw_material_id = rm.raw_material_id where rm.manufacturer_id = ?";
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
 
