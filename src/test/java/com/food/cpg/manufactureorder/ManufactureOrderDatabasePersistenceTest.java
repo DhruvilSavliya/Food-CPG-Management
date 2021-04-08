@@ -145,6 +145,34 @@ public class ManufactureOrderDatabasePersistenceTest {
     }
 
     @Test
+    public void getAllStoredOrdersTest() throws Exception {
+        PowerMockito.mockStatic(ManufactureOrderFactory.class);
+        PowerMockito.doReturn(manufactureOrderFactory).when(ManufactureOrderFactory.class, GET_INSTANCE_METHOD);
+        when(manufactureOrderFactory.makeManufactureOrder()).thenReturn(manufactureOrder);
+
+        when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+        doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
+
+        List<Object> placeholderValues = new ArrayList<>();
+        placeholderValues.add(1);
+        placeholderValues.add(ManufactureOrderStatus.Status.STORED.name());
+
+        ManufactureOrderDatabasePersistence manufactureOrderDatabasePersistence = new ManufactureOrderDatabasePersistence(commonDatabaseOperation);
+
+        manufactureOrderDatabasePersistence.getAllStoredOrders(TEST_MANUFACTURE_ID);
+
+        verify(commonDatabaseOperation, times(1)).getConnection();
+        verify(connection, times(1)).prepareStatement(anyString());
+        verify(commonDatabaseOperation, times(1)).loadPlaceholderValues(preparedStatement, placeholderValues);
+        verify(preparedStatement, times(1)).executeQuery();
+        verify(resultSet, times(3)).next();
+        verify(resultSet, times(6)).getString(anyString());
+        verify(resultSet, times(2)).getInt(anyString());
+        verify(resultSet, times(6)).getDouble(anyString());
+        verify(resultSet, times(2)).getTimestamp(anyString());
+    }
+
+    @Test
     public void loadTest() throws Exception {
         PowerMockito.mockStatic(ManufactureOrderFactory.class);
         PowerMockito.doReturn(manufactureOrderFactory).when(ManufactureOrderFactory.class, GET_INSTANCE_METHOD);

@@ -134,6 +134,8 @@ public class SalesOrderDatabasePersistence implements ISalesOrderPersistence {
         return salesOrders;
     }
 
+
+
     private void loadSalesOrderDetailsFromResultSet(ResultSet resultSet, ISalesOrder salesOrder) throws SQLException {
         salesOrder.setOrderNumber(resultSet.getString(SalesOrderDatabaseColumn.ORDER_NUMBER));
         salesOrder.setItemId(resultSet.getInt(SalesOrderDatabaseColumn.ITEM_ID));

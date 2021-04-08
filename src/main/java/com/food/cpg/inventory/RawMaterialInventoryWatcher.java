@@ -34,7 +34,7 @@ public class RawMaterialInventoryWatcher {
     private static final String NEW_PURCHASE_ORDER_CREATION_MESSAGE = "Raw Material inventory for raw material(s) %s was low from vendor %s. A new purchase order- %s amounting- %s has been created.";
     private static final String COMMA = ",";
 
-    @Scheduled(initialDelay = 30000, fixedDelay = 3000000)
+    @Scheduled(initialDelay = 3000000, fixedDelay = 3000000)
     public void inventoryCheck() {
         List<IManufacturer> manufacturers = getManufacturerPersistence().getAll();
 

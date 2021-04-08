@@ -114,6 +114,30 @@ public class ManufactureOrderTest {
     }
 
     @Test
+    public void getAllStoredOrdersTest() throws Exception {
+        IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
+        manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
+        manufactureOrder.setCost(TEST_MANUFACTURE_ORDER_COST);
+
+        List<IManufactureOrder> manufactureOrders = new ArrayList<>();
+        manufactureOrders.add(manufactureOrder);
+
+        PowerMockito.doReturn(manufactureOrderPersistence).when(manufactureOrder, GET_PERSISTENCE_METHOD);
+        PowerMockito.doReturn(manufactureOrders).when(manufactureOrderPersistence).getAllStoredOrders(anyInt());
+        PowerMockito.doReturn(1).when(manufactureOrder, GET_MANUFACTURER_ID_METHOD);
+
+        List<IManufactureOrder> manufactureOrdersResult = manufactureOrder.getAllStoredOrders();
+
+        verifyPrivate(manufactureOrder).invoke(GET_PERSISTENCE_METHOD);
+        verifyPrivate(manufactureOrder).invoke(GET_MANUFACTURER_ID_METHOD);
+        verify(manufactureOrderPersistence, times(1)).getAllStoredOrders(anyInt());
+        Assert.assertNotNull(manufactureOrdersResult);
+        Assert.assertEquals(1, manufactureOrdersResult.size());
+        Assert.assertEquals(TEST_MANUFACTURER_ID, manufactureOrdersResult.get(0).getManufacturerId());
+        Assert.assertEquals(TEST_MANUFACTURE_ORDER_COST, manufactureOrdersResult.get(0).getCost(), DELTA);
+    }
+
+    @Test
     public void loadTest() throws Exception {
         IManufactureOrder manufactureOrder = spy(new ManufactureOrder());
         manufactureOrder.setManufacturerId(TEST_MANUFACTURER_ID);
