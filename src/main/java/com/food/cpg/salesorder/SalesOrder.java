@@ -6,9 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
 
-public class SalesOrder {
+public class SalesOrder implements ISalesOrder {
 
     private static final String SO_TIME_FORMAT = "ddMMHHmm";
     private static final String SO_PREFIX = "SO-";
@@ -31,113 +30,140 @@ public class SalesOrder {
         setOrderNumber(generatedOrderNumber);
     }
 
+    @Override
     public String getOrderNumber() {
         return orderNumber;
     }
 
+    @Override
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 
+    @Override
     public int getManufacturerId() {
         return manufacturerId;
     }
 
+    @Override
     public void setManufacturerId(int manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 
+    @Override
     public int getItemId() {
         return itemId;
     }
 
+    @Override
     public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
+    @Override
     public int getPackageId() {
         return packageId;
     }
 
+    @Override
     public void setPackageId(int packageId) {
         this.packageId = packageId;
     }
 
+    @Override
     public double getPackageCost() {
         return packageCost;
     }
 
+    @Override
     public void setPackageCost(double packageCost) {
         this.packageCost = packageCost;
     }
 
+    @Override
     public double getShippingCost() {
         return shippingCost;
     }
 
+    @Override
     public void setShippingCost(double shippingCost) {
         this.shippingCost = shippingCost;
     }
 
+    @Override
     public double getTax() {
         return tax;
     }
 
+    @Override
     public void setTax(double tax) {
         this.tax = tax;
     }
 
+    @Override
     public double getTotalCost() {
         return totalCost;
     }
 
+    @Override
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 
+    @Override
     public boolean getIsForCharity() {
         return isForCharity;
     }
 
+    @Override
     public void setIsForCharity(boolean isForCharity) {
         this.isForCharity = isForCharity;
     }
 
+    @Override
     public String getBuyerDetails() {
         return buyerDetails;
     }
 
+    @Override
     public void setBuyerDetails(String buyerDetails) {
         this.buyerDetails = buyerDetails;
     }
 
+    @Override
     public SalesOrderStatus getSalesOrderStatus() {
         return salesOrderStatus;
     }
 
+    @Override
     public void setSalesOrderStatus(SalesOrderStatus salesOrderStatus) {
         this.salesOrderStatus = salesOrderStatus;
     }
 
+    @Override
     public Timestamp getStatusChangeDate() {
         return statusChangeDate;
     }
 
+    @Override
     public void setStatusChangeDate(Timestamp statusChangeDate) {
         this.statusChangeDate = statusChangeDate;
     }
 
-    public List<SalesOrder> getAllOpenOrders() {
+    @Override
+    public List<ISalesOrder> getAllOpenOrders() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAllOpenOrders(loggedInManufacturerId);
     }
 
-    public List<SalesOrder> getAllPackagedOrders() {
+    @Override
+    public List<ISalesOrder> getAllPackagedOrders() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAllPackagedOrders(loggedInManufacturerId);
     }
 
-    public List<SalesOrder> getAllShippedOrders() {
+    @Override
+    public List<ISalesOrder> getAllShippedOrders() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAllShippedOrders(loggedInManufacturerId);
     }
@@ -150,41 +176,45 @@ public class SalesOrder {
         return SO_PREFIX + formattedCurrentDateTime;
     }
 
-    public List<SalesOrder> getAllPaidOrders() {
+    @Override
+    public List<ISalesOrder> getAllPaidOrders() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         return getPersistence().getAllPaidOrders(loggedInManufacturerId);
     }
 
+    @Override
     public void load() {
         getPersistence().load(this);
     }
 
+    @Override
     public void delete() {
         getPersistence().delete(this.getOrderNumber());
     }
 
+    @Override
     public void save() {
         int loggedInManufacturerId = getLoggedInManufacturerId();
         this.setManufacturerId(loggedInManufacturerId);
         getPersistence().save(this);
     }
 
+    @Override
     public void calculateTotalCost() {
-        Double cost = 0.0;
+        double cost;
         cost = this.getPackageCost();
         cost += this.getShippingCost();
-        Double tax = this.getTax();
-        cost += (cost * tax / 100);
+        cost += (cost * this.getTax() / 100);
         this.setTotalCost(cost);
     }
 
+    @Override
     public void moveOrderToNextStage() {
         this.getSalesOrderStatus().moveOrder(this);
     }
 
     private ISalesOrderPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getSalesOrderPersistence();
+        return SalesOrderFactory.instance().makeSalesOrderPersistence();
     }
 
     private int getLoggedInManufacturerId() {

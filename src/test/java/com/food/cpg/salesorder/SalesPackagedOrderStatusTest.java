@@ -21,7 +21,7 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 public class SalesPackagedOrderStatusTest {
 
     private static final String GET_PERSISTENCE_METHOD_NAME = "getPersistence";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final String TEST_SALES_ORDER_NUMBER = "SO-123";
     private static final Integer TEST_ITEM_ID = 1;
     private static final Double TEST_ITEM_QUANTITY = 1.00;
@@ -32,7 +32,7 @@ public class SalesPackagedOrderStatusTest {
     ISalesOrderPersistence salesOrderPersistence;
 
     @Mock
-    SalesOrder salesOrder;
+    ISalesOrder salesOrder;
 
     @Mock
     IPackage iPackage;

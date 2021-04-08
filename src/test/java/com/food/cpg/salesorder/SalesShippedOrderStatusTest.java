@@ -23,7 +23,7 @@ public class SalesShippedOrderStatusTest {
     @Mock
     ISalesOrderPersistence salesOrderPersistence;
     @Mock
-    SalesOrder salesOrder;
+    ISalesOrder salesOrder;
 
     @Test
     public void getOrderStatusTest() {

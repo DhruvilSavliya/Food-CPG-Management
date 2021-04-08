@@ -32,7 +32,7 @@ public class NotificationDatabasePersistenceTest {
 
     private static final int TEST_USER_ID = 1;
     private static final String TEST_CONTENT_ID = "Test notification content";
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
