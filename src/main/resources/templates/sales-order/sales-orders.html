@@ -16,6 +16,7 @@
                 <tr>
                     <th scope="col">Order Number</th>
                     <th scope="col">Cost</th>
+                    <th scope="col">Created On</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -23,7 +24,8 @@
                 <tbody>
                 <tr th:each="order : ${openSalesOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.totalCost}"></td>
+                    <td th:text="'$' + ${order.totalCost}"></td>
+                    <td th:text="${order.statusChangeDate}"></td>
                     <td><a th:href="@{/sales-order/delete/{id}(id=${order.orderNumber})}"><i class="fa fa-trash fa-lg pl-2" aria-hidden="true"></i></a></td>
                     <td><a th:href="@{/sales-order/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Package Order</button></a></td>
                 </tr>
@@ -43,7 +45,7 @@
                 <tbody>
                 <tr th:each="order : ${packagedSalesOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.totalCost}"></td>
+                    <td th:text="'$' + ${order.totalCost}"></td>
                     <td th:text="${order.statusChangeDate}"></td>
                     <td><a th:href="@{/sales-order/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Ship Order</button></a></td>
                 </tr>
@@ -63,7 +65,7 @@
                 <tbody>
                 <tr th:each="order : ${shippedSalesOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.totalCost}"></td>
+                    <td th:text="'$' + ${order.totalCost}"></td>
                     <td th:text="${order.statusChangeDate}"></td>
                     <td><a th:href="@{/sales-order/move/{id}(id=${order.orderNumber})}"><button class="btn btn-primary float-left mb-2">Clear Dues</button></a></td>
                 </tr>
@@ -82,7 +84,7 @@
                 <tbody>
                 <tr th:each="order : ${paidSalesOrders}">
                     <td th:text="${order.orderNumber}"></td>
-                    <td th:text="${order.totalCost}"></td>
+                    <td th:text="'$' + ${order.totalCost}"></td>
                     <td th:text="${order.statusChangeDate}"></td>
                 </tr>
                 </tbody>
