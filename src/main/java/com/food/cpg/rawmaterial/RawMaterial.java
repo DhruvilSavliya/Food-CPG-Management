@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.util.StringUtils;
-
 import com.food.cpg.authentication.AuthenticationSessionDetails;
 import com.food.cpg.databasepersistence.PersistenceFactory;
 
