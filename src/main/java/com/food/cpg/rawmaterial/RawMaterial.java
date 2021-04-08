@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.food.cpg.inventory.IRawMaterialInventory;
-import com.food.cpg.inventory.InventoryFactory;
 import org.springframework.util.StringUtils;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
+import com.food.cpg.inventory.IRawMaterialInventory;
+import com.food.cpg.inventory.InventoryFactory;
 
 
-public class RawMaterial implements IRawMaterial{
+public class RawMaterial implements IRawMaterial {
     private Integer id;
     private Integer manufacturerId;
     private String name;
@@ -175,7 +175,7 @@ public class RawMaterial implements IRawMaterial{
     }
 
     @Override
-    public void saveRawMaterialInventory(Integer rawMaterialID){
+    public void saveRawMaterialInventory(Integer rawMaterialID) {
         IRawMaterialInventory rawMaterialInventory = InventoryFactory.instance().makeRawMaterialInventory();
         rawMaterialInventory.save(rawMaterialID);
     }

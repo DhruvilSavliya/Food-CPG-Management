@@ -11,7 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 
@@ -23,8 +25,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(VendorFactory.class)
 public class VendorDatabasePersistenceTest {
+
+    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final Integer TEST_MANUFACTURER_ID = 1;
+    private static final Integer TEST_VENDOR_ID = 1;
+    private static final String TEST_VENDOR_NAME = "Test Vendor 1";
+    private static final String TEST_VENDOR_ADDRESS = "Test Address 1";
+    private static final String TEST_CONTACT_PERSON_NAME = "Test Person 1";
+    private static final String TEST_CONTACT_PERSON_EMAIL = "person1@vendor1.com";
+    private static final Long TEST_CONTACT_PERSON_PHONE = 9876543210L;
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -39,7 +51,10 @@ public class VendorDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    Vendor vendor;
+    IVendor vendor;
+
+    @Mock
+    VendorFactory vendorFactory;
 
     @Before
     public void setUp() throws SQLException {
@@ -49,16 +64,20 @@ public class VendorDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void getAllTest() throws Exception {
+        PowerMockito.mockStatic(VendorFactory.class);
+        PowerMockito.doReturn(vendorFactory).when(VendorFactory.class, GET_INSTANCE_METHOD);
+        when(vendorFactory.makeVendor()).thenReturn(vendor);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
         List<Object> placeholderValues = new ArrayList<>();
-        placeholderValues.add(1);
+        placeholderValues.add(TEST_MANUFACTURER_ID);
 
         VendorDatabasePersistence vendorDatabasePersistence = new VendorDatabasePersistence(commonDatabaseOperation);
 
-        vendorDatabasePersistence.getAll(1);
+        vendorDatabasePersistence.getAll(TEST_MANUFACTURER_ID);
 
         verify(commonDatabaseOperation, times(1)).getConnection();
         verify(connection, times(1)).prepareStatement(anyString());
@@ -74,7 +93,7 @@ public class VendorDatabasePersistenceTest {
     public void loadTest() throws SQLException {
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
-        when(vendor.getId()).thenReturn(1);
+        when(vendor.getId()).thenReturn(TEST_VENDOR_ID);
 
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(vendor.getId());
@@ -96,12 +115,12 @@ public class VendorDatabasePersistenceTest {
     @Test
     public void saveTest() throws SQLException {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
-        when(vendor.getName()).thenReturn("Test Vendor 1");
-        when(vendor.getAddress()).thenReturn("Test Address 1");
-        when(vendor.getContactPersonName()).thenReturn("Test Person 1");
-        when(vendor.getContactPersonEmail()).thenReturn("person1@vendor1.com");
-        when(vendor.getContactPersonPhone()).thenReturn(9876543210L);
-        when(vendor.getManufacturerId()).thenReturn(1);
+        when(vendor.getName()).thenReturn(TEST_VENDOR_NAME);
+        when(vendor.getAddress()).thenReturn(TEST_VENDOR_ADDRESS);
+        when(vendor.getContactPersonName()).thenReturn(TEST_CONTACT_PERSON_NAME);
+        when(vendor.getContactPersonEmail()).thenReturn(TEST_CONTACT_PERSON_EMAIL);
+        when(vendor.getContactPersonPhone()).thenReturn(TEST_CONTACT_PERSON_PHONE);
+        when(vendor.getManufacturerId()).thenReturn(TEST_MANUFACTURER_ID);
 
         VendorDatabasePersistence vendorDatabasePersistence = new VendorDatabasePersistence(commonDatabaseOperation);
 
@@ -119,12 +138,12 @@ public class VendorDatabasePersistenceTest {
     @Test
     public void updateTest() throws SQLException {
         doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
-        when(vendor.getName()).thenReturn("Test Vendor 1");
-        when(vendor.getAddress()).thenReturn("Test Address 1");
-        when(vendor.getContactPersonName()).thenReturn("Test Person 1");
-        when(vendor.getContactPersonEmail()).thenReturn("person1@vendor1.com");
-        when(vendor.getContactPersonPhone()).thenReturn(9876543210L);
-        when(vendor.getId()).thenReturn(1);
+        when(vendor.getName()).thenReturn(TEST_VENDOR_NAME);
+        when(vendor.getAddress()).thenReturn(TEST_VENDOR_ADDRESS);
+        when(vendor.getContactPersonName()).thenReturn(TEST_CONTACT_PERSON_NAME);
+        when(vendor.getContactPersonEmail()).thenReturn(TEST_CONTACT_PERSON_EMAIL);
+        when(vendor.getContactPersonPhone()).thenReturn(TEST_CONTACT_PERSON_PHONE);
+        when(vendor.getId()).thenReturn(TEST_VENDOR_ID);
 
         VendorDatabasePersistence vendorDatabasePersistence = new VendorDatabasePersistence(commonDatabaseOperation);
 
@@ -149,5 +168,4 @@ public class VendorDatabasePersistenceTest {
 
         verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
     }
-
 }

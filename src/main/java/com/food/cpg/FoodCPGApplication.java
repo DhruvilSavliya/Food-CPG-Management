@@ -25,6 +25,8 @@ import com.food.cpg.registration.DefaultRegistrationFactory;
 import com.food.cpg.registration.RegistrationFactory;
 import com.food.cpg.salesorder.DefaultSalesOrderFactory;
 import com.food.cpg.salesorder.SalesOrderFactory;
+import com.food.cpg.vendor.DefaultVendorFactory;
+import com.food.cpg.vendor.VendorFactory;
 
 @SpringBootApplication
 @EnableScheduling
@@ -44,6 +46,7 @@ public class FoodCPGApplication {
         AuthenticationFactory.setAuthenticationFactory(new DefaultAuthenticationFactory());
         ManufacturerFactory.setManufacturerFactory(new DefaultManufacturerFactory(persistenceFactory));
         RawMaterialFactory.setRawMaterialFactory(new DefaultRawMaterialFactory(persistenceFactory));
+        VendorFactory.setVendorFactory(new DefaultVendorFactory(persistenceFactory));
         RegistrationFactory.setRegistrationFactory(new DefaultRegistrationFactory(persistenceFactory));
         InventoryFactory.setInventoryFactory(new DefaultInventoryFactory(persistenceFactory));
         NotificationFactory.setNotificationFactory(new DefaultNotificationFactory(persistenceFactory));
