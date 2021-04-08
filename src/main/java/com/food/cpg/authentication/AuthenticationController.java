@@ -16,6 +16,7 @@ public class AuthenticationController {
     private static final String REDIRECT_NOTATION = "redirect:";
     private static final String LOGIN_PAGE_ROUTE = "login";
     private static final String VIEW_PROJECT_NAME_KEY = "projectName";
+    private static final String UNAUTHORIZED_ERROR_PAGE_ROUTE = "403-error";
 
     @Value(APPLICATION_NAME_PROPERTY)
     private String projectName;
@@ -37,6 +38,6 @@ public class AuthenticationController {
 
     @GetMapping(AuthenticationEndpoint.UNAUTHORIZED_ERROR_PAGE_END_POINT)
     public String unauthorisedError() {
-        return AuthenticationEndpoint.UNAUTHORIZED_ERROR_PAGE_END_POINT;
+        return UNAUTHORIZED_ERROR_PAGE_ROUTE;
     }
 }

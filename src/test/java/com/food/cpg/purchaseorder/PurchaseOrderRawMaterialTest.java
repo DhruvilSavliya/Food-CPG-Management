@@ -35,7 +35,7 @@ public class PurchaseOrderRawMaterialTest {
 
     @Test
     public void saveTest() throws Exception {
-        PurchaseOrderRawMaterial purchaseOrderRawMaterial = spy(new PurchaseOrderRawMaterial());
+        IPurchaseOrderRawMaterial purchaseOrderRawMaterial = spy(new PurchaseOrderRawMaterial());
 
         PowerMockito.doReturn(purchaseOrderRawMaterialPersistence).when(purchaseOrderRawMaterial, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(purchaseOrderRawMaterialPersistence).save(purchaseOrderRawMaterial);
@@ -47,7 +47,7 @@ public class PurchaseOrderRawMaterialTest {
 
     @Test
     public void loadDetailsTest() {
-        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+        IPurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
         purchaseOrderRawMaterial.setRawMaterialId(TEST_RAW_MATERIAL_ID);
         purchaseOrderRawMaterial.setRawMaterialQuantity(TEST_RAW_MATERIAL_QUANTITY);
 

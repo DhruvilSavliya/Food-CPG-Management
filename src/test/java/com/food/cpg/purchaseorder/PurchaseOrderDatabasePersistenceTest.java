@@ -28,7 +28,7 @@ public class PurchaseOrderDatabasePersistenceTest {
     ICommonDatabaseOperation commonDatabaseOperation;
 
     @Mock
-    PurchaseOrder purchaseOrder;
+    IPurchaseOrder purchaseOrder;
 
     @Test
     public void saveTest() throws SQLException {
