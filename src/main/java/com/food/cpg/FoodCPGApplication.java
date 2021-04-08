@@ -19,6 +19,8 @@ import com.food.cpg.packaging.DefaultPackageFactory;
 import com.food.cpg.packaging.PackageFactory;
 import com.food.cpg.purchaseorder.DefaultPurchaseOrderFactory;
 import com.food.cpg.purchaseorder.PurchaseOrderFactory;
+import com.food.cpg.rawmaterial.DefaultRawMaterialFactory;
+import com.food.cpg.rawmaterial.RawMaterialFactory;
 import com.food.cpg.registration.DefaultRegistrationFactory;
 import com.food.cpg.registration.RegistrationFactory;
 
@@ -39,6 +41,7 @@ public class FoodCPGApplication {
 
         AuthenticationFactory.setAuthenticationFactory(new DefaultAuthenticationFactory());
         ManufacturerFactory.setManufacturerFactory(new DefaultManufacturerFactory(persistenceFactory));
+        RawMaterialFactory.setRawMaterialFactory(new DefaultRawMaterialFactory(persistenceFactory));
         RegistrationFactory.setRegistrationFactory(new DefaultRegistrationFactory(persistenceFactory));
         InventoryFactory.setInventoryFactory(new DefaultInventoryFactory(persistenceFactory));
         NotificationFactory.setNotificationFactory(new DefaultNotificationFactory(persistenceFactory));

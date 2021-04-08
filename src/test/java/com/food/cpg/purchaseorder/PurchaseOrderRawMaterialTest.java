@@ -8,7 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,7 +31,7 @@ public class PurchaseOrderRawMaterialTest {
     IPurchaseOrderRawMaterialPersistence purchaseOrderRawMaterialPersistence;
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
 
     @Test
     public void saveTest() throws Exception {
