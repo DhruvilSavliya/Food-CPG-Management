@@ -8,7 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,11 +31,11 @@ public class PurchaseOrderRawMaterialTest {
     IPurchaseOrderRawMaterialPersistence purchaseOrderRawMaterialPersistence;
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
 
     @Test
     public void saveTest() throws Exception {
-        PurchaseOrderRawMaterial purchaseOrderRawMaterial = spy(new PurchaseOrderRawMaterial());
+        IPurchaseOrderRawMaterial purchaseOrderRawMaterial = spy(new PurchaseOrderRawMaterial());
 
         PowerMockito.doReturn(purchaseOrderRawMaterialPersistence).when(purchaseOrderRawMaterial, GET_PERSISTENCE_METHOD_NAME);
         PowerMockito.doNothing().when(purchaseOrderRawMaterialPersistence).save(purchaseOrderRawMaterial);
@@ -47,7 +47,7 @@ public class PurchaseOrderRawMaterialTest {
 
     @Test
     public void loadDetailsTest() {
-        PurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
+        IPurchaseOrderRawMaterial purchaseOrderRawMaterial = new PurchaseOrderRawMaterial();
         purchaseOrderRawMaterial.setRawMaterialId(TEST_RAW_MATERIAL_ID);
         purchaseOrderRawMaterial.setRawMaterialQuantity(TEST_RAW_MATERIAL_QUANTITY);
 

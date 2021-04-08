@@ -5,12 +5,14 @@ import com.food.cpg.manufacturer.IManufacturerPersistence;
 import com.food.cpg.manufacturer.Manufacturer;
 import com.food.cpg.notification.INotification;
 import com.food.cpg.notification.NotificationFactory;
+import com.food.cpg.purchaseorder.IPurchaseOrder;
 import com.food.cpg.purchaseorder.IPurchaseOrderPersistence;
 import com.food.cpg.purchaseorder.IPurchaseOrderRawMaterialPersistence;
-import com.food.cpg.purchaseorder.PurchaseOrder;
+import com.food.cpg.purchaseorder.PurchaseOrderFactory;
 import com.food.cpg.purchaseorder.PurchaseOrderRawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 import com.food.cpg.rawmaterial.IRawMaterialPersistence;
-import com.food.cpg.rawmaterial.RawMaterial;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -27,7 +29,7 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RawMaterialInventoryWatcher.class, NotificationFactory.class})
+@PrepareForTest({RawMaterialInventoryWatcher.class, NotificationFactory.class, PurchaseOrderFactory.class})
 public class RawMaterialInventoryWatcherTest {
 
     public static final String GET_MANUFACTURER_PERSISTENCE_METHOD = "getManufacturerPersistence";
@@ -70,16 +72,19 @@ public class RawMaterialInventoryWatcherTest {
     Manufacturer manufacturer;
 
     @Mock
-    RawMaterial rawMaterial;
+    IRawMaterial rawMaterial;
 
     @Mock
     IRawMaterialInventory rawMaterialInventory;
 
     @Mock
-    PurchaseOrder purchaseOrder;
+    IPurchaseOrder purchaseOrder;
 
     @Mock
     PurchaseOrderRawMaterial purchaseOrderRawMaterial;
+
+    @Mock
+    PurchaseOrderFactory purchaseOrderFactory;
 
     @Test
     public void inventoryCheckTest() throws Exception {
@@ -105,7 +110,7 @@ public class RawMaterialInventoryWatcherTest {
     public void inventoryCheckForEachManufacturerTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
         List<IRawMaterialInventory> rawMaterialInventoryList = new ArrayList<>();
         rawMaterialInventoryList.add(rawMaterialInventory);
@@ -136,11 +141,16 @@ public class RawMaterialInventoryWatcherTest {
     public void createPurchaseOrderTest() throws Exception {
         RawMaterialInventoryWatcher rawMaterialInventoryWatcher = spy(new RawMaterialInventoryWatcher());
 
-        List<RawMaterial> rawMaterials = new ArrayList<>();
+        List<IRawMaterial> rawMaterials = new ArrayList<>();
         rawMaterials.add(rawMaterial);
 
         purchaseOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         purchaseOrder.setVendorId(TEST_VENDOR_ID);
+
+        PowerMockito.mockStatic(PurchaseOrderFactory.class);
+        PowerMockito.doReturn(purchaseOrderFactory).when(PurchaseOrderFactory.class, GET_INSTANCE_METHOD);
+        when(purchaseOrderFactory.makePurchaseOrder()).thenReturn(purchaseOrder);
+        when(purchaseOrderFactory.makePurchaseOrderRawMaterial()).thenReturn(purchaseOrderRawMaterial);
 
         PowerMockito.doReturn(purchaseOrderRawMaterialPersistence).when(rawMaterialInventoryWatcher, GET_PURCHASE_ORDER_RAW_MATERIAL_PERSISTENCE_METHOD);
         PowerMockito.doReturn(purchaseOrderPersistence).when(rawMaterialInventoryWatcher, GET_PURCHASE_ORDER_PERSISTENCE_METHOD);
