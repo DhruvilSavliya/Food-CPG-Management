@@ -17,4 +17,6 @@ public interface IPurchaseOrderPersistence {
     List<IPurchaseOrder> getPlacedPurchaseOrder(int manufacturerId);
 
     List<IPurchaseOrder> getReceivedPurchaseOrder(int manufacturerId);
+
+    List<IPurchaseOrder> getPaidPurchaseOrder(int manufacturerId);
 }

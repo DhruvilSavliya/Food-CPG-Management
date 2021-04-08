@@ -67,6 +67,8 @@ public interface IManufactureOrder {
 
     List<IManufactureOrder> getAllPackagedOrders();
 
+    List<IManufactureOrder> getAllStoredOrders();
+
     void load();
 
     void delete();

@@ -17,6 +17,7 @@ public class ManufactureOrderController {
     private static final String VIEW_OPEN_MANUFACTURE_ORDERS_KEY = "openManufactureOrders";
     private static final String VIEW_MANUFACTURED_MANUFACTURE_ORDERS_KEY = "manufacturedManufactureOrders";
     private static final String VIEW_PACKAGED_MANUFACTURE_ORDERS_KEY = "packagedManufactureOrders";
+    private static final String VIEW_STORED_MANUFACTURE_ORDERS_KEY = "storedManufactureOrders";
     private static final String VIEW_ITEMS_KEY = "items";
     private static final String VIEW_UNITS_KEY = "units";
     private static final String ORDER_NUMBER_PATH_VARIABLE_NAME = "orderNumber";
@@ -26,6 +27,7 @@ public class ManufactureOrderController {
         model.addAttribute(VIEW_OPEN_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllOpenOrders());
         model.addAttribute(VIEW_MANUFACTURED_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllManufacturedOrders());
         model.addAttribute(VIEW_PACKAGED_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllPackagedOrders());
+        model.addAttribute(VIEW_STORED_MANUFACTURE_ORDERS_KEY, manufactureOrder.getAllStoredOrders());
         return SHOW_MANUFACTURE_ORDERS_ROUTE;
 
     }

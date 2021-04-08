@@ -1,37 +1,38 @@
 package com.food.cpg.packaging;
 
 public interface IPackage {
-    public Integer getPackageId();
 
-    public void setPackageId(Integer packageId);
+    Integer getPackageId();
 
-    public Integer getItemId();
+    void setPackageId(Integer packageId);
 
-    public void setItemId(Integer itemId);
+    Integer getItemId();
 
-    public String getPackageName();
+    void setItemId(Integer itemId);
 
-    public void setPackageName(String packageName);
+    String getPackageName();
 
-    public Double getQuantity();
+    void setPackageName(String packageName);
 
-    public void setQuantity(Double quantity);
+    Double getQuantity();
 
-    public Double getManufacturingCost();
+    void setQuantity(Double quantity);
 
-    public void setManufacturingCost(Double manufacturingCost);
+    Double getManufacturingCost();
 
-    public Double getWholesaleCost();
+    void setManufacturingCost(Double manufacturingCost);
 
-    public void setWholesaleCost(Double wholesaleCost);
+    Double getWholesaleCost();
 
-    public Double getRetailCost();
+    void setWholesaleCost(Double wholesaleCost);
 
-    public void setRetailCost(Double retailCost);
+    Double getRetailCost();
 
-    public Integer getManufacturerId();
+    void setRetailCost(Double retailCost);
 
-    public void setManufacturerId(Integer manufacturerId);
+    Integer getManufacturerId();
 
-    public void load();
+    void setManufacturerId(Integer manufacturerId);
+
+    void load();
 }

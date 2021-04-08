@@ -33,6 +33,12 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
     }
 
     @Override
+    public List<IManufactureOrder> getAllStoredOrders(int manufacturerId) {
+        return getAllOrders(manufacturerId, ManufactureOrderStatus.Status.STORED.name());
+    }
+
+
+    @Override
     public List<IManufactureOrder> getAllOrders(int manufacturerId, String orderStatus) {
         List<IManufactureOrder> manufactureOrders = new ArrayList<>();
 
@@ -59,6 +65,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
         return manufactureOrders;
 
     }
+
 
     @Override
     public void changeStatus(String orderNumber, String orderStatus) {

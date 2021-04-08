@@ -10,7 +10,10 @@ public interface IManufactureOrderPersistence {
 
     List<IManufactureOrder> getAllPackagedOrders(int manufacturerId);
 
+    List<IManufactureOrder> getAllStoredOrders(int manufacturerId);
+
     List<IManufactureOrder> getAllOrders(int manufacturerId, String orderStatus);
+
 
     void load(IManufactureOrder manufactureOrder);
 
