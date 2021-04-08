@@ -41,18 +41,18 @@ public class SalesOrderTest {
 
     @Test
     public void getAllOpenOrdersTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setTotalCost(TEST_SALES_ORDER_COST);
 
-        List<SalesOrder> salesOrders = new ArrayList<>();
+        List<ISalesOrder> salesOrders = new ArrayList<>();
         salesOrders.add(salesOrder);
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(salesOrders).when(salesOrderPersistence).getAllOpenOrders(anyInt());
         PowerMockito.doReturn(1).when(salesOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<SalesOrder> salesOrdersResult = salesOrder.getAllOpenOrders();
+        List<ISalesOrder> salesOrdersResult = salesOrder.getAllOpenOrders();
 
         verifyPrivate(salesOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(salesOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -65,18 +65,18 @@ public class SalesOrderTest {
 
     @Test
     public void getAllPackagedOrdersTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setTotalCost(TEST_SALES_ORDER_COST);
 
-        List<SalesOrder> salesOrders = new ArrayList<>();
+        List<ISalesOrder> salesOrders = new ArrayList<>();
         salesOrders.add(salesOrder);
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(salesOrders).when(salesOrderPersistence).getAllPackagedOrders(anyInt());
         PowerMockito.doReturn(1).when(salesOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<SalesOrder> salesOrdersResult = salesOrder.getAllPackagedOrders();
+        List<ISalesOrder> salesOrdersResult = salesOrder.getAllPackagedOrders();
 
         verifyPrivate(salesOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(salesOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -89,18 +89,18 @@ public class SalesOrderTest {
 
     @Test
     public void getAllShippedOrdersTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setTotalCost(TEST_SALES_ORDER_COST);
 
-        List<SalesOrder> salesOrders = new ArrayList<>();
+        List<ISalesOrder> salesOrders = new ArrayList<>();
         salesOrders.add(salesOrder);
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(salesOrders).when(salesOrderPersistence).getAllShippedOrders(anyInt());
         PowerMockito.doReturn(1).when(salesOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<SalesOrder> salesOrdersResult = salesOrder.getAllShippedOrders();
+        List<ISalesOrder> salesOrdersResult = salesOrder.getAllShippedOrders();
 
         verifyPrivate(salesOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(salesOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -113,18 +113,18 @@ public class SalesOrderTest {
 
     @Test
     public void getAllPaidOrdersTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setTotalCost(TEST_SALES_ORDER_COST);
 
-        List<SalesOrder> salesOrders = new ArrayList<>();
+        List<ISalesOrder> salesOrders = new ArrayList<>();
         salesOrders.add(salesOrder);
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
         PowerMockito.doReturn(salesOrders).when(salesOrderPersistence).getAllPaidOrders(anyInt());
         PowerMockito.doReturn(1).when(salesOrder, GET_MANUFACTURER_ID_METHOD);
 
-        List<SalesOrder> salesOrdersResult = salesOrder.getAllPaidOrders();
+        List<ISalesOrder> salesOrdersResult = salesOrder.getAllPaidOrders();
 
         verifyPrivate(salesOrder).invoke(GET_PERSISTENCE_METHOD);
         verifyPrivate(salesOrder).invoke(GET_MANUFACTURER_ID_METHOD);
@@ -137,7 +137,7 @@ public class SalesOrderTest {
 
     @Test
     public void loadTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setTotalCost(TEST_SALES_ORDER_COST);
 
@@ -152,7 +152,7 @@ public class SalesOrderTest {
 
     @Test
     public void deleteTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setOrderNumber(TEST_ORDER_NUMBER);
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setTotalCost(TEST_SALES_ORDER_COST);
@@ -168,21 +168,21 @@ public class SalesOrderTest {
 
     @Test
     public void moveOrderToNextStageTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setOrderNumber(TEST_ORDER_NUMBER);
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
         salesOrder.setSalesOrderStatus(salesOrderStatus);
 
-        PowerMockito.doNothing().when(salesOrderStatus).moveOrder(anyString());
+        PowerMockito.doNothing().when(salesOrderStatus).moveOrder(salesOrder);
 
         salesOrder.moveOrderToNextStage();
 
-        verify(salesOrderStatus, times(1)).moveOrder(salesOrder.getOrderNumber());
+        verify(salesOrderStatus, times(1)).moveOrder(salesOrder);
     }
 
     @Test
     public void generateOrderNumberTest() throws Exception {
-        SalesOrder salesOrder = new SalesOrder();
+        ISalesOrder salesOrder = new SalesOrder();
 
         Assert.assertNotNull(salesOrder.getOrderNumber());
         Assert.assertTrue(salesOrder.getOrderNumber().contains(ORDER_NUMBER_PREFIX));
@@ -190,7 +190,7 @@ public class SalesOrderTest {
 
     @Test
     public void saveTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setManufacturerId(TEST_MANUFACTURER_ID);
 
         PowerMockito.doReturn(salesOrderPersistence).when(salesOrder, GET_PERSISTENCE_METHOD);
@@ -204,7 +204,7 @@ public class SalesOrderTest {
 
     @Test
     public void calculateTotalCostTest() throws Exception {
-        SalesOrder salesOrder = spy(new SalesOrder());
+        ISalesOrder salesOrder = spy(new SalesOrder());
         salesOrder.setOrderNumber(TEST_ORDER_NUMBER);
         salesOrder.setPackageCost(TEST_PACKAGE_COST);
         salesOrder.setShippingCost(TEST_SHIPPING_COST);

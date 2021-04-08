@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(InventoryFactory.class)
 public class RawMaterialInventoryDatabasePersistenceTest {
 
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
     private static final Double TEST_RAW_MATERIAL_QUANTITY = 10.0;
 
@@ -81,6 +81,17 @@ public class RawMaterialInventoryDatabasePersistenceTest {
         verify(resultSet, times(4)).getString(anyString());
         verify(resultSet, times(2)).getInt(anyString());
         verify(resultSet, times(2)).getDouble(anyString());
+    }
+
+    @Test
+    public void saveTest() throws SQLException {
+        doNothing().when(commonDatabaseOperation).executeUpdate(anyString(), anyList());
+
+        RawMaterialInventoryDatabasePersistence rawMaterialInventoryDatabasePersistence = new RawMaterialInventoryDatabasePersistence(commonDatabaseOperation);
+
+        rawMaterialInventoryDatabasePersistence.save(TEST_RAW_MATERIAL_ID);
+
+        verify(commonDatabaseOperation, times(1)).executeUpdate(anyString(), anyList());
     }
 
     @Test

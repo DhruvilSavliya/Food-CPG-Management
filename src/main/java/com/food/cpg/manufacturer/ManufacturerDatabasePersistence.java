@@ -1,14 +1,14 @@
 package com.food.cpg.manufacturer;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.exceptions.ServiceException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import com.food.cpg.exceptions.ServiceException;
 
 public class ManufacturerDatabasePersistence implements IManufacturerPersistence {
 
@@ -19,16 +19,16 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
     }
 
     @Override
-    public List<Manufacturer> getAll() {
-        List<Manufacturer> manufacturers = new ArrayList<>();
+    public List<IManufacturer> getAll() {
+        List<IManufacturer> manufacturers = new ArrayList<>();
 
-        String sql = "select * from manufacturer";
+        String sql = ManufacturerDatabaseQuery.SELECT_ALL_MANUFACTURER;
 
         try (Connection connection = commonDatabaseOperation.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        Manufacturer manufacturer = new Manufacturer();
+                        IManufacturer manufacturer = ManufacturerFactory.instance().makeManufacturer();
                         loadManufacturerDetailsFromResultSet(rs, manufacturer);
 
                         manufacturers.add(manufacturer);
@@ -36,22 +36,22 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
         return manufacturers;
     }
 
     @Override
-    public Manufacturer get(String manufacturerEmail) {
-        Manufacturer manufacturer = new Manufacturer();
+    public IManufacturer get(String manufacturerEmail) {
+        IManufacturer manufacturer = new Manufacturer();
         manufacturer.setEmail(manufacturerEmail);
         load(manufacturer);
         return manufacturer;
     }
 
     @Override
-    public void load(Manufacturer manufacturer) {
-        String sql = "select * from manufacturer where manufacturer_email = ?";
+    public void load(IManufacturer manufacturer) {
+        String sql = ManufacturerDatabaseQuery.LOAD_MANUFACTURER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturer.getEmail());
 
@@ -65,13 +65,13 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
                 }
             }
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void register(Manufacturer manufacturer) {
-        String sql = "insert into manufacturer (manufacturer_company_name, manufacturer_email, manufacturer_contact, manufacturer_address) values (?, ?, ?, ?)";
+    public void register(IManufacturer manufacturer) {
+        String sql = ManufacturerDatabaseQuery.INSERT_MANUFACTURER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturer.getCompanyName());
         placeholderValues.add(manufacturer.getEmail());
@@ -81,13 +81,13 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void createLoginAccount(Manufacturer manufacturer) {
-        String sql = "insert into users (email, password) values(?,?)";
+    public void createLoginAccount(IManufacturer manufacturer) {
+        String sql = ManufacturerDatabaseQuery.CREATE_MANUFACTURER_LOGIN_ACCOUNT;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturer.getEmail());
         placeholderValues.add(manufacturer.getPassword());
@@ -95,7 +95,7 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
         try {
             commonDatabaseOperation.executeUpdate(sql, placeholderValues);
         } catch (SQLException e) {
-            throw new ServiceException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -113,11 +113,11 @@ public class ManufacturerDatabasePersistence implements IManufacturerPersistence
         }
     }
 
-    public void loadManufacturerDetailsFromResultSet(ResultSet resultSet, Manufacturer manufacturer) throws SQLException {
-        manufacturer.setId(resultSet.getInt("manufacturer_id"));
-        manufacturer.setCompanyName(resultSet.getString("manufacturer_company_name"));
-        manufacturer.setEmail(resultSet.getString("manufacturer_email"));
-        manufacturer.setContact(resultSet.getLong("manufacturer_contact"));
-        manufacturer.setAddress(resultSet.getString("manufacturer_address"));
+    public void loadManufacturerDetailsFromResultSet(ResultSet resultSet, IManufacturer manufacturer) throws SQLException {
+        manufacturer.setId(resultSet.getInt(ManufacturerDatabaseColumn.MANUFACTURER_ID));
+        manufacturer.setCompanyName(resultSet.getString(ManufacturerDatabaseColumn.MANUFACTURER_COMPANY_NAME));
+        manufacturer.setEmail(resultSet.getString(ManufacturerDatabaseColumn.MANUFACTURER_EMAIL));
+        manufacturer.setContact(resultSet.getLong(ManufacturerDatabaseColumn.MANUFACTURER_CONTACT));
+        manufacturer.setAddress(resultSet.getString(ManufacturerDatabaseColumn.MANUFACTURER_ADDRESS));
     }
 }

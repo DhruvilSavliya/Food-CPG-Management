@@ -1,12 +1,5 @@
 package com.food.cpg.item;
 
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,17 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ItemFactory.class)
 public class ItemDatabasePersistenceTest {
 
     private static final String TEST_ITEM_NAME = "Test item";
     private static final Double TEST_ITEM_COOKING_COST = 3.0;
     private static final Double TEST_ITEM_TOTAL_COST = 10.0;
     private static final Integer TEST_ITEM_MANUFACTURER_ID = 1;
+    public static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -39,7 +42,10 @@ public class ItemDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    Item item;
+    IItem item;
+
+    @Mock
+    ItemFactory itemFactory;
 
     @Before
     public void setUp() throws SQLException {
@@ -49,7 +55,10 @@ public class ItemDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    public void getAllTest() throws Exception {
+        PowerMockito.mockStatic(ItemFactory.class);
+        PowerMockito.doReturn(itemFactory).when(ItemFactory.class, GET_INSTANCE_METHOD);
+        when(itemFactory.makeItem()).thenReturn(item);
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 

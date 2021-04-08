@@ -35,7 +35,7 @@ public class PurchaseOrderDatabasePersistenceTest {
     ICommonDatabaseOperation commonDatabaseOperation;
 
     @Mock
-    PurchaseOrder purchaseOrder;
+    IPurchaseOrder purchaseOrder;
 
     @Mock
     Connection connection;

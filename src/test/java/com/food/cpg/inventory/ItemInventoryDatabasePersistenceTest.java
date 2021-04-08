@@ -1,8 +1,6 @@
 package com.food.cpg.inventory;
 
 import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
-import com.food.cpg.packaging.PackagesDatabasePersistence;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItemInventoryDatabasePersistenceTest extends TestCase {
+public class ItemInventoryDatabasePersistenceTest {
 
     private static final Integer TEST_ITEM_ID = 10;
     private static final Double TEST_ITEM_QUANTITY = 2.0;

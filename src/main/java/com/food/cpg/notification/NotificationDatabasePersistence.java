@@ -23,7 +23,7 @@ public class NotificationDatabasePersistence implements INotificationPersistence
     public List<INotification> getAll(int userId) {
         List<INotification> notifications = new ArrayList<>();
 
-        String sql = "select * from notifications where user_id = ?";
+        String sql = NotificationDatabaseQuery.SELECT_ALL_NOTIFICATIONS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(userId);
 
@@ -32,8 +32,8 @@ public class NotificationDatabasePersistence implements INotificationPersistence
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        String content = rs.getString("content");
-                        Timestamp notificationDate = rs.getTimestamp("notification_date");
+                        String content = rs.getString(NotificationDatabaseColumn.CONTENT);
+                        Timestamp notificationDate = rs.getTimestamp(NotificationDatabaseColumn.NOTIFICATION_DATE);
 
                         INotification notification = NotificationFactory.instance().makeNotification(userId, content, notificationDate);
 
@@ -50,7 +50,7 @@ public class NotificationDatabasePersistence implements INotificationPersistence
 
     @Override
     public void send(INotification notification) {
-        String sql = "insert into notifications (user_id, content) values (?, ?)";
+        String sql = NotificationDatabaseQuery.INSERT_NOTIFICATION;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(notification.getUserId());
         placeholderValues.add(notification.getContent());

@@ -1,7 +1,5 @@
 package com.food.cpg.applicationhandlers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,22 +8,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Default controller advice responsible for handling
- * internal server errors/uncaught service exceptions
- *
- * @author Kartik Gevariya
- */
 @ControllerAdvice
 @RestController
 public class ApplicationUncaughtExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(ApplicationUncaughtExceptionHandler.class);
+
+    private static final String INTERNAL_SERVER_ERROR_VIEW = "/500-error";
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleServiceException(Exception ex, HttpServletRequest request) {
-        LOG.error("Internal server Error: {}", ex.getMessage(), ex);
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/500-error");
+        mav.setViewName(INTERNAL_SERVER_ERROR_VIEW);
         return mav;
     }
 }

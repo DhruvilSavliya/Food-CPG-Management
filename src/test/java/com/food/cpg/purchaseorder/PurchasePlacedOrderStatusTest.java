@@ -27,7 +27,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
 @PrepareForTest({PurchasePlacedOrderStatus.class, InventoryFactory.class})
 public class PurchasePlacedOrderStatusTest {
 
-    public static final String GET_INSTANCE_METHOD = "instance";
+    private static final String GET_INSTANCE_METHOD = "instance";
     private static final String TEST_PURCHASE_ORDER_NUMBER = "PO-1234";
     private static final Integer TEST_RAW_MATERIAL_ID = 1;
     private static final String TEST_RAW_MATERIAL_UOM = "g";
@@ -48,10 +48,10 @@ public class PurchasePlacedOrderStatusTest {
     IRawMaterialInventory rawMaterialInventory;
 
     @Mock
-    PurchaseOrder purchaseOrder;
+    IPurchaseOrder purchaseOrder;
 
     @Mock
-    PurchaseOrderRawMaterial purchaseOrderRawMaterial;
+    IPurchaseOrderRawMaterial purchaseOrderRawMaterial;
 
     @Test
     public void getOrderStatusTest() {
@@ -78,7 +78,7 @@ public class PurchasePlacedOrderStatusTest {
     public void increaseRawMaterialQuantityTest() throws Exception {
         PurchasePlacedOrderStatus purchasePlacedOrderStatus = spy(new PurchasePlacedOrderStatus());
 
-        List<PurchaseOrderRawMaterial> purchaseOrderRawMaterials = new ArrayList<>();
+        List<IPurchaseOrderRawMaterial> purchaseOrderRawMaterials = new ArrayList<>();
         purchaseOrderRawMaterials.add(purchaseOrderRawMaterial);
 
         PowerMockito.mockStatic(InventoryFactory.class);

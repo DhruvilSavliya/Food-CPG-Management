@@ -3,8 +3,7 @@ package com.food.cpg.purchaseorder;
 import java.util.List;
 
 import com.food.cpg.authentication.AuthenticationSessionDetails;
-import com.food.cpg.databasepersistence.PersistenceFactory;
-import com.food.cpg.rawmaterial.RawMaterial;
+import com.food.cpg.rawmaterial.IRawMaterial;
 
 public class PurchaseOrderByItem {
 
@@ -27,22 +26,8 @@ public class PurchaseOrderByItem {
         this.itemQuantity = itemQuantity;
     }
 
-    private IPurchaseOrderRawMaterialPersistence getPersistence() {
-        PersistenceFactory persistenceFactory = PersistenceFactory.getPersistenceFactory();
-        return persistenceFactory.getPurchaseOrderRawMaterialPersistence();
-    }
-
-    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
-        return getPersistence().getPurchaseOrderItemRawMaterial(itemId);
-    }
-
-    private int getLoggedInManufacturerId() {
-        AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
-        return authenticationSessionDetails.getAuthenticatedUserId();
-    }
-
-    public void createPurchaseOrderByItem(RawMaterial rawMaterial) {
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
+    public void createPurchaseOrderByItem(IRawMaterial rawMaterial) {
+        IPurchaseOrder purchaseOrder = PurchaseOrderFactory.instance().makePurchaseOrder();
 
         List<PurchaseOrderRawMaterial> purchaseOrderItemRawMaterials = getPurchaseOrderItemRawMaterial(this.getItemId());
         for (PurchaseOrderRawMaterial purchaseOrderRawMaterial : purchaseOrderItemRawMaterials) {
@@ -54,5 +39,18 @@ public class PurchaseOrderByItem {
 
         purchaseOrder.setManufacturerId(this.getLoggedInManufacturerId());
         purchaseOrder.save();
+    }
+
+    private IPurchaseOrderRawMaterialPersistence getPersistence() {
+        return PurchaseOrderFactory.instance().makePurchaseOrderRawMaterialPersistence();
+    }
+
+    public List<PurchaseOrderRawMaterial> getPurchaseOrderItemRawMaterial(int itemId) {
+        return getPersistence().getPurchaseOrderItemRawMaterial(itemId);
+    }
+
+    private int getLoggedInManufacturerId() {
+        AuthenticationSessionDetails authenticationSessionDetails = AuthenticationSessionDetails.getInstance();
+        return authenticationSessionDetails.getAuthenticatedUserId();
     }
 }
