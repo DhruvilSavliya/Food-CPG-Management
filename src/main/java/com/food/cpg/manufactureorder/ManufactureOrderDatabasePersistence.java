@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManufactureOrderDatabasePersistence implements IManufactureOrderPersistence{
+public class ManufactureOrderDatabasePersistence implements IManufactureOrderPersistence {
 
     private final ICommonDatabaseOperation commonDatabaseOperation;
 
@@ -19,25 +19,25 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
     }
 
     @Override
-    public List<ManufactureOrder> getAllOpenOrders(int manufacturerId) {
+    public List<IManufactureOrder> getAllOpenOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, ManufactureOrderStatus.Status.OPEN.name());
     }
 
     @Override
-    public List<ManufactureOrder> getAllManufacturedOrders(int manufacturerId) {
+    public List<IManufactureOrder> getAllManufacturedOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, ManufactureOrderStatus.Status.MANUFACTURED.name());
     }
 
     @Override
-    public List<ManufactureOrder> getAllPackagedOrders(int manufacturerId) {
+    public List<IManufactureOrder> getAllPackagedOrders(int manufacturerId) {
         return getAllOrders(manufacturerId, ManufactureOrderStatus.Status.PACKAGED.name());
     }
 
     @Override
-    public List<ManufactureOrder> getAllOrders(int manufacturerId, String orderStatus) {
-        List<ManufactureOrder> manufactureOrders = new ArrayList<>();
+    public List<IManufactureOrder> getAllOrders(int manufacturerId, String orderStatus) {
+        List<IManufactureOrder> manufactureOrders = new ArrayList<>();
 
-        String sql = "select * from manufacture_orders where manufacturer_id = ? and order_status = ?";
+        String sql = ManufactureOrderDatabaseQuery.SELECT_ALL_MANUFACTURE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufacturerId);
         placeholderValues.add(orderStatus);
@@ -47,7 +47,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
-                        ManufactureOrder manufactureOrder = new ManufactureOrder();
+                        IManufactureOrder manufactureOrder = ManufactureOrderFactory.instance().makeManufactureOrder();
                         loadManufactureOrderDetailsFromResultSet(rs, manufactureOrder);
 
                         manufactureOrders.add(manufactureOrder);
@@ -57,14 +57,13 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
         } catch (SQLException e) {
             throw new ServiceException(e);
         }
-
         return manufactureOrders;
 
     }
 
     @Override
     public void changeStatus(String orderNumber, String orderStatus) {
-        String sql = "update manufacture_orders set order_status = ? where order_number = ?";
+        String sql = ManufactureOrderDatabaseQuery.CHANGE_MANUFACTURE_ORDER_STATUS;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderStatus);
         placeholderValues.add(orderNumber);
@@ -78,8 +77,8 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
 
 
     @Override
-    public void load(ManufactureOrder manufactureOrder) {
-        String sql = "select * from manufacture_orders where order_number = ?";
+    public void load(IManufactureOrder manufactureOrder) {
+        String sql = ManufactureOrderDatabaseQuery.LOAD_MANUFACTURE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufactureOrder.getOrderNumber());
 
@@ -99,9 +98,9 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
     }
 
     @Override
-    public void save(ManufactureOrder manufactureOrder) {
+    public void save(IManufactureOrder manufactureOrder) {
 
-        String sql = "insert into manufacture_orders (order_number, item_id, quantity, quantity_uom, manufacturing_cost, tax, cost, manufacturer_id) values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = ManufactureOrderDatabaseQuery.INSERT_MANUFACTURE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(manufactureOrder.getOrderNumber());
         placeholderValues.add(manufactureOrder.getItemId());
@@ -121,7 +120,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
 
     @Override
     public void delete(String orderNumber) {
-        String sql = "delete from manufacture_orders where order_number = ?";
+        String sql = ManufactureOrderDatabaseQuery.DELETE_MANUFACTURE_ORDER;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(orderNumber);
 
@@ -133,9 +132,9 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
 
     }
 
-    public Double loadItemCost(int itemId){
+    public Double loadItemCost(int itemId) {
         Double itemCost = null;
-        String sql = "select item_total_cost from items where item_id = ?";
+        String sql = ManufactureOrderDatabaseQuery.LOAD_ITEM_COST;
         List<Object> placeholderValues = new ArrayList<>();
         placeholderValues.add(itemId);
 
@@ -144,7 +143,7 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
                 commonDatabaseOperation.loadPlaceholderValues(preparedStatement, placeholderValues);
                 try (ResultSet rs = preparedStatement.executeQuery()) {
                     if (rs.next()) {
-                        itemCost = rs.getDouble("item_total_cost");
+                        itemCost = rs.getDouble(ManufactureOrderDatabaseColumn.ITEM_TOTAL_COST);
                     }
                 }
             }
@@ -154,19 +153,19 @@ public class ManufactureOrderDatabasePersistence implements IManufactureOrderPer
         return itemCost;
     }
 
-    private void loadManufactureOrderDetailsFromResultSet(ResultSet resultSet, ManufactureOrder manufactureOrder) throws SQLException {
-        manufactureOrder.setOrderNumber(resultSet.getString("order_number"));
-        manufactureOrder.setItemId(resultSet.getInt("item_id"));
-        manufactureOrder.setItemQuantity(resultSet.getDouble("quantity"));
-        manufactureOrder.setItemQuantityUOM(resultSet.getString("quantity_uom"));
-        manufactureOrder.setManufacturingCost(resultSet.getDouble("manufacturing_cost"));
-        manufactureOrder.setCost(resultSet.getDouble("cost"));
+    private void loadManufactureOrderDetailsFromResultSet(ResultSet resultSet, IManufactureOrder manufactureOrder) throws SQLException {
+        manufactureOrder.setOrderNumber(resultSet.getString(ManufactureOrderDatabaseColumn.ORDER_NUMBER));
+        manufactureOrder.setItemId(resultSet.getInt(ManufactureOrderDatabaseColumn.ITEM_ID));
+        manufactureOrder.setItemQuantity(resultSet.getDouble(ManufactureOrderDatabaseColumn.ITEM_QUANTITY));
+        manufactureOrder.setItemQuantityUOM(resultSet.getString(ManufactureOrderDatabaseColumn.ITEM_QUANTITY_UOM));
+        manufactureOrder.setManufacturingCost(resultSet.getDouble(ManufactureOrderDatabaseColumn.MANUFACTURING_COST));
+        manufactureOrder.setCost(resultSet.getDouble(ManufactureOrderDatabaseColumn.TOTAL_COST));
 
-        String orderStatus = resultSet.getString("order_status");
-        ManufactureOrderStatus manufactureOrderStatus = ManufactureOrderStatusFactory.getInstance().makeOrderStatus(orderStatus);
+        String orderStatus = resultSet.getString(ManufactureOrderDatabaseColumn.ORDER_STATUS);
+        ManufactureOrderStatus manufactureOrderStatus = ManufactureOrderFactory.instance().makeOrderStatus(orderStatus);
         manufactureOrder.setManufactureOrderStatus(manufactureOrderStatus);
 
-        manufactureOrder.setStatusChangeDate(resultSet.getTimestamp("status_change_date"));
+        manufactureOrder.setStatusChangeDate(resultSet.getTimestamp(ManufactureOrderDatabaseColumn.STATUS_CHANGE_DATE));
     }
 
 }

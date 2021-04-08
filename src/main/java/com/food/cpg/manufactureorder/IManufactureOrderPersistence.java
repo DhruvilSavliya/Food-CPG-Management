@@ -4,17 +4,17 @@ import java.util.List;
 
 public interface IManufactureOrderPersistence {
 
-    List<ManufactureOrder> getAllOpenOrders(int manufacturerId);
+    List<IManufactureOrder> getAllOpenOrders(int manufacturerId);
 
-    List<ManufactureOrder> getAllManufacturedOrders(int manufacturerId);
+    List<IManufactureOrder> getAllManufacturedOrders(int manufacturerId);
 
-    List<ManufactureOrder> getAllPackagedOrders(int manufacturerId);
+    List<IManufactureOrder> getAllPackagedOrders(int manufacturerId);
 
-    List<ManufactureOrder> getAllOrders(int manufacturerId, String orderStatus);
+    List<IManufactureOrder> getAllOrders(int manufacturerId, String orderStatus);
 
-    void load(ManufactureOrder manufactureOrder);
+    void load(IManufactureOrder manufactureOrder);
 
-    void save(ManufactureOrder manufactureOrder);
+    void save(IManufactureOrder manufactureOrder);
 
     void delete(String orderNumber);
 

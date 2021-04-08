@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import com.food.cpg.databasepersistence.ICommonDatabaseOperation;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyObject;
@@ -23,11 +24,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ManufactureOrderFactory.class)
 public class ManufactureOrderDatabasePersistenceTest {
 
     private static final String TEST_ORDER_NUMBER = "MO-123456";
     private static final Integer TEST_MANUFACTURE_ID = 1;
+    private static final String GET_INSTANCE_METHOD = "instance";
 
     @Mock
     ICommonDatabaseOperation commonDatabaseOperation;
@@ -42,7 +45,13 @@ public class ManufactureOrderDatabasePersistenceTest {
     ResultSet resultSet;
 
     @Mock
-    ManufactureOrder manufactureOrder;
+    IManufactureOrder manufactureOrder;
+
+    @Mock
+    ManufactureOrderFactory manufactureOrderFactory;
+
+    @Mock
+    ManufactureOrderStatus manufactureOrderStatus;
 
     @Before
     public void setUp() throws SQLException {
@@ -52,7 +61,11 @@ public class ManufactureOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllOpenOrdersTest() throws SQLException {
+    public void getAllOpenOrdersTest() throws Exception {
+        PowerMockito.mockStatic(ManufactureOrderFactory.class);
+        PowerMockito.doReturn(manufactureOrderFactory).when(ManufactureOrderFactory.class, GET_INSTANCE_METHOD);
+        when(manufactureOrderFactory.makeManufactureOrder()).thenReturn(manufactureOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -76,7 +89,11 @@ public class ManufactureOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllManufacturedOrdersTest() throws SQLException {
+    public void getAllManufacturedOrdersTest() throws Exception {
+        PowerMockito.mockStatic(ManufactureOrderFactory.class);
+        PowerMockito.doReturn(manufactureOrderFactory).when(ManufactureOrderFactory.class, GET_INSTANCE_METHOD);
+        when(manufactureOrderFactory.makeManufactureOrder()).thenReturn(manufactureOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -100,7 +117,11 @@ public class ManufactureOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void getAllPackagedOrdersTest() throws SQLException {
+    public void getAllPackagedOrdersTest() throws Exception {
+        PowerMockito.mockStatic(ManufactureOrderFactory.class);
+        PowerMockito.doReturn(manufactureOrderFactory).when(ManufactureOrderFactory.class, GET_INSTANCE_METHOD);
+        when(manufactureOrderFactory.makeManufactureOrder()).thenReturn(manufactureOrder);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
 
@@ -124,7 +145,11 @@ public class ManufactureOrderDatabasePersistenceTest {
     }
 
     @Test
-    public void loadTest() throws SQLException {
+    public void loadTest() throws Exception {
+        PowerMockito.mockStatic(ManufactureOrderFactory.class);
+        PowerMockito.doReturn(manufactureOrderFactory).when(ManufactureOrderFactory.class, GET_INSTANCE_METHOD);
+        when(manufactureOrderFactory.makeOrderStatus(anyString())).thenReturn(manufactureOrderStatus);
+
         when(resultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
         doNothing().when(commonDatabaseOperation).loadPlaceholderValues(anyObject(), anyList());
         when(manufactureOrder.getOrderNumber()).thenReturn(TEST_ORDER_NUMBER);

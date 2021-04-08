@@ -36,7 +36,7 @@ public class ManufactureManufacturedOrderStatusTest  {
     IItemInventory itemInventory;
 
     @Mock
-    ManufactureOrder manufactureOrder;
+    IManufactureOrder manufactureOrder;
 
     @Test
     public void getOrderStatusTest() {
